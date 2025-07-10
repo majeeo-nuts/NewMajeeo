@@ -96,15 +96,15 @@
 <script>
 const STORAGE_KEY = 'majeeo-cart';
 const products = [
-  { name:"Premium Almonds (Badam)", img:"assets/images/Product/Images/almonds.webp", price:1000, desc:"High-quality California almonds.", best:true, link:"product/product-almonds.html" },
-  { name:"Premium Cashews (Kaju)", img:"assets/images/Product/Images/Cashews.avif", price:1200, desc:"Fresh, creamy cashews.", best:true, link:"product/product-cashews.html" },
-  { name:"Mamra Almonds (Organic)", img:"assets/images/Product/Images/mamra_almonds.webp", price:1600, desc:"Premium organic Mamra almonds.", best:false, link:"product/product-mamra-almonds.html" },
-  { name:"Pista (Pistachios)", img:"assets/images/Product/Images/Pista.jpg", price:1400, desc:"Crunchy, lightly salted pistachios.", best:false, link:"product/product-pista.html" },
-  { name:"Walnut (Akhrot)", img:"assets/images/Product/Images/Walnut.png", price:1300, desc:"Brain‑boosting walnuts rich in Omega‑3.", best:false, link:"product/product-walnut.html" },
-  { name:"Raisins (Kishmish)", img:"assets/images/Product/Images/Raisins.png", price:600, desc:"Sweet, sun‑dried raisins.", best:false, link:"product/product-raisins.html" },
-  { name:"Mix Dry Fruits", img:"assets/images/Product/Images/Mix_Dryfruits.jpg", price:1500, desc:"Mix of almonds, cashews, pista, raisins & figs.", best:false, link:"product/product-mix-dryfruits.html" },
-  { name:"Anjeer (Figs)", img:"assets/images/Product/Images/Anjeer.png", price:900, desc:"Naturally sweet sun‑dried figs.", best:false, link:"product/product-anjeer.html" },
-  { name:"ABC", img:"assets/images/Product/Images/abc.jpg", price:1, desc:"Sample product at ₹1 only.", best:false, link:"product/product-abc.html" }
+  { name:"Premium Almonds (Badam)", img:"assets/images/Product/Images/almonds.webp", price:1000, desc:"High-quality California almonds.", best:true, link:"products/product-almonds.html" },
+  { name:"Premium Cashews (Kaju)", img:"assets/images/Product/Images/Cashews.avif", price:1200, desc:"Fresh, creamy cashews.", best:true, link:"products/product-cashews.html" },
+  { name:"Mamra Almonds (Organic)", img:"assets/images/Product/Images/mamra_almonds.webp", price:1600, desc:"Premium organic Mamra almonds.", best:false, link:"products/product-mamra-almonds.html" },
+  { name:"Pista (Pistachios)", img:"assets/images/Product/Images/Pista.jpg", price:1400, desc:"Crunchy, lightly salted pistachios.", best:false, link:"products/product-pista.html" },
+  { name:"Walnut (Akhrot)", img:"assets/images/Product/Images/Walnut.png", price:1300, desc:"Brain‑boosting walnuts rich in Omega‑3.", best:false, link:"products/product-walnut.html" },
+  { name:"Raisins (Kishmish)", img:"assets/images/Product/Images/Raisins.png", price:600, desc:"Sweet, sun‑dried raisins.", best:false, link:"products/product-raisins.html" },
+  { name:"Mix Dry Fruits", img:"assets/images/Product/Images/Mix_Dryfruits.jpg", price:1500, desc:"Mix of almonds, cashews, pista, raisins & figs.", best:false, link:"products/product-mix-dryfruits.html" },
+  { name:"Anjeer (Figs)", img:"assets/images/Product/Images/Anjeer.png", price:900, desc:"Naturally sweet sun‑dried figs.", best:false, link:"products/product-anjeer.html" },
+  { name:"ABC", img:"assets/images/Product/Images/abc.jpg", price:1, desc:"Sample product at ₹1 only.", best:false, link:"products/product-abc.html" }
 ];
 
 const getCart = () => JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
