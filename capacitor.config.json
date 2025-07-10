@@ -1,6 +1,6 @@
 {
   "appId": "com.majeeo.nuts",
   "appName": "MajeeoNuts",
-  "webDir": "www",
+  "webDir": "NewMajeeoNuts",
   "bundledWebRuntime": false
 }
