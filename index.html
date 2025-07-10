@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MajeeoNuts – Premium Dry Fruits</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#8B4513',
+            secondary: '#F5DEB3'
+          },
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-white text-gray-800">
+  <header class="bg-primary text-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto flex items-center justify-between p-4">
+      <div class="flex items-center gap-3">
+        <img src="assets/images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="h-10 w-10 rounded-full" />
+        <h1 class="text-xl font-bold">MajeeoNuts</h1>
+      </div>
+      <nav class="space-x-6">
+        <a href="#home" class="hover:text-yellow-200">Home</a>
+        <a href="#about" class="hover:text-yellow-200">About Us</a>
+        <a href="#contact" class="hover:text-yellow-200">Contact</a>
+        <a href="cart.html" class="relative hover:text-yellow-200">
+          🛒 Cart <span id="cart-count" class="ml-1 bg-yellow-500 text-black rounded-full px-2 text-xs">0</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <section id="home" class="relative w-full h-[60vh] overflow-hidden">
+    <video class="absolute w-full h-full object-cover" src="assets/videos/majeeoNuts_dryfruits_homepage_video.mp4" autoplay loop muted></video>
+    <div class="relative z-10 flex items-center justify-center h-full bg-black/50">
+      <h2 class="text-4xl font-bold text-white">Pure. Crunchy. Healthy.</h2>
+    </div>
+  </section>
+
+  <section class="container mx-auto py-12">
+    <h3 class="text-2xl font-semibold mb-6 text-center">Our Products</h3>
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Almonds -->
+      <div class="border rounded-lg p-4 shadow">
+        <img src="assets/images/almonds.webp" alt="Almonds" class="w-full h-40 object-cover rounded" />
+        <h4 class="text-lg font-bold mt-2">Almonds</h4>
+        <p class="text-sm text-gray-600">₹1000/kg</p>
+        <button class="mt-2 bg-primary text-white px-4 py-1 rounded add-to-cart" data-name="Almonds" data-price="1000">Add to Cart</button>
+      </div>
+      <!-- Cashews -->
+      <div class="border rounded-lg p-4 shadow">
+        <img src="assets/images/Cashews.avif" alt="Cashews" class="w-full h-40 object-cover rounded" />
+        <h4 class="text-lg font-bold mt-2">Cashews</h4>
+        <p class="text-sm text-gray-600">₹1200/kg</p>
+        <button class="mt-2 bg-primary text-white px-4 py-1 rounded add-to-cart" data-name="Cashews" data-price="1200">Add to Cart</button>
+      </div>
+      <!-- Dates -->
+      <div class="border rounded-lg p-4 shadow">
+        <img src="assets/images/Mix_Dryfruits.jpg" alt="Dates" class="w-full h-40 object-cover rounded" />
+        <h4 class="text-lg font-bold mt-2">Dates</h4>
+        <p class="text-sm text-gray-600">₹1300/kg</p>
+        <button class="mt-2 bg-primary text-white px-4 py-1 rounded add-to-cart" data-name="Dates" data-price="1300">Add to Cart</button>
+      </div>
+      <!-- Figs -->
+      <div class="border rounded-lg p-4 shadow">
+        <img src="assets/images/Anjeer.png" alt="Figs" class="w-full h-40 object-cover rounded" />
+        <h4 class="text-lg font-bold mt-2">Figs</h4>
+        <p class="text-sm text-gray-600">₹1500/kg</p>
+        <button class="mt-2 bg-primary text-white px-4 py-1 rounded add-to-cart" data-name="Figs" data-price="1500">Add to Cart</button>
+      </div>
+      <!-- Raisins -->
+      <div class="border rounded-lg p-4 shadow">
+        <img src="assets/images/Raisins.png" alt="Raisins" class="w-full h-40 object-cover rounded" />
+        <h4 class="text-lg font-bold mt-2">Raisins</h4>
+        <p class="text-sm text-gray-600">₹1400/kg</p>
+        <button class="mt-2 bg-primary text-white px-4 py-1 rounded add-to-cart" data-name="Raisins" data-price="1400">Add to Cart</button>
+      </div>
+      <!-- Walnuts -->
+      <div class="border rounded-lg p-4 shadow">
+        <img src="assets/images/Walnut.png" alt="Walnuts" class="w-full h-40 object-cover rounded" />
+        <h4 class="text-lg font-bold mt-2">Walnuts</h4>
+        <p class="text-sm text-gray-600">₹1400/kg</p>
+        <button class="mt-2 bg-primary text-white px-4 py-1 rounded add-to-cart" data-name="Walnuts" data-price="1400">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="bg-secondary py-12 text-center">
+    <h3 class="text-2xl font-semibold mb-4">About Us</h3>
+    <p class="max-w-xl mx-auto">MajeeoNuts offers world-class dry fruits sourced directly from farms. We are committed to quality, health, and taste.</p>
+  </section>
+
+  <section id="contact" class="py-12 bg-gray-100">
+    <div class="container mx-auto">
+      <h3 class="text-2xl font-semibold mb-4 text-center">Contact Us</h3>
+      <form class="max-w-xl mx-auto grid gap-4">
+        <input type="text" placeholder="Your Name" class="p-2 border rounded" required />
+        <input type="email" placeholder="Your Email" class="p-2 border rounded" required />
+        <textarea placeholder="Message" class="p-2 border rounded h-32"></textarea>
+        <button class="bg-primary text-white px-4 py-2 rounded">Send</button>
+      </form>
+    </div>
+  </section>
+
+  <footer class="bg-primary text-white text-center py-4">
+    <p>&copy; 2025 MajeeoNuts. All rights reserved.</p>
+    <p>Email: maheshgawade7799@gmail.com</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+
+</html>

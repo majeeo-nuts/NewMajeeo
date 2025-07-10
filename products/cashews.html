@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pistachios – MajeeoNuts</title>
+  <link rel="stylesheet" href="../style.css" />
+</head>
+<body class="bg-white text-gray-800">
+  <header class="bg-green-800 text-white p-4 flex justify-between items-center">
+    <a href="../index.html" class="text-xl font-bold">MajeeoNuts</a>
+    <nav class="space-x-4">
+      <a href="../index.html">Home</a>
+      <a href="../about.html">About Us</a>
+      <a href="../contact.html">Contact Us</a>
+      <a href="../cart.html">Cart</a>
+    </nav>
+  </header>
+
+  <main class="p-4 max-w-5xl mx-auto">
+    <div class="grid md:grid-cols-2 gap-8 items-center">
+      <img src="../assets/images/Pista.jpg" alt="Pistachios" class="w-full rounded-lg shadow" />
+      <div>
+        <h1 class="text-3xl font-bold mb-4">Premium Pistachios (Pista)</h1>
+        <p class="mb-4">Treat yourself with our rich and crunchy pistachios – a nutritious snack packed with healthy fats, fiber, and antioxidants. Perfect for snacking or gifting!</p>
+        <p class="text-xl font-semibold mb-4">Price: ₹1400 / kg</p>
+        <button onclick="addToCart('Pistachios', 1400)" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded shadow">Add to Cart</button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-gray-100 text-center p-4 mt-10">
+    <p>&copy; 2025 MajeeoNuts. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function addToCart(product, price) {
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({ product, price, quantity: 1 });
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(product + " added to cart!");
+    }
+  </script>
+</body>
+</html>
