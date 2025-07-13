@@ -1,0 +1,220 @@
+<!-- Save as: product/product-cashews.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Premium Cashews (Kaju) - MajeeoNuts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; background-color: #fffef8; }
+    .cart-item { display: flex; justify-content: space-between; align-items: center; border: 1px solid #e5e7eb; padding: 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; background-color: #ffffff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); }
+    .cart-item p { margin-bottom: 0; }
+    .nav-center { position: absolute; left: 50%; transform: translateX(-50%); }
+  </style>
+</head>
+<body class="text-gray-800 text-sm">
+
+<!-- Header -->
+<header class="bg-red-800 text-white py-3 px-6 relative shadow flex items-center justify-between">
+  <a href="../home.html" class="flex items-center space-x-2">
+    <img src="../assets/images/Product/Images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="h-8 w-auto">
+    <span class="text-xl font-bold">MajeeoNuts</span>
+  </a>
+  <nav class="space-x-4 text-sm nav-center">
+    <a href="../home.html" class="hover:underline">Home</a>
+    <a href="../about.html" class="hover:underline">About Us</a>
+    <a href="../contact.html" class="hover:underline">Contact Us</a>
+  </nav>
+  <a href="../cart.html" class="text-sm bg-white text-red-700 px-3 py-1 rounded-full font-semibold hover:bg-yellow-100 flex items-center">
+    🛒 Cart <span id="cart-count" class="ml-1 bg-red-700 text-white px-2 py-[1px] rounded-full text-[10px] font-bold"></span>
+  </a>
+</header>
+
+<!-- Product Section -->
+<section class="max-w-5xl mx-auto p-4 mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div class="text-center">
+    <img src="../assets/images/Product/Images/cashews.avif" alt="Premium Cashews" class="rounded shadow mb-4 mx-auto w-52 h-52 object-cover" />
+    <h2 class="text-lg font-bold mb-2">Premium Cashews (Kaju)</h2>
+    <select id="quantity" class="p-1 border rounded text-sm mb-2">
+      <option value="250">250g - ₹300</option>
+      <option value="500">500g - ₹600</option>
+      <option value="1000" selected>1kg - ₹1200</option>
+    </select>
+    <p class="text-red-700 font-bold text-lg mb-1">₹<span id="price">1200</span></p>
+
+    <div class="flex flex-col sm:flex-row gap-4 mt-3">
+      <button onclick="addToCart()" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-800">Add to Cart</button>
+      <button onclick="buyNow()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Buy Now</button>
+    </div>
+
+    <div id="cart-items" class="mt-5 space-y-2"></div>
+  </div>
+
+  <div class="text-sm space-y-3">
+    <p><strong>Fresh and Crunchy:</strong> Perfectly roasted and packed with flavor.</p>
+    <div class="flex gap-3 text-xs">
+      <span class="bg-green-100 text-green-800 px-2 py-1 rounded">Rich in Zinc</span>
+      <span class="bg-green-100 text-green-800 px-2 py-1 rounded">Cholesterol Free</span>
+      <span class="bg-green-100 text-green-800 px-2 py-1 rounded">Heart Healthy</span>
+    </div>
+
+    <hr class="my-4"/>
+    <h3 class="font-semibold text-base">Description</h3>
+    <p class="text-gray-700">Our Premium Cashews are jumbo-sized, sweet, and full of crunch. Ideal for daily snacks, sweets, or gifting.</p>
+
+    <h3 class="font-semibold text-base mt-4">Benefits</h3>
+    <p class="text-gray-700">High in healthy fats and protein. Helps with energy, immunity, and skin health.</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-white border-t mt-12 text-xs">
+  <div class="bg-gray-100 py-6 px-4 sm:px-6 lg:px-16">
+    <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div>
+        <img src="../assets/images/Product/Images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="w-20 mb-2">
+        <p class="text-gray-600">Majeeo Nuts brings you premium dry fruits from across India and the world.</p>
+      </div>
+      <div>
+        <h4 class="font-semibold text-gray-800 mb-1">Quick Links</h4>
+        <ul class="text-gray-600 space-y-1">
+          <li><a href="../about.html" class="hover:text-red-600">About Us</a></li>
+          <li><a href="../contact.html" class="hover:text-red-600">Contact Us</a></li>
+          <li><a href="../bulk-order.html" class="hover:text-red-600">Bulk Ordering</a></li>
+          <li><a href="../shop.html" class="hover:text-red-600">Shop</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-gray-800 mb-1">Account Info</h4>
+        <ul class="text-gray-600 space-y-1">
+          <li><a href="../account.html" class="hover:text-red-600">My Account</a></li>
+          <li><a href="../privacy.html" class="hover:text-red-600">Privacy Policy</a></li>
+          <li><a href="../return.html" class="hover:text-red-600">Return Policy</a></li>
+          <li><a href="../terms.html" class="hover:text-red-600">Terms & Conditions</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-semibold text-gray-800 mb-1">Contact</h4>
+        <ul class="text-gray-600 space-y-1">
+          <li>📍 Mumbai, India</li>
+          <li>✉️ maheshgawade7799@gmail.com</li>
+          <li>📞 +91-7483600212</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- JavaScript -->
+<script>
+  const quantitySelect = document.getElementById("quantity");
+  const priceDisplay = document.getElementById("price");
+  const cartItemsDiv = document.getElementById("cart-items");
+  const priceMap = { 250: 300, 500: 600, 1000: 1200 };
+  let cart = JSON.parse(localStorage.getItem("majeeo-cart")) || [];
+
+  function updatePriceDisplay() {
+    const grams = parseInt(quantitySelect.value);
+    priceDisplay.innerText = priceMap[grams];
+  }
+
+  function updateCartBadge() {
+    const badge = document.getElementById("cart-count");
+    const total = cart.reduce((sum, item) => sum + item.count, 0);
+    badge.textContent = total ? `${total}x` : '';
+  }
+
+  function renderMiniCart() {
+    cartItemsDiv.innerHTML = "";
+    if (cart.length === 0) {
+      cartItemsDiv.innerHTML = '<p class="text-gray-500 text-sm">Your cart is empty.</p>';
+      return;
+    }
+    cart.forEach((item, index) => {
+      const div = document.createElement("div");
+      div.className = "cart-item";
+      div.innerHTML = `
+        <div>
+          <p><strong>${item.name}</strong></p>
+          <p>${item.count} × ${item.grams}g – ₹${item.price.toFixed(2)}</p>
+        </div>
+        <div class="flex gap-1">
+          <button onclick="removeOne(${index})" class="text-yellow-600 text-xs border px-2 rounded">−1</button>
+          <button onclick="removeAll(${index})" class="text-red-600 text-xs border px-2 rounded">❌ All</button>
+        </div>
+      `;
+      cartItemsDiv.appendChild(div);
+    });
+  }
+
+  function addToCart() {
+    const grams = parseInt(quantitySelect.value);
+    const name = "Premium Cashews (Kaju)";
+    const price = priceMap[grams];
+
+    const existing = cart.find(item => item.name === name && item.grams === grams);
+    if (existing) {
+      existing.count += 1;
+      existing.price += price;
+    } else {
+      cart.push({ name, grams, price, count: 1 });
+    }
+
+    localStorage.setItem("majeeo-cart", JSON.stringify(cart));
+    renderMiniCart();
+    updateCartBadge();
+  }
+
+  function removeOne(index) {
+    const item = cart[index];
+    const unitPrice = item.price / item.count;
+    if (item.count > 1) {
+      item.count -= 1;
+      item.price -= unitPrice;
+    } else {
+      cart.splice(index, 1);
+    }
+    localStorage.setItem("majeeo-cart", JSON.stringify(cart));
+    renderMiniCart();
+    updateCartBadge();
+  }
+
+  function removeAll(index) {
+    cart.splice(index, 1);
+    localStorage.setItem("majeeo-cart", JSON.stringify(cart));
+    renderMiniCart();
+    updateCartBadge();
+  }
+
+  function buyNow() {
+    const grams = parseInt(quantitySelect.value);
+    const total = priceMap[grams];
+    const options = {
+      key: "rzp_live_LIqOpioBHDIhG4",
+      amount: total * 100,
+      currency: "INR",
+      name: "MajeeoNuts",
+      description: "Premium Cashews Purchase",
+      handler: function (response) {
+        alert("Payment successful! ID: " + response.razorpay_payment_id);
+      },
+      prefill: { email: "maheshgawade7799@gmail.com" },
+      theme: { color: "#b91c1c" }
+    };
+    new Razorpay(options).open();
+  }
+
+  quantitySelect.addEventListener("change", updatePriceDisplay);
+  updatePriceDisplay();
+  renderMiniCart();
+  updateCartBadge();
+</script>
+
+<div class="text-center mt-4">
+  <a href="../home.html" class="text-red-700 underline text-sm hover:text-red-900">← Go to Home</a>
+</div>
+</body>
+</html>
