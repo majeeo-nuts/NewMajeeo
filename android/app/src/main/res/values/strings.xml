@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">NewMajeeoNuts</string>
+    <string name="title_activity_main">NewMajeeoNuts</string>
+    <string name="package_name">com.majeeo.nuts</string>
+    <string name="custom_url_scheme">com.majeeo.nuts</string>
+</resources>
