@@ -1,4 +1,3 @@
-<!-- Save as: home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,15 +27,20 @@
       </a>
     </div>
 
-    <!-- Center: Search + Cart -->
-    <div class="flex-1 hidden md:flex items-center justify-center space-x-2 mx-4">
+    <!-- Right: Desktop Navigation + Search + Cart -->
+    <div class="hidden md:flex items-center space-x-6 ml-auto">
+      <nav class="flex space-x-4 text-sm">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="about.html" class="hover:underline">About Us</a>
+        <a href="contact.html" class="hover:underline">Contact Us</a>
+      </nav>
       <input id="searchInput" type="text" placeholder="Search…" class="px-2 py-1 rounded border border-gray-400 focus:ring-2 focus:ring-red-500 w-44 text-xs text-black">
       <a href="cart.html" class="bg-red-700 text-white px-3 py-1 rounded-full text-sm font-semibold hover:bg-red-600 flex items-center">
         🛒 Cart&nbsp;<span id="cart-count" class="ml-1 bg-white text-red-700 px-2 rounded-full text-[10px] font-bold"></span>
       </a>
     </div>
 
-    <!-- Right: Navigation / Hamburger -->
+    <!-- Mobile: Hamburger -->
     <div class="md:hidden">
       <button id="nav-toggle" class="focus:outline-none">
         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2"
@@ -47,6 +51,13 @@
       </button>
     </div>
   </div>
+
+  <!-- Mobile Nav Links -->
+  <nav id="mobile-menu" class="md:hidden hidden flex-col mt-2 space-y-1 text-sm px-4">
+    <a href="index.html" class="hover:underline">Home</a>
+    <a href="about.html" class="hover:underline">About Us</a>
+    <a href="contact.html" class="hover:underline">Contact Us</a>
+  </nav>
 </header>
 
 <!-- Search & Cart fallback for mobile -->
@@ -58,16 +69,38 @@
 </div>
 
 <script>
-  // Toggle mobile nav
-  document.getElementById('nav-toggle').addEventListener('click', () => {
-    const menu = document.getElementById('mobile-menu');
-    menu.classList.toggle('hidden');
+  document.addEventListener("DOMContentLoaded", () => {
+    // Toggle mobile nav
+    document.getElementById('nav-toggle').addEventListener('click', () => {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    // Sync cart counts (assumes same logic elsewhere for updating counts)
+    const cartData = JSON.parse(localStorage.getItem('majeeo-cart') || '[]');
+    const total = cartData.reduce((sum, item) => sum + item.grams, 0);
+    if (total) {
+      document.getElementById('cart-count').textContent = `${total}g`;
+      document.getElementById('cart-count-mobile').textContent = `${total}g`;
+    }
+
+    // Search (shared logic)
+    function searchHandler(value) {
+      const q = value.toLowerCase();
+      document.querySelectorAll('.grid article').forEach(card => {
+        const title = card.querySelector('h2')?.innerText.toLowerCase() || '';
+        card.style.display = title.includes(q) ? 'block' : 'none';
+      });
+    }
+
+    document.getElementById('searchInput')?.addEventListener('input', e => searchHandler(e.target.value));
+    document.getElementById('searchInputMobile')?.addEventListener('input', e => searchHandler(e.target.value));
   });
 </script>
-<!-- Rest of your body content here... -->
+
+<!-- Main content continues here... -->
 </body>
 </html>
-
 <!-- Hero + Side Cart -->
 <section class="max-w-5xl mx-auto mt-4 px-2 flex flex-col md:flex-row gap-4">
   <div class="w-full md:w-2/3 rounded-lg overflow-hidden shadow">
