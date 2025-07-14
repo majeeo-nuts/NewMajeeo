@@ -15,33 +15,40 @@
 <!-- Navbar -->
 <nav class="bg-red-800 text-white p-4 shadow-md">
   <div class="flex items-center justify-between">
+    <!-- Logo -->
     <a href="index.html" class="flex items-center space-x-2">
-<img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="w-20 mb-2">
+      <img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="w-20 mb-2">
       <span class="text-xl font-bold">MajeeoNuts</span>
     </a>
-    <div class="md:hidden">
-      <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-    </div>
-    <div class="hidden md:flex gap-4 text-xs" id="menu">
+
+    <!-- Center Menu (hidden on mobile) -->
+    <div class="hidden md:flex gap-4 text-xs absolute left-1/2 transform -translate-x-1/2">
       <a href="index.html" class="hover:underline">Home</a>
       <a href="about.html" class="hover:underline">About Us</a>
       <a href="contact.html" class="hover:underline">Contact Us</a>
     </div>
-  </div>
-  <div class="md:hidden hidden flex-col mt-2 gap-2 text-xs" id="mobile-menu">
-    <a href="index.html" class="hover:underline">Home</a>
-    <a href="about.html" class="hover:underline">About Us</a>
-    <a href="contact.html" class="hover:underline">Contact Us</a>
-  </div>
+
+    <!-- Search + Cart -->
     <div class="flex items-center space-x-2">
-    <input id="searchInput" type="text" placeholder="Search…" class="px-2 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-red-600 w-32 text-xs text-black">
-    <a href="cart.html" class="bg-red-700 text-white px-3 py-1 rounded-full text-sm font-semibold hover:bg-red-600 flex items-center">
-      🛒 Cart&nbsp;<span id="cart-count" class="ml-1 bg-white text-red-700 px-2 rounded-full text-[10px] font-bold"></span>
-    </a>
+      <input id="searchInput" type="text" placeholder="Search…" class="px-2 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-red-600 w-32 text-xs text-black">
+      <a href="cart.html" class="bg-red-700 text-white px-3 py-1 rounded-full text-sm font-semibold hover:bg-red-600 flex items-center">
+        🛒 Cart&nbsp;<span id="cart-count" class="ml-1 bg-white text-red-700 px-2 rounded-full text-[10px] font-bold"></span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Mobile Menu (hidden by default) -->
+  <div class="md:hidden mt-2">
+    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="mb-2">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+    <div class="hidden flex-col gap-2 text-xs" id="mobile-menu">
+      <a href="index.html" class="hover:underline">Home</a>
+      <a href="about.html" class="hover:underline">About Us</a>
+      <a href="contact.html" class="hover:underline">Contact Us</a>
+    </div>
   </div>
 </nav>
 
