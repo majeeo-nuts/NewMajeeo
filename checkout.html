@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Checkout - MajeeoNuts</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Optional: FontAwesome for social icons -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body class="bg-yellow-50 font-sans text-gray-800">
@@ -13,20 +13,15 @@
 <!-- Header -->
 <header class="bg-green-800 text-white p-4 shadow-md">
   <div class="max-w-7xl mx-auto flex items-center justify-between">
-    <!-- Left: Logo -->
     <a href="index.html" class="flex items-center space-x-2">
       <img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="w-20 mb-2">
       <span class="text-xl font-bold">MajeeoNuts</span>
     </a>
-
-    <!-- Desktop Navigation -->
     <nav class="hidden md:flex space-x-6 text-sm">
       <a href="index.html" class="hover:underline">Home</a>
       <a href="about.html" class="underline font-semibold">About Us</a>
       <a href="contact.html" class="hover:underline">Contact Us</a>
     </nav>
-
-    <!-- Hamburger Icon -->
     <div class="md:hidden">
       <button id="nav-toggle" class="focus:outline-none">
         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2"
@@ -37,8 +32,6 @@
       </button>
     </div>
   </div>
-
-  <!-- Mobile Menu -->
   <nav id="mobile-menu" class="md:hidden hidden flex-col mt-2 space-y-2 px-4 text-sm">
     <a href="index.html" class="hover:underline">Home</a>
     <a href="about.html" class="underline font-semibold">About Us</a>
@@ -53,49 +46,44 @@
   });
 </script>
 
-  <!-- Checkout Section -->
-  <main class="max-w-xl mx-auto mt-10 bg-white p-6 rounded shadow">
-    <h1 class="text-2xl font-bold mb-4">Checkout</h1>
-    <p class="mb-6">Click the button below to complete your payment using Razorpay.</p>
+<main class="max-w-xl mx-auto mt-10 bg-white p-6 rounded shadow">
+  <h1 class="text-2xl font-bold mb-4">Checkout</h1>
+  <p class="mb-6">Click the button below to complete your payment using Razorpay.</p>
+  <button id="rzp-button1" class="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700">
+    Pay with Razorpay
+  </button>
+</main>
 
-    <button id="rzp-button1" class="bg-green-600 text-white px-6 py-3 rounded hover:bg-green-700">
-      Pay with Razorpay
-    </button>
-  </main>
+<script>
+  const cart = JSON.parse(localStorage.getItem('majeeo-cart')) || [];
+  const total = cart.reduce((sum, item) => sum + item.price, 0);
 
-  <!-- Razorpay Payment Script -->
-  <script>
-    const cart = JSON.parse(localStorage.getItem('majeeo-cart')) || [];
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
+  const rzpOptions = {
+    key: "rzp_live_LIqOpioBHDIhG4",
+    amount: Math.round(total * 100),
+    currency: "INR",
+    name: "MajeeoNuts",
+    description: "Dry Fruits Order Payment",
+    image: "images/MajeeoNuts.Logo.png",
+    handler: function (response) {
+      alert("✅ Payment Successful!\nPayment ID: " + response.razorpay_payment_id);
+      localStorage.removeItem('majeeo-cart');
+      window.location.href = "index.html";
+    },
+    prefill: {
+      name: "Customer",
+      email: "customer@example.com",
+      contact: "9999999999"
+    },
+    theme: { color: "#b91c1c" }
+  };
 
-    const options = {
-      key: "rzp_live_LIqOpioBHDIhG4",
-      amount: Math.round(total * 100),
-      currency: "INR",
-      name: "MajeeoNuts",
-      description: "Dry Fruits Order Payment",
-      image: "assets/images/Product/Images/MajeeoNuts.Logo.png",
-      handler: function (response) {
-        alert("✅ Payment Successful!\nPayment ID: " + response.razorpay_payment_id);
-        localStorage.removeItem('majeeo-cart');
-        window.location.href = "home.html";
-      },
-      prefill: {
-        name: "Customer",
-        email: "customer@example.com",
-        contact: "9999999999"
-      },
-      theme: {
-        color: "#b91c1c"
-      }
-    };
-
-    const rzp = new Razorpay(options);
-    document.getElementById('rzp-button1').onclick = function(e) {
-      rzp.open();
-      e.preventDefault();
-    };
-  </script>
+  document.getElementById('rzp-button1').addEventListener('click', function (e) {
+    e.preventDefault();
+    const rzp = new Razorpay(rzpOptions);
+    rzp.open();
+  });
+</script>
 
 </body>
 </html>
