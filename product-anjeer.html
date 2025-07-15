@@ -1,34 +1,105 @@
-<!-- Save as: product/product-anjeer.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Anjeer (Figs) - MajeeoNuts</title>
+  <title>MajeeoNuts – Premium Dry Fruits</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Poppins', sans-serif; background-color: #fffef8; }
-    .cart-item { display: flex; justify-content: space-between; align-items: center; border: 1px solid #e5e7eb; padding: 0.5rem; border-radius: 0.25rem; font-size: 0.75rem; background-color: #ffffff; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); }
-    .cart-item p { margin-bottom: 0; }
-    .nav-center { position: absolute; left: 50%; transform: translateX(-50%); }
+    body { font-family: 'Poppins', sans-serif; }
+    .best-seller-badge {
+      background:#b91c1c;color:#fff;font-size:.6rem;padding:0.1rem 0.3rem;border-radius:0.375rem;margin-left:0.5rem;vertical-align:middle;
+    }
   </style>
 </head>
-<body class="text-gray-800 text-sm">
 
+<body class="bg-yellow-50 text-gray-900 text-sm">
 <!-- Header -->
-  <header class="bg-green-800 text-white p-4 flex justify-between items-center">
-    <a href="index.html" class="flex items-center space-x-2">
-      <img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="w-10 h-10 object-contain" />
-      <span class="text-xl font-bold">MajeeoNuts</span>
-    </a>
-    <nav class="space-x-4">
-      <a href="index.html" class="hover:underline">Home</a>
-      <a href="about.html" class="hover:underline">About Us</a>
-      <a href="contact.html" class="underline font-semibold">Contact Us</a>
-    </nav>
-  </header>
+<header class="bg-red-800 text-white py-3 px-4 shadow-md">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <!-- Left: Logo and Brand -->
+    <div class="flex items-center space-x-3">
+      <a href="index.html" class="flex items-center space-x-2">
+        <img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="h-8 w-auto">
+        <span class="text-xl font-bold">MajeeoNuts</span>
+      </a>
+    </div>
+
+    <!-- Right: Desktop Navigation + Search + Cart -->
+    <div class="hidden md:flex items-center space-x-6 ml-auto">
+      <nav class="flex space-x-4 text-sm">
+        <a href="index.html" class="hover:underline">Home</a>
+        <a href="shop.html" class="hover:underline">Shop</a>
+        <a href="about.html" class="hover:underline">About Us</a>
+        <a href="contact.html" class="hover:underline">Contact Us</a>
+      </nav>
+      <input id="searchInput" type="text" placeholder="Search…" class="px-2 py-1 rounded border border-gray-400 focus:ring-2 focus:ring-red-500 w-44 text-xs text-black">
+      <a href="cart.html" class="bg-red-700 text-white px-3 py-1 rounded-full text-sm font-semibold hover:bg-red-600 flex items-center">
+        🛒 Cart&nbsp;<span id="cart-count" class="ml-1 bg-white text-red-700 px-2 rounded-full text-[10px] font-bold"></span>
+      </a>
+    </div>
+
+    <!-- Mobile: Hamburger -->
+    <div class="md:hidden">
+      <button id="nav-toggle" class="focus:outline-none">
+        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Nav Links -->
+  <nav id="mobile-menu" class="md:hidden hidden flex-col mt-2 space-y-1 text-sm px-4">
+    <a href="index.html" class="hover:underline">Home</a>
+    <a href="shop.html" class="hover:underline">Shop</a>
+    <a href="about.html" class="hover:underline">About Us</a>
+    <a href="contact.html" class="hover:underline">Contact Us</a>
+  </nav>
+</header>
+
+<!-- Search & Cart fallback for mobile -->
+<div class="md:hidden flex justify-center items-center gap-2 mt-2 px-4">
+  <input id="searchInputMobile" type="text" placeholder="Search..." class="px-2 py-1 rounded border border-gray-400 focus:ring-2 focus:ring-red-500 w-full text-xs text-black">
+  <a href="cart.html" class="bg-red-700 text-white px-3 py-1 rounded-full text-sm font-semibold hover:bg-red-600 flex items-center">
+    🛒 Cart&nbsp;<span id="cart-count-mobile" class="ml-1 bg-white text-red-700 px-2 rounded-full text-[10px] font-bold"></span>
+  </a>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    // Toggle mobile nav
+    document.getElementById('nav-toggle').addEventListener('click', () => {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    // Sync cart counts
+    const cartData = JSON.parse(localStorage.getItem('majeeo-cart') || '[]');
+    const total = cartData.reduce((sum, item) => sum + item.grams, 0);
+    if (total) {
+      document.getElementById('cart-count').textContent = `${total}g`;
+      document.getElementById('cart-count-mobile').textContent = `${total}g`;
+    }
+
+    // Search handler
+    function searchHandler(value) {
+      const q = value.toLowerCase();
+      document.querySelectorAll('.grid article').forEach(card => {
+        const title = card.querySelector('h2')?.innerText.toLowerCase() || '';
+        card.style.display = title.includes(q) ? 'block' : 'none';
+      });
+    }
+
+    document.getElementById('searchInput')?.addEventListener('input', e => searchHandler(e.target.value));
+    document.getElementById('searchInputMobile')?.addEventListener('input', e => searchHandler(e.target.value));
+  });
+</script>
+
 
 <!-- Product Section -->
 <section class="max-w-5xl mx-auto p-4 mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
