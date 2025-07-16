@@ -14,20 +14,17 @@
     }
   </style>
 </head>
-
 <body class="bg-yellow-50 text-gray-900 text-sm">
+
 <!-- Header -->
 <header class="bg-red-800 text-white py-3 px-4 shadow-md">
   <div class="max-w-7xl mx-auto flex items-center justify-between">
-    <!-- Left: Logo and Brand -->
     <div class="flex items-center space-x-3">
       <a href="index.html" class="flex items-center space-x-2">
         <img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="h-8 w-auto">
         <span class="text-xl font-bold">MajeeoNuts</span>
       </a>
     </div>
-
-    <!-- Right: Desktop Navigation + Search + Cart -->
     <div class="hidden md:flex items-center space-x-6 ml-auto">
       <nav class="flex space-x-4 text-sm">
         <a href="index.html" class="hover:underline">Home</a>
@@ -40,20 +37,15 @@
         🛒 Cart&nbsp;<span id="cart-count" class="ml-1 bg-white text-red-700 px-2 rounded-full text-[10px] font-bold"></span>
       </a>
     </div>
-
-    <!-- Mobile: Hamburger -->
     <div class="md:hidden">
       <button id="nav-toggle" class="focus:outline-none">
         <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2"
           viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path stroke-linecap="round" stroke-linejoin="round"
-            d="M4 6h16M4 12h16M4 18h16"></path>
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
         </svg>
       </button>
     </div>
   </div>
-
-  <!-- Mobile Nav Links -->
   <nav id="mobile-menu" class="md:hidden hidden flex-col mt-2 space-y-1 text-sm px-4">
     <a href="index.html" class="hover:underline">Home</a>
     <a href="shop.html" class="hover:underline">Shop</a>
@@ -62,7 +54,6 @@
   </nav>
 </header>
 
-<!-- Search & Cart fallback for mobile -->
 <div class="md:hidden flex justify-center items-center gap-2 mt-2 px-4">
   <input id="searchInputMobile" type="text" placeholder="Search..." class="px-2 py-1 rounded border border-gray-400 focus:ring-2 focus:ring-red-500 w-full text-xs text-black">
   <a href="cart.html" class="bg-red-700 text-white px-3 py-1 rounded-full text-sm font-semibold hover:bg-red-600 flex items-center">
@@ -70,36 +61,9 @@
   </a>
 </div>
 
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // Toggle mobile nav
-    document.getElementById('nav-toggle').addEventListener('click', () => {
-      const menu = document.getElementById('mobile-menu');
-      menu.classList.toggle('hidden');
-    });
-
-    // Sync cart counts
-    const cartData = JSON.parse(localStorage.getItem('majeeo-cart') || '[]');
-    const total = cartData.reduce((sum, item) => sum + item.grams, 0);
-    if (total) {
-      document.getElementById('cart-count').textContent = `${total}g`;
-      document.getElementById('cart-count-mobile').textContent = `${total}g`;
-    }
-
-    // Search handler
-    function searchHandler(value) {
-      const q = value.toLowerCase();
-      document.querySelectorAll('.grid article').forEach(card => {
-        const title = card.querySelector('h2')?.innerText.toLowerCase() || '';
-        card.style.display = title.includes(q) ? 'block' : 'none';
-      });
-    }
-
-    document.getElementById('searchInput')?.addEventListener('input', e => searchHandler(e.target.value));
-    document.getElementById('searchInputMobile')?.addEventListener('input', e => searchHandler(e.target.value));
-  });
-</script>
-
+<main class="max-w-4xl mx-auto p-4">
+  <h1 class="text-2xl font-bold mb-4">Your Cart</h1>
+  <div id="cart-items" class="space-y-4"></div>
   <div class="mt-6 text-right border-t pt-4">
     <h2 class="text-xl font-semibold">Total: ₹<span id="total">0</span></h2>
     <a href="checkout.html">
@@ -112,7 +76,7 @@
   <div class="bg-gray-100 py-6 px-4 sm:px-6 lg:px-16">
     <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
       <div>
-      <img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="w-20 mb-2">
+        <img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="w-20 mb-2">
         <p class="text-gray-600">Majeeo Nuts brings you premium dry fruits from across India and the world.</p>
       </div>
       <div>
@@ -146,6 +110,31 @@
 </footer>
 
 <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById('nav-toggle').addEventListener('click', () => {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+
+    const cartData = JSON.parse(localStorage.getItem('majeeo-cart') || '[]');
+    const totalGrams = cartData.reduce((sum, item) => sum + item.grams, 0);
+    if (totalGrams) {
+      document.getElementById('cart-count').textContent = `${totalGrams}g`;
+      document.getElementById('cart-count-mobile').textContent = `${totalGrams}g`;
+    }
+
+    function searchHandler(value) {
+      const q = value.toLowerCase();
+      document.querySelectorAll('.grid article').forEach(card => {
+        const title = card.querySelector('h2')?.innerText.toLowerCase() || '';
+        card.style.display = title.includes(q) ? 'block' : 'none';
+      });
+    }
+
+    document.getElementById('searchInput')?.addEventListener('input', e => searchHandler(e.target.value));
+    document.getElementById('searchInputMobile')?.addEventListener('input', e => searchHandler(e.target.value));
+  });
+
   const cart = JSON.parse(localStorage.getItem("majeeo-cart")) || [];
   const container = document.getElementById("cart-items");
   const totalDisplay = document.getElementById("total");
@@ -163,7 +152,7 @@
       const itemTotal = item.price;
       total += itemTotal;
       const div = document.createElement("div");
-      div.className = "cart-item";
+      div.className = "cart-item bg-white p-4 rounded shadow flex justify-between items-center";
       div.innerHTML = `
         <div>
           <p class="font-semibold">${item.name}</p>
@@ -176,7 +165,6 @@
       `;
       container.appendChild(div);
     });
-
     totalDisplay.innerText = total.toFixed(2);
   }
 
