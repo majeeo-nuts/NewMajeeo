@@ -1,95 +1,281 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact Us - MajeeoNuts</title>
+  <title>Contact Us – MajeeoNuts</title>
+  <meta name="description" content="Get in touch with MajeeoNuts. We are here to help with your orders, bulk inquiries, and feedback.">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Optional: FontAwesome for social icons -->
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: { red: '#7f1d1d', gold: '#D4AF37', cream: '#F9F5F1', dark: '#1A1A1A' }
+          },
+          fontFamily: { sans: ['Poppins', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="bg-yellow-50 font-sans text-gray-800">
+<body class="bg-brand-cream text-brand-dark font-sans antialiased">
 
-  <!-- Header -->
-  <header class="bg-green-800 text-white p-4 flex justify-between items-center">
-    <a href="home.html" class="flex items-center space-x-2">
-        <img src="assets/images/Product/Images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="w-20 mb-2">
-      <span class="text-xl font-bold">MajeeoNuts</span>
-    </a>
-    <nav class="space-x-4">
-      <a href="home.html" class="hover:underline">Home</a>
-      <a href="about.html" class="hover:underline">About Us</a>
-      <a href="contact.html" class="underline font-semibold">Contact Us</a>
-    </nav>
-  </header>
+<!-- Announcement Bar -->
+<div class="bg-brand-gold text-brand-red text-xs font-bold text-center py-1.5 tracking-wide">
+  🎉 FREE SHIPPING on orders above ₹999 | 🎁 10% OFF on First Order: CODE NEW10
+</div>
 
-  <!-- Main Content -->
-  <main class="max-w-4xl mx-auto p-6 mt-8 bg-white rounded shadow">
-    <h2 class="text-3xl font-bold mb-4 text-red-700">Contact Us</h2>
-    <p class="mb-2">📍 <strong>Location:</strong> Mumbai, India</p>
-    <p class="mb-2">✉️ <strong>Email:</strong> <a href="mailto:maheshgawade7799@gmail.com" class="text-green-700 underline">maheshgawade7799@gmail.com</a></p>
-    <p class="mb-2">📞 <strong>Phone:</strong> +91-7483600212</p>
-  </main>
+<!-- Navbar -->
+<nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      
+      <!-- Mobile Menu Button -->
+      <button onclick="toggleMenu()" class="md:hidden text-brand-red p-2"><i class="ri-menu-line text-2xl"></i></button>
 
-  <!-- Footer -->
-  <footer class="bg-white border-t mt-16 text-sm">
-    <div class="bg-gray-100 py-8 px-4 sm:px-6 lg:px-16">
-      <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Logo -->
+      <a href="index.html" class="flex-shrink-0 flex items-center gap-2">
+        <img src="assets/images/Product/Images/MajeeoNuts.Logo.png" onerror="this.src='images/MajeeoNuts.Logo.png'" alt="MajeeoNuts" class="h-12 w-auto object-contain">
+        <span class="text-2xl font-serif font-bold text-brand-red tracking-tight">MajeeoNuts</span>
+      </a>
 
-        <!-- Brand -->
-        <div>
-        <img src="assets/images/Product/Images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="w-20 mb-2">
-        <p class="text-gray-600">Majeeo Nuts brings you a collection of carefully selected dry fruits from India and across the world.</p>
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex space-x-8 items-center">
+        <a href="index.html" class="text-brand-dark hover:text-brand-red font-medium transition">Home</a>
+        <a href="shop.html" class="text-brand-dark hover:text-brand-red font-medium transition">Shop All</a>
+        <a href="gifting.html" class="text-brand-dark hover:text-brand-red font-medium transition">Gifting</a>
+        <a href="contact.html" class="text-brand-red font-medium transition border-b-2 border-brand-red">Contact Us</a>
+      </div>
+
+      <!-- Right Icons -->
+      <div class="flex items-center space-x-4 sm:space-x-6 text-brand-red">
+        <a href="account.html" class="hover:text-brand-gold transition"><i class="ri-user-line text-xl"></i></a>
+        <a href="cart.html" class="relative hover:text-brand-gold transition group">
+          <i class="ri-shopping-bag-line text-xl"></i>
+          <span id="cart-count-badge" class="absolute -top-2 -right-2 bg-brand-gold text-brand-red text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full transition opacity-0">0</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Menu Sidebar -->
+  <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleMenu()"></div>
+  <div id="mobile-sidebar" class="fixed top-0 left-0 w-3/4 max-w-xs h-full bg-white z-50 transform -translate-x-full transition-transform duration-300 shadow-2xl">
+    <div class="p-5 flex justify-between items-center border-b">
+      <span class="font-serif font-bold text-xl text-brand-red">Menu</span>
+      <button onclick="toggleMenu()"><i class="ri-close-line text-2xl"></i></button>
+    </div>
+    <div class="flex flex-col p-5 space-y-4 text-base font-medium">
+      <a href="index.html" class="text-brand-dark">Home</a>
+      <a href="shop.html" class="text-brand-dark">Shop All</a>
+      <a href="gifting.html" class="text-brand-dark">Gifting</a>
+      <a href="cart.html" class="text-brand-dark">Cart</a>
+      <a href="contact.html" class="text-brand-red font-bold">Contact Us</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero / Header -->
+<div class="bg-brand-red text-white py-16 text-center relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+    <h1 class="text-4xl md:text-5xl font-serif font-bold mb-4 relative z-10">Get in Touch</h1>
+    <p class="text-brand-gold text-lg relative z-10">We'd love to hear from you. Here's how you can reach us.</p>
+</div>
+
+<!-- Main Contact Content -->
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 -mt-8">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Contact Info Cards -->
+        <div class="lg:col-span-1 space-y-6">
+            <!-- Card 1: Phone/WhatsApp -->
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition">
+                <div class="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-2xl mb-4">
+                    <i class="ri-whatsapp-line"></i>
+                </div>
+                <h3 class="font-bold text-lg text-brand-dark mb-1">Chat with Us</h3>
+                <p class="text-gray-500 text-sm mb-3">All Day from 9am to 9pm.</p>
+                <a href="https://wa.me/918369245051" target="_blank" class="text-brand-red font-bold hover:underline">+91 8369245051</a>
+            </div>
+
+            <!-- Card 2: Email -->
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition">
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-2xl mb-4">
+                    <i class="ri-mail-send-line"></i>
+                </div>
+                <h3 class="font-bold text-lg text-brand-dark mb-1">Email Support</h3>
+                <p class="text-gray-500 text-sm mb-3">We'll get back to you within 24 hours.</p>
+                <a href="mailto:maheshgawade7799@gmail.com" class="text-brand-red font-bold hover:underline break-all">maheshgawade7799@gmail.com</a>
+            </div>
+
+            <!-- Card 3: Location -->
+            <div class="bg-white p-6 rounded-xl shadow-md border border-gray-100 hover:shadow-lg transition">
+                <div class="w-12 h-12 bg-brand-red/10 text-brand-red rounded-full flex items-center justify-center text-2xl mb-4">
+                    <i class="ri-map-pin-line"></i>
+                </div>
+                <h3 class="font-bold text-lg text-brand-dark mb-1">Our Location</h3>
+                <p class="text-gray-600 text-sm">Mumbai, Maharashtra, India.</p>
+            </div>
         </div>
 
-        <!-- Quick Links -->
-        <div>
-          <h4 class="font-semibold text-gray-800 mb-2">Quick Links</h4>
-          <ul class="text-gray-600 space-y-1">
-            <li><a href="about.html" class="hover:text-red-600">About Us</a></li>
-            <li><a href="contact.html" class="hover:text-red-600">Contact Us</a></li>
-            <li><a href="bulk-order.html" class="hover:text-red-600">Bulk Ordering</a></li>
-            <li><a href="shop.html" class="hover:text-red-600">Shop</a></li>
-          </ul>
+        <!-- Contact Form -->
+        <div class="lg:col-span-2 bg-white rounded-xl shadow-xl p-8 border border-gray-200">
+            <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6">Send us a Message</h2>
+            <form action="https://formsubmit.co/maheshgawade7799@gmail.com" method="POST" class="space-y-6">
+                <!-- Redirect & Captcha Settings -->
+                <input type="hidden" name="_next" value="https://newmajeeo.netlify.app/contact.html">
+                <input type="hidden" name="_subject" value="New Contact Form Submission!">
+                <input type="hidden" name="_captcha" value="false">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
+                        <input type="text" name="name" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-brand-gold outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                        <input type="email" name="email" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-brand-gold outline-none transition">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone Number (Optional)</label>
+                    <input type="tel" name="phone" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-brand-gold outline-none transition">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Message</label>
+                    <textarea name="message" rows="4" required class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-gold focus:border-brand-gold outline-none transition"></textarea>
+                </div>
+
+                <button type="submit" class="w-full bg-brand-red text-white font-bold py-3 rounded-lg hover:bg-brand-dark transition shadow-md">
+                    Send Message
+                </button>
+            </form>
         </div>
 
-        <!-- Account Info -->
-        <div>
-          <h4 class="font-semibold text-gray-800 mb-2">Account Info</h4>
-          <ul class="text-gray-600 space-y-1">
-            <li><a href="account.html" class="hover:text-red-600">My Account</a></li>
-            <li><a href="privacy.html" class="hover:text-red-600">Privacy Policy</a></li>
-            <li><a href="returns.html" class="hover:text-red-600">Return Policy</a></li>
-            <li><a href="terms.html" class="hover:text-red-600">Terms & Conditions</a></li>
-          </ul>
-        </div>
+    </div>
+</main>
 
-        <!-- Contact Info -->
-        <div>
-          <h4 class="font-semibold text-gray-800 mb-2">Contact</h4>
-          <ul class="text-gray-600 space-y-1">
+<!-- Footer (Consistent) -->
+<footer class="bg-brand-dark text-white pt-16 pb-8 mt-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+            <img src="assets/images/Product/Images/MajeeoNuts.Logo.png" onerror="this.src='images/MajeeoNuts.Logo.png'" alt="MajeeoNuts" class="h-10 grayscale brightness-200">
+            <span class="text-xl font-serif font-bold tracking-wide">MajeeoNuts</span>
+        </div>
+        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Delivering health and happiness through premium dry fruits.</p>
+      </div>
+      <div>
+        <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Shop</h4>
+        <ul class="space-y-2 text-gray-400 text-sm">
+          <li><a href="shop.html" class="hover:text-white transition">All Products</a></li>
+          <li><a href="gifting.html" class="hover:text-white transition">Gifting</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Contact Details</h4>
+        <ul class="text-gray-400 space-y-2 text-sm">
             <li>📍 Mumbai, India</li>
             <li>✉️ maheshgawade7799@gmail.com</li>
-            <li>📞 +91-7483600212</li>
-          </ul>
-          <div class="mt-4 flex space-x-4">
-            <a href="#" class="text-gray-500 hover:text-blue-600"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="text-gray-500 hover:text-pink-500"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="text-gray-500 hover:text-blue-400"><i class="fab fa-twitter"></i></a>
-          </div>
-        </div>
-
+            <li>📞 +91-8369245051</li>
+        </ul>
       </div>
-
-      <div class="mt-8 border-t pt-4 text-center text-gray-500 text-xs">
-        © 2025 <strong>Majeeo Nuts</strong>. All Rights Reserved.
+      <div>
+        <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Newsletter</h4>
+        <p class="text-gray-400 text-sm mb-4">Subscribe for exclusive offers.</p>
+        
+        <form id="newsletterForm" class="flex flex-col gap-2">
+          <input type="email" id="subEmail" name="email" placeholder="Enter your email" class="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded focus:outline-none focus:border-brand-gold" required>
+          <button type="submit" class="bg-brand-gold text-brand-dark font-bold px-4 py-2 rounded hover:bg-white transition">Subscribe</button>
+        </form>
       </div>
     </div>
-
-    <div class="text-center mt-4">
-      <a href="home.html" class="text-red-700 underline hover:text-red-900">← Go to Home</a>
+    <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-gray-500 text-xs">© 2025 MajeeoNuts. All rights reserved.</p>
+      <div class="flex gap-4 text-2xl text-gray-500"><i class="ri-visa-line"></i><i class="ri-mastercard-line"></i><i class="ri-google-play-line"></i></div>
     </div>
-  </footer>
+  </div>
+</footer>
 
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/918369245051" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition transform hover:scale-110 z-50 flex items-center justify-center">
+  <i class="ri-whatsapp-line text-3xl"></i>
+</a>
+
+<script>
+  // Mobile Menu
+  function toggleMenu() {
+    const overlay = document.getElementById('mobile-menu-overlay');
+    const sidebar = document.getElementById('mobile-sidebar');
+    overlay.classList.toggle('hidden');
+    sidebar.classList.toggle('-translate-x-full');
+  }
+
+  // Cart Badge Logic
+  const STORAGE_KEY = 'majeeo-cart';
+  function updateCartCount() {
+    const cart = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    const count = cart.reduce((sum, item) => sum + item.count, 0);
+    const badge = document.getElementById('cart-count-badge');
+    if(badge) {
+        badge.textContent = count;
+        badge.classList.toggle('opacity-0', count === 0);
+    }
+  }
+
+  // Newsletter Logic
+  document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const emailInput = document.getElementById('subEmail');
+    const email = emailInput.value;
+    const btn = this.querySelector('button');
+    const originalText = btn.innerText;
+
+    btn.innerText = "Processing...";
+    btn.disabled = true;
+
+    fetch("https://formsubmit.co/ajax/maheshgawade7799@gmail.com", {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+            email: email,
+            _subject: "New Newsletter Subscriber: " + email,
+            _cc: email,
+            _template: "table",
+            message: "Hello! I have subscribed to the MajeeoNuts newsletter."
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("Success! You are subscribed. A confirmation email has been sent to your inbox.");
+        emailInput.value = '';
+        btn.innerText = "Subscribed!";
+        setTimeout(() => { btn.innerText = originalText; btn.disabled = false; }, 3000);
+    })
+    .catch(error => {
+        console.log(error);
+        alert("Connection error. Please try again.");
+        btn.innerText = originalText;
+        btn.disabled = false;
+    });
+  });
+
+  // Init
+  updateCartCount();
+</script>
 </body>
 </html>
