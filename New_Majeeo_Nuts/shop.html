@@ -1,245 +1,463 @@
-<!-- Save as: home.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MajeeoNuts – Premium Dry Fruits</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>Shop All – MajeeoNuts Premium Dry Fruits</title>
+  <meta name="description" content="Explore our premium collection of farm-fresh dry fruits, nuts, and exotic mixes with fast checkout.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <style>
-    body { font-family: 'Poppins', sans-serif; }
-    .best-seller-badge {
-      background:#b91c1c;color:#fff;font-size:.6rem;padding:0.1rem 0.3rem;border-radius:0.375rem;margin-left:0.5rem;vertical-align:middle;
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#7f1d1d',     /* Deep Royal Red - Primary */
+              gold: '#D4AF37',    /* Premium Gold - Accent */
+              cream: '#F9F5F1',   /* Warm Background */
+              dark: '#1A1A1A',
+            }
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          }
+        }
+      }
     }
-    .nav-centre { position:absolute; left:50%; transform:translateX(-50%); }
+  </script>
+  <style>
+    /* Custom style for the Best Seller badge (more professional) */
+    .best-seller-badge {
+        background: #D4AF37; 
+        color: #7f1d1d; 
+        font-size: 0.6rem; 
+        padding: 0.1rem 0.4rem; 
+        border-radius: 9999px; /* Pill shape */
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    
+    /* Utility for hidden mobile elements */
+    .mobile-hidden-cart {
+        transition: transform 0.3s ease-in-out;
+    }
   </style>
 </head>
-<body class="bg-yellow-50 text-gray-900 text-sm">
+<body class="bg-brand-cream text-brand-dark font-sans antialiased">
 
-<!-- Header -->
-<header class="bg-red-800 text-white py-3 px-4 relative flex items-center justify-between shadow-md">
-  <a href="home.html" class="flex items-center space-x-2">
-  <img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="h-8 w-auto">
-  <span class="text-xl font-bold">MajeeoNuts</span>
-</a>
+<div class="bg-brand-gold text-brand-red text-xs font-bold text-center py-1.5 tracking-wide">
+  🎉 FREE SHIPPING on orders above ₹999 | Secure Payments via Razorpay
+</div>
 
-  <nav class="nav-centre space-x-4 text-xs">
-    <a href="home.html" class="hover:underline">Home</a>
-    <a href="about.html" class="hover:underline">About Us</a>
-    <a href="contact.html" class="hover:underline">Contact Us</a>
-  </nav>
-  <div class="flex items-center space-x-2">
-    <input id="searchInput" type="text" placeholder="Search…" class="px-2 py-1 rounded border border-gray-300 focus:ring-2 focus:ring-red-600 w-32 text-xs text-black">
-    <a href="cart.html" class="bg-red-700 text-white px-3 py-1 rounded-full text-sm font-semibold hover:bg-red-600 flex items-center">
-      🛒 Cart&nbsp;<span id="cart-count" class="ml-1 bg-white text-red-700 px-2 rounded-full text-[10px] font-bold"></span>
-    </a>
-  </div>
-</header>
+<nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+            <a href="index.html" class="flex-shrink-0 flex items-center gap-2">
+                <img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts" class="h-12 w-auto object-contain">
+                <span class="text-2xl font-serif font-bold text-brand-red tracking-tight">MajeeoNuts</span>
+            </a>
+            
+            <div class="hidden lg:flex items-center space-x-6">
+                <a href="index.html" class="text-brand-dark hover:text-brand-red font-medium transition">Home</a>
+                <a href="shop.html" class="text-brand-red font-medium transition border-b-2 border-brand-red">Shop All</a>
+                <a href="gifting.html" class="text-brand-dark hover:text-brand-red font-medium transition">Gifting</a>
+                <input id="searchInput" type="text" placeholder="Search dry fruits…" class="px-3 py-2 rounded-full border border-gray-300 focus:ring-2 focus:ring-brand-red focus:border-brand-red w-64 text-sm text-brand-dark transition">
+            </div>
 
-<!-- Hero + Side Cart -->
-<section class="max-w-5xl mx-auto mt-4 px-2 flex flex-col md:flex-row gap-4">
-  <div class="w-full md:w-2/3 rounded-lg overflow-hidden shadow">
-    <video class="w-full aspect-square h-[220px] object-cover rounded-lg" controls>
-      <source src="media/majeeoNuts_dryfruits_homepage_video.mp4" type="video/mp4">
-    </video>
-  </div>
-
-  <aside class="bg-white rounded-lg shadow p-4 h-max md:w-1/3">
-    <h2 class="text-lg font-bold mb-2">Your Cart</h2>
-    <div id="cart-items" class="space-y-3 text-xs"></div>
-    <button id="checkout-btn" class="mt-3 w-full bg-red-700 text-white py-1 rounded text-sm" disabled>Checkout</button>
-  </aside>
-</section>
-
-<!-- Product Grid -->
-<div class="max-w-5xl mx-auto p-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4"></div>
-
-<!-- Footer -->
-<footer class="bg-white border-t mt-12 text-xs">
-  <div class="bg-gray-100 py-6 px-6 lg:px-16">
-    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
-      <div>
-<img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="w-20 mb-2">
-        <p class="text-gray-600">Majeeo Nuts brings you carefully selected dry fruits from India and across the world.</p>
-      </div>
-      <div>
-        <h4 class="font-semibold text-gray-800 mb-1">Quick Links</h4>
-        <ul class="text-gray-600 space-y-1">
-          <li><a href="about.html" class="hover:text-blue-600">About Us</a></li>
-          <li><a href="contact.html" class="hover:text-blue-600">Contact Us</a></li>
-          <li><a href="bulk-order.html" class="hover:text-blue-600">Bulk Ordering</a></li>
-          <li><a href="shop.html" class="hover:text-blue-600">Shop</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-semibold text-gray-800 mb-1">Account Info</h4>
-        <ul class="text-gray-600 space-y-1">
-          <li><a href="account.html" class="hover:text-blue-600">My Account</a></li>
-          <li><a href="privacy.html" class="hover:text-blue-600">Privacy Policy</a></li>
-          <li><a href="return.html" class="hover:text-blue-600">Return Policy</a></li>
-          <li><a href="terms.html" class="hover:text-blue-600">Terms & Conditions</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-semibold text-gray-800 mb-1">Contact Details</h4>
-        <ul class="text-gray-600 space-y-1">
-          <li>📍 Mumbai, India</li>
-          <li>✉️ maheshgawade7799@gmail.com</li>
-          <li>📞 +91-7483600212</li>
-        </ul>
-      </div>
+            <div class="flex items-center space-x-4 sm:space-x-6 text-brand-red">
+                <a href="account.html" class="hidden sm:block hover:text-brand-gold transition"><i class="ri-user-line text-xl"></i></a>
+                
+                <button onclick="toggleCartSidebar()" class="relative hover:text-brand-gold transition group">
+                    <i class="ri-shopping-bag-line text-xl"></i>
+                    <span id="cart-count" class="absolute -top-2 -right-2 bg-brand-gold text-brand-red text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full transition">0</span>
+                </button>
+                
+                <button onclick="toggleMenu()" class="lg:hidden text-brand-red p-2">
+                    <i class="ri-menu-line text-2xl"></i>
+                </button>
+            </div>
+        </div>
     </div>
-  </div>
+    <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleMenu()"></div>
+    <div id="mobile-sidebar" class="fixed top-0 right-0 w-3/4 max-w-xs h-full bg-white z-50 transform translate-x-full transition-transform duration-300 shadow-2xl">
+        <div class="p-5 flex justify-between items-center border-b">
+            <span class="font-serif font-bold text-xl text-brand-red">Menu</span>
+            <button onclick="toggleMenu()"><i class="ri-close-line text-2xl"></i></button>
+        </div>
+        <div class="flex flex-col p-5 space-y-4 text-base font-medium">
+            <a href="index.html" class="text-brand-dark">Home</a>
+            <a href="shop.html" class="text-brand-dark">Shop All Dry Fruits</a>
+            <a href="gifting.html" class="text-brand-dark">Gift Boxes</a>
+            <a href="contact.html" class="text-brand-dark">Contact Us</a>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="text-center mb-10">
+        <h1 class="text-4xl md:text-5xl font-serif font-bold text-brand-red mb-2">Our Premium Collection</h1>
+        <p class="text-gray-600 text-lg">Handpicked for health, taste, and freshness. Shop by category or explore all.</p>
+    </div>
+
+    <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="product-grid-container">
+        </section>
+
+    <div id="no-results" class="text-center text-xl text-gray-500 mt-12 hidden">
+        <i class="ri-search-line text-4xl block mb-4"></i>
+        <p>Sorry, no products matched your search criteria.</p>
+    </div>
+
+    <button id="scroll-to-top" class="fixed bottom-6 right-20 bg-brand-red text-white p-3 rounded-full shadow-lg opacity-0 transition-opacity duration-300" title="Scroll to Top">
+        <i class="ri-arrow-up-line"></i>
+    </button>
+</main>
+
+<aside id="cart-sidebar" class="fixed top-0 right-0 w-full max-w-sm h-full bg-white z-50 shadow-2xl transform translate-x-full mobile-hidden-cart lg:translate-x-0 lg:w-96 lg:static lg:h-auto lg:shadow-none lg:bg-transparent lg:max-w-none lg:p-0">
+    <div class="lg:sticky lg:top-24 bg-white p-6 rounded-xl shadow-lg border border-brand-cream">
+        
+        <div class="flex justify-between items-center mb-4 lg:hidden border-b pb-3">
+            <h2 class="text-xl font-serif font-bold text-brand-red">Your Shopping Bag</h2>
+            <button onclick="toggleCartSidebar()" class="text-brand-dark p-1"><i class="ri-close-line text-2xl"></i></button>
+        </div>
+
+        <div id="cart-items" class="space-y-4 text-sm min-h-20">
+            </div>
+
+        <div class="mt-6 pt-4 border-t border-gray-200">
+            <div class="flex justify-between font-bold text-brand-dark mb-3">
+                <span>Total:</span>
+                <span id="cart-total">₹0.00</span>
+            </div>
+            <button id="checkout-btn" class="w-full bg-brand-red text-white py-3 rounded-xl text-base font-bold hover:bg-brand-dark transition disabled:bg-red-300" disabled>
+                Proceed to Secure Checkout
+            </button>
+            <p class="text-xs text-gray-500 mt-2 flex items-center justify-center gap-1">
+                <i class="ri-lock-line"></i> 100% Secure Payments
+            </p>
+        </div>
+    </div>
+</aside>
+
+<a href="https://wa.me/917483600212" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition transform hover:scale-110 z-50 flex items-center justify-center">
+    <i class="ri-whatsapp-line text-3xl"></i>
+</a>
+<footer class="bg-brand-dark text-white pt-16 pb-8 mt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts" class="h-10 grayscale brightness-200">
+                    <span class="text-xl font-serif font-bold tracking-wide">MajeeoNuts</span>
+                </div>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed">Delivering health and happiness through premium dry fruits. Experience the royal taste of nature's finest jewels.</p>
+            </div>
+            <div>
+                <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Shop</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="shop.html" class="hover:text-white transition">All Products</a></li>
+                    <li><a href="shop.html?cat=almonds" class="hover:text-white transition">Almonds</a></li>
+                    <li><a href="shop.html?cat=cashews" class="hover:text-white transition">Cashews</a></li>
+                    <li><a href="shop.html?cat=dates" class="hover:text-white transition">Dates</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Support</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+                    <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+                    <li><a href="shipping.html" class="hover:text-white transition">Shipping Policy</a></li>
+                    <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Contact Details</h4>
+                <ul class="text-gray-400 space-y-2 text-sm">
+                    <li>📍 Mumbai, India</li>
+                    <li>✉️ maheshgawade7799@gmail.com</li>
+                    <li>📞 +91-7483600212</li>
+                </ul>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <p class="text-gray-500 text-xs">© 2025 MajeeoNuts. All rights reserved.</p>
+            <div class="flex gap-4 text-2xl text-gray-500">
+                <i class="ri-visa-line"></i>
+                <i class="ri-mastercard-line"></i>
+                <i class="ri-google-play-line"></i>
+            </div>
+        </div>
+    </div>
 </footer>
 
-<!-- JS: Products + Cart Logic -->
 <script>
-  const STORAGE_KEY = 'majeeo-cart';
-const products = [
-  { name:"Premium Almonds (Badam)",  img:"images/almonds.webp", price:1000, desc:"High-quality California almonds.", best:true, link:"product-almonds.html" },
-  { name:"Premium Cashews (Kaju)", img:"images/cashews.avif", price:1200, desc:"Fresh, creamy cashews.", best:true, link:"product-cashews.html" },
-  { name:"Mamra Almonds (Organic)", img:"images/mamra_almonds.webp", price:1600, desc:"Premium organic Mamra almonds.", best:false, link:"product-mamra-almonds.html" },
-  { name:"Pista (Pistachios)", img:"images/Pista.jpg", price:1400, desc:"Crunchy, lightly salted pistachios.", best:false, link:"product-pista.html" },
-  { name:"Walnut (Akhrot)", img:"images/Walnut.png", price:1300, desc:"Brain‑boosting walnuts rich in Omega‑3.", best:false, link:"product-walnut.html" },
-  { name:"Raisins (Kishmish)", img:"images/Raisins.png", price:600, desc:"Sweet, sun‑dried raisins.", best:false, link:"product-raisins.html" },
-  { name:"Mix Dry Fruits", img:"images/Mix_Dryfruits.jpg", price:1500, desc:"Mix of almonds, cashews, pista, raisins & figs.", best:false, link:"product-mix-dryfruits.html" },
-  { name:"Anjeer (Figs)", img:"images/Anjeer.png", price:900, desc:"Naturally sweet sun‑dried figs.", best:false, link:"product-anjeer.html" },
-  { name:"ABC", img:"images/abc.jpg", price:1, desc:"Sample product at ₹1 only.", best:false, link:"product-abc.html" } // New product added
-];
+    const STORAGE_KEY = 'majeeo-cart';
+    
+    // Product Data (Reused from your input)
+    const products = [
+        { name:"Premium Almonds (Badam)", img:"images/almonds.webp", price:1000, desc:"High-quality California almonds.", best:true, link:"product-almonds.html" },
+        { name:"Premium Cashews (Kaju)", img:"images/cashews.avif", price:1200, desc:"Fresh, creamy cashews.", best:true, link:"product-cashews.html" },
+        { name:"Mamra Almonds (Organic)", img:"images/mamra_almonds.webp", price:1600, desc:"Premium organic Mamra almonds.", best:false, link:"product-mamra-almonds.html" },
+        { name:"Pista (Pistachios)", img:"images/Pista.jpg", price:1400, desc:"Crunchy, lightly salted pistachios.", best:false, link:"product-pista.html" },
+        { name:"Walnut (Akhrot)", img:"images/Walnut.png", price:1300, desc:"Brain‑boosting walnuts rich in Omega‑3.", best:false, link:"product-walnut.html" },
+        { name:"Raisins (Kishmish)", img:"images/Raisins.png", price:600, desc:"Sweet, sun‑dried raisins.", best:false, link:"product-raisins.html" },
+        { name:"Mix Dry Fruits", img:"images/Mix_Dryfruits.jpg", price:1500, desc:"Mix of almonds, cashews, pista, raisins & figs.", best:false, link:"product-mix-dryfruits.html" },
+        { name:"Anjeer (Figs)", img:"images/Anjeer.png", price:900, desc:"Naturally sweet sun‑dried figs.", best:false, link:"product-anjeer.html" },
+        { name:"ABC", img:"images/abc.jpg", price:1, desc:"Sample product at ₹1 only.", best:false, link:"product-abc.html" }
+    ];
 
+    const getCart = () => JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+    const saveCart = (c) => localStorage.setItem(STORAGE_KEY, JSON.stringify(c));
+    
+    const cartItemsDiv = document.getElementById('cart-items');
+    const checkoutBtn = document.getElementById('checkout-btn');
+    const badge = document.getElementById('cart-count');
+    const cartTotalSpan = document.getElementById('cart-total');
+    const productGrid = document.getElementById('product-grid-container');
+    const noResults = document.getElementById('no-results');
 
-  const getCart = () => JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-  const saveCart = (c) => localStorage.setItem(STORAGE_KEY, JSON.stringify(c));
-  const cartItemsDiv = document.getElementById('cart-items');
-  const checkoutBtn = document.getElementById('checkout-btn');
-  const badge = document.getElementById('cart-count');
+    // --- UI RENDERING FUNCTIONS ---
 
-  function renderProducts() {
-    const container = document.querySelector(".grid");
-    products.forEach(p => {
-      container.innerHTML += `
-        <article class="bg-white rounded-lg shadow p-3">
-          <h2 class="font-semibold mb-1 text-xs"><a href="${p.link}" class="hover:underline">${p.name}</a></h2>
-          <a href="${p.link}"><img src="${p.img}" alt="${p.name}" class="w-full h-32 object-cover rounded mb-2"></a>
-          <p class="text-red-700 font-bold mb-1">₹${p.price}/kg</p>
-          <p class="text-gray-700 text-xs mb-1">${p.desc}</p>
-          <div class="flex items-center mb-2">
-            <select class="p-1 border rounded text-xs">
-              <option value="250">250g</option><option value="500">500g</option><option value="1000" selected>1kg</option>
-            </select>
-            ${p.best ? '<div class="best-seller-badge">Best Seller</div>' : ''}
-          </div>
-          <button class="add-to-cart w-full bg-red-600 text-white py-1 text-xs rounded" data-name="${p.name}" data-price="${p.price}">Add to Cart</button>
-        </article>`;
-    });
-  }
-
-  function renderCart() {
-    const c = getCart();
-    cartItemsDiv.innerHTML = c.length
-      ? c.map((item, i) => `
-        <div class="border p-2 rounded flex justify-between items-center">
-          <div>
-            <p class="font-semibold">${item.name}</p>
-<p>${item.count} × ${item.unitGrams}g – ₹${item.price.toFixed(2)}</p>
-          </div>
-          <div class="flex gap-1">
-            <button onclick="removeOne(${i})" class="text-yellow-600 text-xs border px-2 rounded">−1</button>
-            <button onclick="removeAll(${i})" class="text-red-600 text-xs border px-2 rounded">❌ All</button>
-          </div>
-        </div>`).join('')
-      : '<p class="text-gray-500">Your cart is empty.</p>';
-    checkoutBtn.disabled = c.length === 0;
-    updateCartCount();
-  }
-
-  function removeOne(index) {
-    const c = getCart();
-    const item = c[index];
-    const perGram = item.grams / item.count;
-    const perPrice = item.price / item.count;
-    if (item.count > 1) {
-      item.count--;
-      item.grams -= perGram;
-      item.price -= perPrice;
-    } else {
-      c.splice(index, 1);
+    function renderProducts() {
+        productGrid.innerHTML = ''; // Clear existing content
+        products.forEach(p => {
+            const card = document.createElement('article');
+            card.className = 'bg-white rounded-xl shadow-lg border border-gray-100 p-4 hover:shadow-xl transition duration-300';
+            
+            // Generate Product Card HTML
+            card.innerHTML = `
+                <a href="${p.link}" class="block">
+                    <img src="${p.img}" alt="${p.name}" class="w-full h-40 object-cover rounded-lg mb-3">
+                </a>
+                <h3 class="font-serif font-semibold text-lg text-brand-dark leading-tight mb-1">
+                    <a href="${p.link}" class="hover:text-brand-red">${p.name}</a>
+                </h3>
+                <p class="text-gray-600 text-xs mb-2 truncate">${p.desc}</p>
+                <p class="text-brand-red font-bold text-xl mb-3">₹${p.price}/kg</p>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <select class="unit-select p-2 border border-gray-300 rounded text-sm focus:ring-brand-red focus:border-brand-red">
+                        <option value="250">250g</option>
+                        <option value="500">500g</option>
+                        <option value="1000" selected>1kg</option>
+                    </select>
+                    ${p.best ? '<div class="best-seller-badge">Best Seller</div>' : ''}
+                </div>
+                
+                <button class="add-to-cart w-full bg-brand-red text-white py-2 font-bold text-sm rounded-lg hover:bg-brand-dark transition" 
+                        data-name="${p.name}" data-price="${p.price}">
+                    <i class="ri-shopping-cart-line mr-1"></i> Add to Bag
+                </button>`;
+            
+            productGrid.appendChild(card);
+        });
     }
-    saveCart(c);
-    renderCart();
-  }
 
-  function removeAll(index) {
-    const c = getCart();
-    c.splice(index, 1);
-    saveCart(c);
-    renderCart();
-  }
+    function renderCart() {
+        const c = getCart();
+        const totalAmount = c.reduce((sum, item) => sum + item.price, 0);
 
-  document.addEventListener('click', e => {
-    if (e.target.classList.contains('add-to-cart')) {
-      const card = e.target.closest('article');
-      const grams = parseInt(card.querySelector('select').value);
-      const name = e.target.dataset.name;
-      const pricePerKg = parseFloat(e.target.dataset.price);
-      const price = (pricePerKg / 1000) * grams;
+        cartItemsDiv.innerHTML = c.length
+            ? c.map((item, i) => `
+                <div class="border border-gray-200 p-3 rounded-lg flex justify-between items-center bg-brand-cream">
+                    <div class="flex-grow">
+                        <p class="font-semibold text-brand-dark">${item.name} (${item.unitGrams}g)</p>
+                        <p class="text-xs text-gray-600">${item.count} unit(s) × ₹${(item.price / item.count).toFixed(2)}</p>
+                    </div>
+                    <div class="flex gap-1 items-center">
+                        <button onclick="removeOne(${i})" class="text-brand-red text-base border border-brand-red px-2 rounded-full hover:bg-brand-red hover:text-white transition">
+                            <i class="ri-subtract-line"></i>
+                        </button>
+                        <span class="font-bold w-4 text-center">${item.count}</span>
+                        <button onclick="addOne(${i})" class="text-brand-red text-base border border-brand-red px-2 rounded-full hover:bg-brand-red hover:text-white transition">
+                            <i class="ri-add-line"></i>
+                        </button>
+                        <button onclick="removeAll(${i})" class="text-gray-500 hover:text-red-600 ml-2" title="Remove all units of this item">
+                            <i class="ri-delete-bin-line text-lg"></i>
+                        </button>
+                    </div>
+                </div>`).join('')
+            : '<p class="text-center text-gray-500 py-6">Your bag is empty. Start shopping!</p>';
 
-      const cart = getCart();
-      const existing = cart.find(i => i.name === name && i.grams / i.count === grams);
-
-      if (existing) {
-        existing.count += 1;
-        existing.grams += grams;
-        existing.price += price;
-      } else {
-cart.push({ name, grams, price, count: 1, unitGrams: grams });
-      }
-
-      saveCart(cart);
-      renderCart();
-    }
-  });
-
-  function updateCartCount() {
-    const c = getCart();
-    const total = c.reduce((sum, item) => sum + item.grams, 0);
-    badge.textContent = total ? `${total}g` : '';
-  }
-
-  checkoutBtn.addEventListener('click', () => {
-    const cart = getCart();
-    const total = cart.reduce((s, i) => s + i.price, 0);
-    new Razorpay({
-      key: "rzp_live_LIqOpioBHDIhG4",
-      amount: Math.round(total * 100),
-      currency: "INR",
-      name: "MajeeoNuts",
-      description: "Cart Checkout",
-      handler: (resp) => {
-        alert("Payment successful! ID: " + resp.razorpay_payment_id);
-        localStorage.removeItem(STORAGE_KEY);
-        renderCart();
+        checkoutBtn.disabled = c.length === 0;
+        cartTotalSpan.textContent = `₹${totalAmount.toFixed(2)}`;
         updateCartCount();
-      },
-      theme: { color: "#b91c1c" }
-    }).open();
-  });
+    }
+    
+    // --- CART LOGIC FUNCTIONS ---
 
-  document.getElementById('searchInput').addEventListener('input', e => {
-    const q = e.target.value.toLowerCase();
-    document.querySelectorAll('.grid article').forEach(card => {
-      card.style.display = card.innerText.toLowerCase().includes(q) ? 'block' : 'none';
+    function removeOne(index) {
+        const c = getCart();
+        const item = c[index];
+        const unitPrice = item.price / item.count;
+        const unitGrams = item.unitGrams; // Use unitGrams instead of recalculating perGram
+
+        if (item.count > 1) {
+            item.count--;
+            item.grams -= unitGrams;
+            item.price -= unitPrice;
+        } else {
+            c.splice(index, 1);
+        }
+        saveCart(c);
+        renderCart();
+    }
+
+    function addOne(index) {
+        const c = getCart();
+        const item = c[index];
+        const unitPrice = item.price / item.count;
+        const unitGrams = item.unitGrams; 
+
+        item.count++;
+        item.grams += unitGrams;
+        item.price += unitPrice;
+        
+        saveCart(c);
+        renderCart();
+    }
+
+    function removeAll(index) {
+        const c = getCart();
+        c.splice(index, 1);
+        saveCart(c);
+        renderCart();
+    }
+
+    function updateCartCount() {
+        const c = getCart();
+        const totalUnits = c.reduce((sum, item) => sum + item.count, 0);
+        
+        // Show total units/items instead of total grams for better UX on the badge
+        badge.textContent = totalUnits;
+        
+        // Mobile cart toggle if cart is empty/full
+        const cartSidebar = document.getElementById('cart-sidebar');
+        if (totalUnits > 0 && window.innerWidth < 1024) { // Show on mobile if not already showing
+            // Optionally auto-open cart on first add (not implemented here)
+        }
+    }
+
+    // --- EVENT HANDLERS ---
+    
+    // Global listener for Add to Cart
+    document.addEventListener('click', e => {
+        if (e.target.closest('.add-to-cart')) {
+            const button = e.target.closest('.add-to-cart');
+            const card = button.closest('article');
+            const grams = parseInt(card.querySelector('.unit-select').value);
+            const name = button.dataset.name;
+            const pricePerKg = parseFloat(button.dataset.price);
+            
+            // Calculate the price for the selected unit (e.g., 250g)
+            const unitPrice = (pricePerKg / 1000) * grams; 
+
+            const cart = getCart();
+            
+            // Check if item of the SAME WEIGHT UNIT already exists
+            const existing = cart.find(i => i.name === name && i.unitGrams === grams);
+
+            if (existing) {
+                existing.count += 1;
+                existing.grams += grams;
+                existing.price += unitPrice;
+            } else {
+                cart.push({ name, grams, price: unitPrice, count: 1, unitGrams: grams });
+            }
+
+            saveCart(cart);
+            renderCart();
+            if (window.innerWidth < 1024) {
+                 toggleCartSidebar(); // Open side cart on mobile after adding
+            }
+        }
     });
-  });
 
-  renderProducts();
-  renderCart();
+    // Checkout Logic (Reused from your input)
+    checkoutBtn.addEventListener('click', () => {
+        const cart = getCart();
+        const total = cart.reduce((s, i) => s + i.price, 0);
+        
+        // Razorpay integration (using your key placeholder)
+        new Razorpay({
+            key: "rzp_live_LIqOpioBHDIhG4", // Replace with your actual live key
+            amount: Math.round(total * 100),
+            currency: "INR",
+            name: "MajeeoNuts",
+            description: "Cart Checkout",
+            handler: (resp) => {
+                alert("Payment successful! ID: " + resp.razorpay_payment_id);
+                localStorage.removeItem(STORAGE_KEY);
+                renderCart();
+            },
+            theme: { color: "#7f1d1d" } // Use brand red for theme
+        }).open();
+    });
+
+    // Search/Filtering Logic
+    document.getElementById('searchInput').addEventListener('input', e => {
+        const q = e.target.value.toLowerCase();
+        let visibleCount = 0;
+        
+        document.querySelectorAll('#product-grid-container article').forEach(card => {
+            const isMatch = card.innerText.toLowerCase().includes(q);
+            card.style.display = isMatch ? 'block' : 'none';
+            if (isMatch) visibleCount++;
+        });
+
+        noResults.classList.toggle('hidden', visibleCount > 0);
+    });
+
+    // --- UTILITY & INIT ---
+
+    // Mobile Menu Toggle (Reused from index.html)
+    function toggleMenu() {
+        const overlay = document.getElementById('mobile-menu-overlay');
+        const sidebar = document.getElementById('mobile-sidebar');
+        overlay.classList.toggle('hidden');
+        sidebar.classList.toggle('translate-x-full');
+    }
+
+    // Cart Sidebar Toggle (New for shop.html)
+    function toggleCartSidebar() {
+        const sidebar = document.getElementById('cart-sidebar');
+        const overlay = document.getElementById('mobile-menu-overlay'); // Reusing menu overlay
+        
+        if (window.innerWidth < 1024) { // Mobile toggle
+            sidebar.classList.toggle('translate-x-full');
+            overlay.classList.toggle('hidden');
+            document.body.classList.toggle('overflow-hidden');
+        }
+    }
+    
+    // Scroll to Top logic
+    const scrollToTopBtn = document.getElementById('scroll-to-top');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            scrollToTopBtn.classList.remove('opacity-0');
+            scrollToTopBtn.classList.add('opacity-100');
+        } else {
+            scrollToTopBtn.classList.remove('opacity-100');
+            scrollToTopBtn.classList.add('opacity-0');
+        }
+    });
+    scrollToTopBtn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Initial load
+    renderProducts();
+    renderCart();
+
 </script>
-
-<div class="text-center mt-4">
-  <a href="home.html" class="text-red-700 underline text-sm hover:text-red-900">← Go to Home</a>
-</div>
 </body>
 </html>

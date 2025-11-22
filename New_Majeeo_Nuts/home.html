@@ -1,117 +1,350 @@
-<!-- Updated Home Page: home.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MajeeoNuts – Premium Dry Fruits</title>
+  <title>MajeeoNuts – Premium Dry Fruits & Gifting</title>
+  <meta name="description" content="India's finest premium dry fruits, nuts, and gift boxes. Handpicked quality delivered to your doorstep.">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <style>body { font-family: 'Poppins', sans-serif; }</style>
-</head>
-<body class="bg-yellow-50 text-gray-900 text-sm">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#7f1d1d',     /* Deep Royal Red */
+              gold: '#D4AF37',    /* Premium Gold */
+              cream: '#F9F5F1',   /* Warm Background */
+              dark: '#1A1A1A',
+            }
+          },
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+            serif: ['Playfair Display', 'serif'],
+          }
+        }
+      }
+    }
+  </script>
 
-<!-- Navbar -->
-<nav class="bg-red-800 text-white p-4 shadow-md">
-  <div class="flex items-center justify-between">
-    <a href="home.html" class="flex items-center space-x-2">
-<img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="w-20 mb-2">
-      <span class="text-xl font-bold">MajeeoNuts</span>
-    </a>
-    <div class="md:hidden">
-      <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-    </div>
-    <div class="hidden md:flex gap-4 text-xs" id="menu">
-      <a href="home.html" class="hover:underline">Home</a>
-      <a href="about.html" class="hover:underline">About Us</a>
-      <a href="contact.html" class="hover:underline">Contact Us</a>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; }
+    ::-webkit-scrollbar-thumb { background: #7f1d1d; border-radius: 4px; }
+    
+    /* Smooth Fade In Animation */
+    .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
+    @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+    .delay-100 { animation-delay: 0.1s; }
+    .delay-200 { animation-delay: 0.2s; }
+  </style>
+</head>
+<body class="bg-brand-cream text-brand-dark font-sans antialiased selection:bg-brand-red selection:text-white">
+
+<div class="bg-brand-gold text-brand-red text-xs font-bold text-center py-1.5 tracking-wide">
+  🎉 FREE SHIPPING on orders above ₹999 | 🎁 10% OFF on First Order: CODE NEW10
+</div>
+
+<nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-20">
+      
+      <div class="flex items-center md:hidden">
+        <button onclick="toggleMenu()" class="text-brand-red p-2">
+          <i class="ri-menu-line text-2xl"></i>
+        </button>
+      </div>
+
+      <a href="home.html" class="flex-shrink-0 flex items-center gap-2">
+        <img src="images/MajeeoNuts.Logo.png" onerror="this.style.display='none'" alt="MajeeoNuts" class="h-12 w-auto object-contain">
+        <span class="text-2xl font-serif font-bold text-brand-red tracking-tight">MajeeoNuts</span>
+      </a>
+
+      <div class="hidden md:flex space-x-8 items-center">
+        <a href="home.html" class="text-brand-dark hover:text-brand-red font-medium transition">Home</a>
+        <a href="shop.html" class="text-brand-dark hover:text-brand-red font-medium transition">Shop All</a>
+        <a href="gifting.html" class="text-brand-dark hover:text-brand-red font-medium transition">Gifting</a>
+        <a href="about.html" class="text-brand-dark hover:text-brand-red font-medium transition">Our Story</a>
+      </div>
+
+      <div class="flex items-center space-x-4 sm:space-x-6 text-brand-red">
+        <button class="hover:text-brand-gold transition"><i class="ri-search-line text-xl"></i></button>
+        <a href="account.html" class="hidden sm:block hover:text-brand-gold transition"><i class="ri-user-line text-xl"></i></a>
+        <a href="cart.html" class="relative hover:text-brand-gold transition group">
+          <i class="ri-shopping-bag-line text-xl"></i>
+          <span class="absolute -top-2 -right-2 bg-brand-gold text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full group-hover:bg-brand-dark transition">0</span>
+        </a>
+      </div>
     </div>
   </div>
-  <div class="md:hidden hidden flex-col mt-2 gap-2 text-xs" id="mobile-menu">
-    <a href="home.html" class="hover:underline">Home</a>
-    <a href="about.html" class="hover:underline">About Us</a>
-    <a href="contact.html" class="hover:underline">Contact Us</a>
+
+  <div id="mobile-menu" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleMenu()"></div>
+  <div id="mobile-sidebar" class="fixed top-0 left-0 w-3/4 max-w-xs h-full bg-white z-50 transform -translate-x-full transition-transform duration-300 shadow-2xl">
+    <div class="p-5 flex justify-between items-center border-b">
+      <span class="font-serif font-bold text-xl text-brand-red">Menu</span>
+      <button onclick="toggleMenu()"><i class="ri-close-line text-2xl"></i></button>
+    </div>
+    <div class="flex flex-col p-5 space-y-4 text-base font-medium">
+      <a href="home.html" class="text-brand-dark">Home</a>
+      <a href="shop.html" class="text-brand-dark">Shop All Dry Fruits</a>
+      <a href="gifting.html" class="text-brand-dark">Gift Boxes</a>
+      <a href="bulk.html" class="text-brand-dark">Bulk Orders</a>
+      <a href="contact.html" class="text-brand-dark">Contact Us</a>
+    </div>
   </div>
 </nav>
 
-<!-- Hero Section -->
-<header class="relative h-[70vh] overflow-hidden">
+<header class="relative h-[80vh] w-full overflow-hidden">
   <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
     <source src="Video/majeeoNuts_dryfruits_homepage_video.mp4" type="video/mp4">
+    <img src="assets/images/hero-fallback.jpg" alt="Premium Dry Fruits" class="w-full h-full object-cover">
   </video>
-  <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
-    <div class="text-center text-white px-4">
-      <h1 class="text-4xl font-bold mb-2">Premium Dry Fruits for Every Occasion</h1>
-      <p class="mb-4">Handpicked. Healthy. Delicious. Directly from farms to your family.</p>
-      <a href="shop.html" class="bg-yellow-400 text-red-900 font-semibold py-2 px-4 rounded hover:bg-yellow-300 transition">Shop Now</a>
+  
+  <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70 flex items-center justify-center">
+    <div class="text-center text-white px-4 max-w-3xl fade-in-up">
+      <span class="uppercase tracking-[0.2em] text-brand-gold text-sm md:text-base font-bold mb-4 block">Royal Quality, Farm Fresh</span>
+      <h1 class="text-4xl md:text-6xl font-serif font-bold mb-6 leading-tight">Experience the Crunch of <br/><span class="text-brand-gold italic">Premium</span> Wellness</h1>
+      <p class="mb-8 text-gray-200 text-base md:text-lg font-light">Handpicked almonds, cashews, and exotic nuts delivered straight from the orchards to your home.</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="shop.html" class="bg-brand-gold text-brand-red font-bold py-3 px-8 rounded-full hover:bg-white transition transform hover:-translate-y-1 shadow-lg">
+          Shop Now
+        </a>
+        <a href="gifting.html" class="border-2 border-white text-white font-bold py-3 px-8 rounded-full hover:bg-white hover:text-brand-red transition transform hover:-translate-y-1">
+          Explore Gifting
+        </a>
+      </div>
     </div>
   </div>
 </header>
 
-<!-- Why Choose Section -->
-<section class="max-w-6xl mx-auto mt-12 px-4 text-center">
-  <h2 class="text-2xl font-bold mb-6">Why Choose MajeeoNuts?</h2>
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    <div class="bg-white shadow-md rounded-lg p-6">
-      <img src="assets/images/quality.png" alt="Quality" class="w-12 mx-auto mb-2">
-      <h3 class="font-semibold text-lg mb-2">Premium Quality</h3>
-      <p class="text-gray-600 text-sm">Top-grade nuts sourced from certified farms across the world.</p>
+<section class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+  <div class="text-center mb-12 fade-in-up delay-100">
+    <h2 class="text-3xl font-serif font-bold text-brand-red mb-2">Shop by Category</h2>
+    <div class="h-1 w-20 bg-brand-gold mx-auto"></div>
+  </div>
+  
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+    <a href="shop.html?cat=almonds" class="group relative block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition fade-in-up delay-100">
+      <img src="https://images.unsplash.com/photo-1623227866882-c005c207758f?auto=format&fit=crop&w=500&q=80" alt="Almonds" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+        <h3 class="text-white font-bold text-lg">Almonds</h3>
+      </div>
+    </a>
+    <a href="shop.html?cat=cashews" class="group relative block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition fade-in-up delay-200">
+      <img src="https://images.unsplash.com/photo-1599408630527-c76225a40304?auto=format&fit=crop&w=500&q=80" alt="Cashews" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+        <h3 class="text-white font-bold text-lg">Cashews</h3>
+      </div>
+    </a>
+    <a href="shop.html?cat=walnuts" class="group relative block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition fade-in-up delay-100">
+      <img src="https://images.unsplash.com/photo-1551195880-019dfb4938d1?auto=format&fit=crop&w=500&q=80" alt="Walnuts" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+        <h3 class="text-white font-bold text-lg">Walnuts</h3>
+      </div>
+    </a>
+    <a href="shop.html?cat=mix" class="group relative block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition fade-in-up delay-200">
+      <img src="https://images.unsplash.com/photo-1558019711-06c1969277d3?auto=format&fit=crop&w=500&q=80" alt="Mixed Nuts" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+        <h3 class="text-white font-bold text-lg">Premium Mixes</h3>
+      </div>
+    </a>
+  </div>
+</section>
+
+<section class="bg-white py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-end mb-10">
+      <div>
+        <h2 class="text-3xl font-serif font-bold text-brand-red">Best Sellers</h2>
+        <p class="text-gray-500 mt-2">Loved by our customers across India</p>
+      </div>
+      <a href="shop.html" class="text-brand-red font-semibold hover:text-brand-gold transition hidden md:block">View All &rarr;</a>
     </div>
-    <div class="bg-white shadow-md rounded-lg p-6">
-      <img src="assets/images/fresh.png" alt="Freshness" class="w-12 mx-auto mb-2">
-      <h3 class="font-semibold text-lg mb-2">Freshness Guaranteed</h3>
-      <p class="text-gray-600 text-sm">Packed fresh in hygienic conditions with secure sealing.</p>
+
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+      <div class="border border-gray-100 rounded-lg p-4 hover:shadow-lg transition bg-white">
+        <div class="relative mb-4">
+          <span class="absolute top-0 left-0 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">Fresh</span>
+          <img src="https://placehold.co/300x300/png?text=California+Almonds" alt="Almonds" class="w-full h-48 object-contain rounded">
+        </div>
+        <h3 class="font-semibold text-gray-800 truncate">California Almonds (Badam)</h3>
+        <p class="text-sm text-gray-500 mb-2">500g Pack</p>
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-brand-red">₹499</span>
+          <button class="bg-brand-red text-white p-2 rounded-full hover:bg-brand-dark transition"><i class="ri-shopping-cart-2-line"></i></button>
+        </div>
+      </div>
+
+      <div class="border border-gray-100 rounded-lg p-4 hover:shadow-lg transition bg-white">
+        <div class="relative mb-4">
+          <span class="absolute top-0 left-0 bg-brand-gold text-white text-xs font-bold px-2 py-1 rounded">Best Seller</span>
+          <img src="https://placehold.co/300x300/png?text=King+Cashews" alt="Cashews" class="w-full h-48 object-contain rounded">
+        </div>
+        <h3 class="font-semibold text-gray-800 truncate">Premium King Cashews</h3>
+        <p class="text-sm text-gray-500 mb-2">250g Pack</p>
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-brand-red">₹350</span>
+          <button class="bg-brand-red text-white p-2 rounded-full hover:bg-brand-dark transition"><i class="ri-shopping-cart-2-line"></i></button>
+        </div>
+      </div>
+
+      <div class="border border-gray-100 rounded-lg p-4 hover:shadow-lg transition bg-white">
+        <div class="relative mb-4">
+          <img src="https://placehold.co/300x300/png?text=Afghan+Anjeer" alt="Anjeer" class="w-full h-48 object-contain rounded">
+        </div>
+        <h3 class="font-semibold text-gray-800 truncate">Afghan Anjeer (Figs)</h3>
+        <p class="text-sm text-gray-500 mb-2">500g Pack</p>
+        <div class="flex items-center justify-between">
+          <span class="font-bold text-brand-red">₹850</span>
+          <button class="bg-brand-red text-white p-2 rounded-full hover:bg-brand-dark transition"><i class="ri-shopping-cart-2-line"></i></button>
+        </div>
+      </div>
+
+      <div class="border border-gray-100 rounded-lg p-4 hover:shadow-lg transition bg-white">
+        <div class="relative mb-4">
+           <span class="absolute top-0 left-0 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">10% OFF</span>
+          <img src="https://placehold.co/300x300/png?text=Pistachios" alt="Pistachios" class="w-full h-48 object-contain rounded">
+        </div>
+        <h3 class="font-semibold text-gray-800 truncate">Roasted Salted Pistachios</h3>
+        <p class="text-sm text-gray-500 mb-2">250g Pack</p>
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs text-gray-400 line-through mr-1">₹450</span>
+            <span class="font-bold text-brand-red">₹405</span>
+          </div>
+          <button class="bg-brand-red text-white p-2 rounded-full hover:bg-brand-dark transition"><i class="ri-shopping-cart-2-line"></i></button>
+        </div>
+      </div>
     </div>
-    <div class="bg-white shadow-md rounded-lg p-6">
-      <img src="assets/images/delivery.png" alt="Delivery" class="w-12 mx-auto mb-2">
-      <h3 class="font-semibold text-lg mb-2">Fast Delivery</h3>
-      <p class="text-gray-600 text-sm">We ensure safe and on-time delivery across India.</p>
+    
+    <div class="mt-8 text-center md:hidden">
+       <a href="shop.html" class="bg-gray-100 text-brand-dark px-6 py-3 rounded-full font-semibold">View All Products</a>
     </div>
   </div>
 </section>
 
-<!-- Footer -->
-<footer class="bg-white border-t mt-16 text-xs">
-  <div class="bg-gray-100 py-6 px-6 lg:px-16">
-    <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
-      <div>
-<img src="images/MajeeoNuts.Logo.png" alt="MajeeoNuts Logo" class="w-20 mb-2">
-        <p class="text-gray-600">Majeeo Nuts brings you carefully selected dry fruits from India and across the world.</p>
+<section class="bg-brand-cream py-12 border-y border-gray-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
+      <div class="p-4">
+        <div class="bg-white w-16 h-16 mx-auto rounded-full flex items-center justify-center shadow-sm mb-4 text-brand-red text-3xl">
+          <i class="ri-shield-check-line"></i>
+        </div>
+        <h3 class="font-bold text-lg mb-1">Premium Quality</h3>
+        <p class="text-gray-600 text-sm">Certified sourcing from best farms.</p>
       </div>
+      <div class="p-4">
+        <div class="bg-white w-16 h-16 mx-auto rounded-full flex items-center justify-center shadow-sm mb-4 text-brand-red text-3xl">
+          <i class="ri-truck-line"></i>
+        </div>
+        <h3 class="font-bold text-lg mb-1">Pan India Delivery</h3>
+        <p class="text-gray-600 text-sm">Safe shipping to 25,000+ pincodes.</p>
+      </div>
+      <div class="p-4">
+        <div class="bg-white w-16 h-16 mx-auto rounded-full flex items-center justify-center shadow-sm mb-4 text-brand-red text-3xl">
+          <i class="ri-secure-payment-line"></i>
+        </div>
+        <h3 class="font-bold text-lg mb-1">Secure Payment</h3>
+        <p class="text-gray-600 text-sm">100% safe payments via Razorpay.</p>
+      </div>
+      <div class="p-4">
+        <div class="bg-white w-16 h-16 mx-auto rounded-full flex items-center justify-center shadow-sm mb-4 text-brand-red text-3xl">
+          <i class="ri-customer-service-2-line"></i>
+        </div>
+        <h3 class="font-bold text-lg mb-1">24/7 Support</h3>
+        <p class="text-gray-600 text-sm">Dedicated WhatsApp & Email support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-brand-dark text-white pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+      
       <div>
-        <h4 class="font-semibold text-gray-800 mb-1">Quick Links</h4>
-        <ul class="text-gray-600 space-y-1">
-          <li><a href="about.html" class="hover:text-blue-600">About Us</a></li>
-          <li><a href="contact.html" class="hover:text-blue-600">Contact Us</a></li>
-          <li><a href="bulk-order.html" class="hover:text-blue-600">Bulk Ordering</a></li>
-          <li><a href="shop.html" class="hover:text-blue-600">Shop</a></li>
+        <div class="flex items-center gap-2 mb-4">
+            <img src="images/MajeeoNuts.Logo.png" onerror="this.style.display='none'" alt="MajeeoNuts" class="h-10 grayscale brightness-200">
+            <span class="text-xl font-serif font-bold tracking-wide">MajeeoNuts</span>
+        </div>
+        <p class="text-gray-400 text-sm mb-6 leading-relaxed">
+          Delivering health and happiness through premium dry fruits. Experience the royal taste of nature's finest jewels.
+        </p>
+        <div class="flex space-x-4">
+          <a href="#" class="text-gray-400 hover:text-brand-gold transition"><i class="ri-instagram-line text-xl"></i></a>
+          <a href="#" class="text-gray-400 hover:text-brand-gold transition"><i class="ri-facebook-circle-fill text-xl"></i></a>
+          <a href="#" class="text-gray-400 hover:text-brand-gold transition"><i class="ri-twitter-x-line text-xl"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Shop</h4>
+        <ul class="space-y-2 text-gray-400 text-sm">
+          <li><a href="shop.html" class="hover:text-white transition">All Products</a></li>
+          <li><a href="shop.html?cat=almonds" class="hover:text-white transition">Almonds</a></li>
+          <li><a href="shop.html?cat=cashews" class="hover:text-white transition">Cashews</a></li>
+          <li><a href="shop.html?cat=dates" class="hover:text-white transition">Dates</a></li>
+          <li><a href="gifting.html" class="hover:text-white transition">Gift Boxes</a></li>
         </ul>
       </div>
+
       <div>
-        <h4 class="font-semibold text-gray-800 mb-1">Account Info</h4>
-        <ul class="text-gray-600 space-y-1">
-          <li><a href="account.html" class="hover:text-blue-600">My Account</a></li>
-          <li><a href="privacy.html" class="hover:text-blue-600">Privacy Policy</a></li>
-          <li><a href="return.html" class="hover:text-blue-600">Return Policy</a></li>
-          <li><a href="terms.html" class="hover:text-blue-600">Terms & Conditions</a></li>
+        <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Support</h4>
+        <ul class="space-y-2 text-gray-400 text-sm">
+          <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
+          <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
+          <li><a href="shipping.html" class="hover:text-white transition">Shipping Policy</a></li>
+          <li><a href="return.html" class="hover:text-white transition">Returns & Refunds</a></li>
+          <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
         </ul>
       </div>
+
       <div>
-        <h4 class="font-semibold text-gray-800 mb-1">Contact Details</h4>
-        <ul class="text-gray-600 space-y-1">
-          <li>📍 Mumbai, India</li>
-          <li>✉️ maheshgawade7799@gmail.com</li>
-          <li>📞 +91-7483600212</li>
-        </ul>
+        <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Stay Updated</h4>
+        <p class="text-gray-400 text-sm mb-4">Subscribe for exclusive offers and nutrition tips.</p>
+        <form class="flex flex-col gap-2">
+          <input type="email" placeholder="Enter your email" class="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded focus:outline-none focus:border-brand-gold">
+          <button type="submit" class="bg-brand-gold text-brand-dark font-bold px-4 py-2 rounded hover:bg-white transition">Subscribe</button>
+        </form>
       </div>
+    </div>
+
+    <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-gray-500 text-xs">© 2025 MajeeoNuts. All rights reserved. Made with ❤️ in India.</p>
+      <div class="flex gap-4 text-2xl text-gray-500">
+         <i class="ri-visa-line"></i>
+         <i class="ri-mastercard-line"></i>
+         <i class="ri-google-play-line"></i> </div>
     </div>
   </div>
 </footer>
 
+<a href="https://wa.me/917483600212" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition transform hover:scale-110 z-50 flex items-center justify-center">
+  <i class="ri-whatsapp-line text-3xl"></i>
+</a>
+
+<script>
+  // Toggle Mobile Menu
+  function toggleMenu() {
+    const menu = document.getElementById('mobile-menu');
+    const sidebar = document.getElementById('mobile-sidebar');
+    
+    if (menu.classList.contains('hidden')) {
+      menu.classList.remove('hidden');
+      sidebar.classList.remove('-translate-x-full');
+    } else {
+      menu.classList.add('hidden');
+      sidebar.classList.add('-translate-x-full');
+    }
+  }
+</script>
 </body>
 </html>
