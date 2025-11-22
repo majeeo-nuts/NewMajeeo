@@ -66,9 +66,9 @@
                     <i class="ri-secure-payment-line"></i> Pay Securely with Razorpay
                 </button>
                 
-                <div class="mt-4 flex justify-center gap-4 text-2xl text-gray-400">
-                    <i class="ri-visa-line"></i> <i class="ri-mastercard-line"></i> <i class="ri-bank-card-line"></i>
-                </div>
+                <p class="text-xs text-center text-gray-400 mt-4">
+                    <i class="ri-shield-check-line"></i> SSL Encrypted Transaction
+                </p>
             </div>
         </div>
     </div>
@@ -91,20 +91,19 @@
     const payBtn = document.getElementById('pay-btn');
     const emailInput = document.getElementById('customer-email');
 
-    // 1. CHECK LOGIN (Updated with Safer Redirect)
+    // 1. CHECK LOGIN (FIXED REDIRECT METHOD)
     const activeUser = JSON.parse(localStorage.getItem(CURRENT_USER));
     if (!activeUser) {
         alert("Please Log In to complete your purchase.");
-        // Using explicit relative path to fix the error
-        window.location.assign("./account.html"); 
+        // Standard redirect that works in all browsers
+        window.location.href = "account.html"; 
     } else {
-        // Pre-fill email if logged in
         emailInput.value = activeUser.email;
     }
 
-    // 2. Render Cart Logic
+    // 2. RENDER CART
     if (cart.length === 0) {
-        container.innerHTML = `<p class="text-gray-500">Your cart is empty. <a href="./shop.html" class="text-brand-red underline">Go Shop</a></p>`;
+        container.innerHTML = `<p class="text-gray-500">Your cart is empty. <a href="shop.html" class="text-brand-red underline">Go Shop</a></p>`;
         payBtn.disabled = true;
         payBtn.classList.add('opacity-50', 'cursor-not-allowed');
     } else {
@@ -123,7 +122,7 @@
         totalDisplay.innerText = total.toFixed(2);
     }
 
-    // 3. Payment & Invoice Logic
+    // 3. PAYMENT LOGIC
     payBtn.addEventListener('click', () => {
         const customerEmail = emailInput.value;
 
@@ -134,47 +133,44 @@
             return;
         }
 
+        // Disable button to prevent double clicks
+        payBtn.disabled = true;
+        payBtn.innerHTML = `<i class="ri-loader-4-line animate-spin"></i> Processing...`;
+
         const options = {
             key: "rzp_live_LIqOpioBHDIhG4", // Live Key
             amount: Math.round(total * 100),
             currency: "INR",
             name: "MajeeoNuts",
-            description: "Premium Dry Fruits Order",
+            description: "Order Payment",
             image: "assets/images/Product/Images/MajeeoNuts.Logo.png",
             prefill: {
                 email: customerEmail,
                 contact: "9999999999"
             },
+            // A. SUCCESS
             handler: function (response) {
-                // --- SEQUENTIAL ORDER ID LOGIC ---
                 const today = new Date();
                 const dateStr = today.getFullYear() + "" + String(today.getMonth() + 1).padStart(2, '0') + String(today.getDate()).padStart(2, '0');
-                
                 const allOrders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
-                // Filter for orders created today to calculate sequence
                 const todayOrdersCount = allOrders.filter(o => o.id && o.id.startsWith('MN-' + dateStr)).length;
-                // Sequence is Count + 1
                 const nextSeq = String(todayOrdersCount + 1).padStart(3, '0');
-                
                 const orderId = `MN-${dateStr}-${nextSeq}`;
 
-                // Create Order
                 const newOrder = {
                     id: orderId,
                     timestamp: new Date().getTime(),
                     date: today.toDateString(),
-                    userEmail: activeUser.email, // LINKED TO USER
+                    userEmail: activeUser.email,
                     items: cart,
                     total: total,
                     status: 'Paid',
                     paymentId: response.razorpay_payment_id
                 };
 
-                // Save History
                 allOrders.unshift(newOrder);
                 localStorage.setItem(ORDERS_KEY, JSON.stringify(allOrders));
 
-                // Send Invoice Email (Admin + Customer)
                 const itemsList = cart.map(i => `${i.name} (${i.count} x ${i.unitGrams}g)`).join(', ');
                 
                 fetch("https://formsubmit.co/ajax/maheshgawade7799@gmail.com", {
@@ -190,24 +186,33 @@
                         "Payment ID": response.razorpay_payment_id,
                         "Items Ordered": itemsList,
                         "Track Order": `https://newmajeeo.netlify.app/track.html?id=${orderId}`,
-                        "Status": "Payment Successful - Processing"
+                        "Status": "Payment Successful"
                     })
                 });
 
-                alert("✅ Payment Successful! Invoice sent to " + customerEmail);
+                alert("✅ Payment Successful! Invoice sent.");
                 localStorage.removeItem(STORAGE_KEY);
-                
-                // Updated Safer Redirect
-                window.location.assign("./account.html");
+                // FIXED REDIRECT
+                window.location.href = "account.html";
+            },
+            // B. MODAL DISMISS
+            modal: {
+                ondismiss: function() {
+                    payBtn.disabled = false;
+                    payBtn.innerHTML = `<i class="ri-secure-payment-line"></i> Pay Securely with Razorpay`;
+                    alert("Payment process cancelled.");
+                }
             },
             theme: { color: "#7f1d1d" }
         };
 
         const rzp = new Razorpay(options);
-        
-        // --- FAILURE HANDLING ---
+
+        // C. FAILURE
         rzp.on('payment.failed', function (response){
-            alert("Payment Failed! \nReason: " + response.error.description + "\nPlease try again.");
+            payBtn.disabled = false;
+            payBtn.innerHTML = `<i class="ri-secure-payment-line"></i> Pay Securely with Razorpay`;
+            alert("PAYMENT FAILED!\n\nReason: " + response.error.description);
         });
 
         rzp.open();
