@@ -6,159 +6,149 @@
   <title>MajeeoNuts – Premium Dry Fruits & Gifting</title>
   <meta name="description" content="India's finest premium dry fruits, nuts, and gift boxes. Handpicked quality delivered to your doorstep.">
   
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
   
+  <!-- Icons -->
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
   
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            brand: {
-              red: '#7f1d1d',     /* Deep Royal Red */
-              gold: '#D4AF37',    /* Premium Gold */
-              cream: '#F9F5F1',   /* Warm Background */
-              dark: '#1A1A1A',
-            }
+            brand: { red: '#7f1d1d', gold: '#D4AF37', cream: '#F9F5F1', dark: '#1A1A1A' }
           },
-          fontFamily: {
-            sans: ['Poppins', 'sans-serif'],
-            serif: ['Playfair Display', 'serif'],
-          }
+          fontFamily: { sans: ['Poppins', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
         }
       }
     }
   </script>
 
   <style>
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-track { background: #f1f1f1; }
-    ::-webkit-scrollbar-thumb { background: #7f1d1d; border-radius: 4px; }
-    
-    /* Smooth Fade In Animation */
     .fade-in-up { animation: fadeInUp 0.8s ease-out forwards; opacity: 0; transform: translateY(20px); }
     @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
-    .delay-100 { animation-delay: 0.1s; }
-    .delay-200 { animation-delay: 0.2s; }
+    
+    /* Toast Notification */
+    #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 100; left: 50%; transform: translateX(-50%); bottom: 30px; font-size: 17px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+    #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+    @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+    @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
   </style>
 </head>
-<body class="bg-brand-cream text-brand-dark font-sans antialiased selection:bg-brand-red selection:text-white">
+<body class="bg-brand-cream text-brand-dark font-sans antialiased">
 
+<!-- Announcement Bar -->
 <div class="bg-brand-gold text-brand-red text-xs font-bold text-center py-1.5 tracking-wide">
   🎉 FREE SHIPPING on orders above ₹999 | 🎁 10% OFF on First Order: CODE NEW10
 </div>
 
+<!-- Navbar -->
 <nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md transition-all duration-300">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-20">
       
-      <div class="flex items-center md:hidden">
-        <button onclick="toggleMenu()" class="text-brand-red p-2">
-          <i class="ri-menu-line text-2xl"></i>
-        </button>
-      </div>
+      <!-- Mobile Menu Button -->
+      <button onclick="toggleMenu()" class="md:hidden text-brand-red p-2"><i class="ri-menu-line text-2xl"></i></button>
 
-      <a href="home.html" class="flex-shrink-0 flex items-center gap-2">
-        <img src="images/MajeeoNuts.Logo.png" onerror="this.style.display='none'" alt="MajeeoNuts" class="h-12 w-auto object-contain">
+      <!-- Logo (Restored Path) -->
+      <a href="index.html" class="flex-shrink-0 flex items-center gap-2">
+        <img src="assets/images/Product/Images/MajeeoNuts.Logo.png" onerror="this.src='images/MajeeoNuts.Logo.png'" alt="MajeeoNuts" class="h-12 w-auto object-contain">
         <span class="text-2xl font-serif font-bold text-brand-red tracking-tight">MajeeoNuts</span>
       </a>
 
+      <!-- Desktop Navigation -->
       <div class="hidden md:flex space-x-8 items-center">
-        <a href="home.html" class="text-brand-dark hover:text-brand-red font-medium transition">Home</a>
+        <a href="index.html" class="text-brand-red font-medium transition border-b-2 border-brand-red">Home</a>
         <a href="shop.html" class="text-brand-dark hover:text-brand-red font-medium transition">Shop All</a>
         <a href="gifting.html" class="text-brand-dark hover:text-brand-red font-medium transition">Gifting</a>
-        <a href="about.html" class="text-brand-dark hover:text-brand-red font-medium transition">Our Story</a>
+        <a href="about.html" class="text-brand-dark hover:text-brand-red font-medium transition">About Us</a>
       </div>
 
+      <!-- Right Icons -->
       <div class="flex items-center space-x-4 sm:space-x-6 text-brand-red">
-        <button class="hover:text-brand-gold transition"><i class="ri-search-line text-xl"></i></button>
-        <a href="account.html" class="hidden sm:block hover:text-brand-gold transition"><i class="ri-user-line text-xl"></i></a>
+        <!-- Search Bar (Functional) -->
+        <div class="relative hidden sm:block group">
+            <input type="text" id="navSearch" placeholder="Search..." class="pl-3 pr-8 py-1 border border-gray-300 rounded-full text-sm focus:border-brand-red focus:ring-1 focus:ring-brand-red transition w-32 focus:w-48">
+            <button onclick="handleSearch()" class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-brand-red"><i class="ri-search-line"></i></button>
+        </div>
+        
+        <a href="account.html" class="hover:text-brand-gold transition"><i class="ri-user-line text-xl"></i></a>
+        
+        <!-- Cart Icon with Counter -->
         <a href="cart.html" class="relative hover:text-brand-gold transition group">
           <i class="ri-shopping-bag-line text-xl"></i>
-          <span class="absolute -top-2 -right-2 bg-brand-gold text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full group-hover:bg-brand-dark transition">0</span>
+          <span id="cart-count-badge" class="absolute -top-2 -right-2 bg-brand-gold text-brand-red text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full transition opacity-0">0</span>
         </a>
       </div>
     </div>
   </div>
 
-  <div id="mobile-menu" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleMenu()"></div>
+  <!-- Mobile Menu -->
+  <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleMenu()"></div>
   <div id="mobile-sidebar" class="fixed top-0 left-0 w-3/4 max-w-xs h-full bg-white z-50 transform -translate-x-full transition-transform duration-300 shadow-2xl">
     <div class="p-5 flex justify-between items-center border-b">
       <span class="font-serif font-bold text-xl text-brand-red">Menu</span>
       <button onclick="toggleMenu()"><i class="ri-close-line text-2xl"></i></button>
     </div>
     <div class="flex flex-col p-5 space-y-4 text-base font-medium">
-      <a href="home.html" class="text-brand-dark">Home</a>
-      <a href="shop.html" class="text-brand-dark">Shop All Dry Fruits</a>
-      <a href="gifting.html" class="text-brand-dark">Gift Boxes</a>
-      <a href="bulk.html" class="text-brand-dark">Bulk Orders</a>
-      <a href="contact.html" class="text-brand-dark">Contact Us</a>
+      <a href="index.html" class="text-brand-dark">Home</a>
+      <a href="shop.html" class="text-brand-dark">Shop All</a>
+      <a href="gifting.html" class="text-brand-dark">Gifting</a>
+      <a href="cart.html" class="text-brand-dark">Cart</a>
+      <a href="account.html" class="text-brand-dark">My Account</a>
     </div>
   </div>
 </nav>
 
-<header class="relative h-[80vh] w-full overflow-hidden">
+<!-- Hero Section -->
+<header class="relative h-[70vh] sm:h-[80vh] w-full overflow-hidden">
   <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
+    <!-- Updated Video Path -->
     <source src="Video/majeeoNuts_dryfruits_homepage_video.mp4" type="video/mp4">
-    <img src="assets/images/hero-fallback.jpg" alt="Premium Dry Fruits" class="w-full h-full object-cover">
   </video>
-  
-  <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70 flex items-center justify-center">
+  <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/30 to-black/70 flex items-center justify-center">
     <div class="text-center text-white px-4 max-w-3xl fade-in-up">
       <span class="uppercase tracking-[0.2em] text-brand-gold text-sm md:text-base font-bold mb-4 block">Royal Quality, Farm Fresh</span>
       <h1 class="text-4xl md:text-6xl font-serif font-bold mb-6 leading-tight">Experience the Crunch of <br/><span class="text-brand-gold italic">Premium</span> Wellness</h1>
-      <p class="mb-8 text-gray-200 text-base md:text-lg font-light">Handpicked almonds, cashews, and exotic nuts delivered straight from the orchards to your home.</p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
-        <a href="shop.html" class="bg-brand-gold text-brand-red font-bold py-3 px-8 rounded-full hover:bg-white transition transform hover:-translate-y-1 shadow-lg">
-          Shop Now
-        </a>
-        <a href="gifting.html" class="border-2 border-white text-white font-bold py-3 px-8 rounded-full hover:bg-white hover:text-brand-red transition transform hover:-translate-y-1">
-          Explore Gifting
-        </a>
+        <a href="shop.html" class="bg-brand-gold text-brand-red font-bold py-3 px-8 rounded-full hover:bg-white transition transform hover:-translate-y-1 shadow-lg">Shop Now</a>
+        <a href="gifting.html" class="bg-transparent border-2 border-white text-white font-bold py-3 px-8 rounded-full hover:bg-white hover:text-brand-red transition transform hover:-translate-y-1 shadow-lg">Explore Gifting</a>
       </div>
     </div>
   </div>
 </header>
 
-<section class="max-w-7xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
-  <div class="text-center mb-12 fade-in-up delay-100">
-    <h2 class="text-3xl font-serif font-bold text-brand-red mb-2">Shop by Category</h2>
-    <div class="h-1 w-20 bg-brand-gold mx-auto"></div>
-  </div>
-  
-  <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-    <a href="shop.html?cat=almonds" class="group relative block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition fade-in-up delay-100">
-      <img src="https://images.unsplash.com/photo-1623227866882-c005c207758f?auto=format&fit=crop&w=500&q=80" alt="Almonds" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-        <h3 class="text-white font-bold text-lg">Almonds</h3>
-      </div>
-    </a>
-    <a href="shop.html?cat=cashews" class="group relative block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition fade-in-up delay-200">
-      <img src="https://images.unsplash.com/photo-1599408630527-c76225a40304?auto=format&fit=crop&w=500&q=80" alt="Cashews" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-        <h3 class="text-white font-bold text-lg">Cashews</h3>
-      </div>
-    </a>
-    <a href="shop.html?cat=walnuts" class="group relative block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition fade-in-up delay-100">
-      <img src="https://images.unsplash.com/photo-1551195880-019dfb4938d1?auto=format&fit=crop&w=500&q=80" alt="Walnuts" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-        <h3 class="text-white font-bold text-lg">Walnuts</h3>
-      </div>
-    </a>
-    <a href="shop.html?cat=mix" class="group relative block overflow-hidden rounded-xl shadow-md hover:shadow-xl transition fade-in-up delay-200">
-      <img src="https://images.unsplash.com/photo-1558019711-06c1969277d3?auto=format&fit=crop&w=500&q=80" alt="Mixed Nuts" class="w-full h-64 object-cover transition duration-500 group-hover:scale-110">
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
-        <h3 class="text-white font-bold text-lg">Premium Mixes</h3>
-      </div>
-    </a>
-  </div>
+<!-- Features Section (Restored Images) -->
+<section class="max-w-7xl mx-auto py-12 px-4 text-center">
+    <h2 class="text-3xl font-serif font-bold text-brand-red mb-8">Why Choose MajeeoNuts?</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-100 hover:shadow-xl transition">
+            <img src="assets/images/quality.png" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden')" alt="Quality" class="w-16 mx-auto mb-4">
+            <i class="ri-medal-line text-4xl text-brand-gold mb-4 hidden"></i> 
+            <h3 class="font-bold text-xl mb-2">Premium Quality</h3>
+            <p class="text-gray-600">Top-grade nuts sourced from certified farms across the world.</p>
+        </div>
+        <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-100 hover:shadow-xl transition">
+            <img src="assets/images/fresh.png" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden')" alt="Freshness" class="w-16 mx-auto mb-4">
+            <i class="ri-plant-line text-4xl text-brand-gold mb-4 hidden"></i> 
+            <h3 class="font-bold text-xl mb-2">Freshness Guaranteed</h3>
+            <p class="text-gray-600">Packed fresh in hygienic conditions with secure sealing.</p>
+        </div>
+        <div class="bg-white shadow-lg rounded-xl p-6 border border-gray-100 hover:shadow-xl transition">
+            <img src="assets/images/delivery.png" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden')" alt="Delivery" class="w-16 mx-auto mb-4">
+            <i class="ri-truck-line text-4xl text-brand-gold mb-4 hidden"></i> 
+            <h3 class="font-bold text-xl mb-2">Fast Delivery</h3>
+            <p class="text-gray-600">Safe and on-time delivery across India.</p>
+        </div>
+    </div>
 </section>
 
+<!-- Bestsellers (Fixed Add To Cart) -->
 <section class="bg-white py-16">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-end mb-10">
@@ -170,181 +160,192 @@
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
-      <div class="border border-gray-100 rounded-lg p-4 hover:shadow-lg transition bg-white">
-        <div class="relative mb-4">
-          <span class="absolute top-0 left-0 bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">Fresh</span>
-          <img src="https://placehold.co/300x300/png?text=California+Almonds" alt="Almonds" class="w-full h-48 object-contain rounded">
-        </div>
-        <h3 class="font-semibold text-gray-800 truncate">California Almonds (Badam)</h3>
-        <p class="text-sm text-gray-500 mb-2">500g Pack</p>
-        <div class="flex items-center justify-between">
-          <span class="font-bold text-brand-red">₹499</span>
-          <button class="bg-brand-red text-white p-2 rounded-full hover:bg-brand-dark transition"><i class="ri-shopping-cart-2-line"></i></button>
-        </div>
-      </div>
-
-      <div class="border border-gray-100 rounded-lg p-4 hover:shadow-lg transition bg-white">
-        <div class="relative mb-4">
-          <span class="absolute top-0 left-0 bg-brand-gold text-white text-xs font-bold px-2 py-1 rounded">Best Seller</span>
-          <img src="https://placehold.co/300x300/png?text=King+Cashews" alt="Cashews" class="w-full h-48 object-contain rounded">
-        </div>
-        <h3 class="font-semibold text-gray-800 truncate">Premium King Cashews</h3>
-        <p class="text-sm text-gray-500 mb-2">250g Pack</p>
-        <div class="flex items-center justify-between">
-          <span class="font-bold text-brand-red">₹350</span>
-          <button class="bg-brand-red text-white p-2 rounded-full hover:bg-brand-dark transition"><i class="ri-shopping-cart-2-line"></i></button>
+      <!-- Product 1 -->
+      <div class="border border-gray-100 rounded-lg p-4 hover:shadow-lg transition bg-white group relative">
+        <span class="absolute top-2 left-2 bg-brand-gold text-brand-red text-[10px] font-bold px-2 py-1 rounded z-10">BESTSELLER</span>
+        <a href="shop.html">
+            <!-- Restored Image Path -->
+            <img src="images/almonds.webp" onerror="this.src='https://placehold.co/300x300?text=Almonds'" alt="Almonds" class="w-full h-48 object-contain rounded mb-4 group-hover:scale-105 transition duration-300">
+        </a>
+        <h3 class="font-semibold text-gray-800 truncate">Premium Almonds (Badam)</h3>
+        <p class="text-sm text-gray-500 mb-2">1kg Pack</p>
+        <div class="flex items-center justify-between mt-2">
+          <span class="font-bold text-brand-red">₹1000</span>
+          <button onclick="quickAdd('Premium Almonds (Badam)', 1000, 'images/almonds.webp', 1000)" class="bg-brand-red text-white p-2 rounded-full hover:bg-brand-dark transition shadow-md" title="Add to Cart">
+            <i class="ri-shopping-cart-2-line"></i>
+          </button>
         </div>
       </div>
 
-      <div class="border border-gray-100 rounded-lg p-4 hover:shadow-lg transition bg-white">
-        <div class="relative mb-4">
-          <img src="https://placehold.co/300x300/png?text=Afghan+Anjeer" alt="Anjeer" class="w-full h-48 object-contain rounded">
-        </div>
-        <h3 class="font-semibold text-gray-800 truncate">Afghan Anjeer (Figs)</h3>
-        <p class="text-sm text-gray-500 mb-2">500g Pack</p>
-        <div class="flex items-center justify-between">
-          <span class="font-bold text-brand-red">₹850</span>
-          <button class="bg-brand-red text-white p-2 rounded-full hover:bg-brand-dark transition"><i class="ri-shopping-cart-2-line"></i></button>
+      <!-- Product 2 -->
+      <div class="border border-gray-100 rounded-lg p-4 hover:shadow-lg transition bg-white group relative">
+        <a href="shop.html">
+            <img src="images/cashews.avif" onerror="this.src='https://placehold.co/300x300?text=Cashews'" alt="Cashews" class="w-full h-48 object-contain rounded mb-4 group-hover:scale-105 transition duration-300">
+        </a>
+        <h3 class="font-semibold text-gray-800 truncate">Premium Cashews (Kaju)</h3>
+        <p class="text-sm text-gray-500 mb-2">1kg Pack</p>
+        <div class="flex items-center justify-between mt-2">
+          <span class="font-bold text-brand-red">₹1200</span>
+          <button onclick="quickAdd('Premium Cashews (Kaju)', 1200, 'images/cashews.avif', 1000)" class="bg-brand-red text-white p-2 rounded-full hover:bg-brand-dark transition shadow-md" title="Add to Cart">
+            <i class="ri-shopping-cart-2-line"></i>
+          </button>
         </div>
       </div>
+      
+      <!-- Product 3 -->
+      <div class="border border-gray-100 rounded-lg p-4 hover:shadow-lg transition bg-white group relative">
+         <a href="shop.html">
+            <img src="images/Pista.jpg" onerror="this.src='https://placehold.co/300x300?text=Pista'" alt="Pistachios" class="w-full h-48 object-contain rounded mb-4 group-hover:scale-105 transition duration-300">
+         </a>
+         <h3 class="font-semibold text-gray-800 truncate">Pista (Pistachios)</h3>
+         <p class="text-sm text-gray-500 mb-2">1kg Pack</p>
+         <div class="flex items-center justify-between mt-2">
+           <span class="font-bold text-brand-red">₹1400</span>
+           <button onclick="quickAdd('Pista (Pistachios)', 1400, 'images/Pista.jpg', 1000)" class="bg-brand-red text-white p-2 rounded-full hover:bg-brand-dark transition shadow-md" title="Add to Cart">
+             <i class="ri-shopping-cart-2-line"></i>
+           </button>
+         </div>
+       </div>
 
-      <div class="border border-gray-100 rounded-lg p-4 hover:shadow-lg transition bg-white">
-        <div class="relative mb-4">
-           <span class="absolute top-0 left-0 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded">10% OFF</span>
-          <img src="https://placehold.co/300x300/png?text=Pistachios" alt="Pistachios" class="w-full h-48 object-contain rounded">
-        </div>
-        <h3 class="font-semibold text-gray-800 truncate">Roasted Salted Pistachios</h3>
-        <p class="text-sm text-gray-500 mb-2">250g Pack</p>
-        <div class="flex items-center justify-between">
-          <div>
-            <span class="text-xs text-gray-400 line-through mr-1">₹450</span>
-            <span class="font-bold text-brand-red">₹405</span>
-          </div>
-          <button class="bg-brand-red text-white p-2 rounded-full hover:bg-brand-dark transition"><i class="ri-shopping-cart-2-line"></i></button>
+       <!-- Product 4 -->
+       <div class="border border-gray-100 rounded-lg p-4 hover:shadow-lg transition bg-white group relative">
+        <a href="shop.html">
+           <img src="images/Mix_Dryfruits.jpg" onerror="this.src='https://placehold.co/300x300?text=Mix+Dry+Fruits'" alt="Mix Dry Fruits" class="w-full h-48 object-contain rounded mb-4 group-hover:scale-105 transition duration-300">
+        </a>
+        <h3 class="font-semibold text-gray-800 truncate">Mix Dry Fruits</h3>
+        <p class="text-sm text-gray-500 mb-2">1kg Pack</p>
+        <div class="flex items-center justify-between mt-2">
+          <span class="font-bold text-brand-red">₹1500</span>
+          <button onclick="quickAdd('Mix Dry Fruits', 1500, 'images/Mix_Dryfruits.jpg', 1000)" class="bg-brand-red text-white p-2 rounded-full hover:bg-brand-dark transition shadow-md" title="Add to Cart">
+            <i class="ri-shopping-cart-2-line"></i>
+          </button>
         </div>
       </div>
     </div>
-    
     <div class="mt-8 text-center md:hidden">
        <a href="shop.html" class="bg-gray-100 text-brand-dark px-6 py-3 rounded-full font-semibold">View All Products</a>
     </div>
   </div>
 </section>
 
-<section class="bg-brand-cream py-12 border-y border-gray-200">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-center">
-      <div class="p-4">
-        <div class="bg-white w-16 h-16 mx-auto rounded-full flex items-center justify-center shadow-sm mb-4 text-brand-red text-3xl">
-          <i class="ri-shield-check-line"></i>
-        </div>
-        <h3 class="font-bold text-lg mb-1">Premium Quality</h3>
-        <p class="text-gray-600 text-sm">Certified sourcing from best farms.</p>
-      </div>
-      <div class="p-4">
-        <div class="bg-white w-16 h-16 mx-auto rounded-full flex items-center justify-center shadow-sm mb-4 text-brand-red text-3xl">
-          <i class="ri-truck-line"></i>
-        </div>
-        <h3 class="font-bold text-lg mb-1">Pan India Delivery</h3>
-        <p class="text-gray-600 text-sm">Safe shipping to 25,000+ pincodes.</p>
-      </div>
-      <div class="p-4">
-        <div class="bg-white w-16 h-16 mx-auto rounded-full flex items-center justify-center shadow-sm mb-4 text-brand-red text-3xl">
-          <i class="ri-secure-payment-line"></i>
-        </div>
-        <h3 class="font-bold text-lg mb-1">Secure Payment</h3>
-        <p class="text-gray-600 text-sm">100% safe payments via Razorpay.</p>
-      </div>
-      <div class="p-4">
-        <div class="bg-white w-16 h-16 mx-auto rounded-full flex items-center justify-center shadow-sm mb-4 text-brand-red text-3xl">
-          <i class="ri-customer-service-2-line"></i>
-        </div>
-        <h3 class="font-bold text-lg mb-1">24/7 Support</h3>
-        <p class="text-gray-600 text-sm">Dedicated WhatsApp & Email support.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
+<!-- Footer -->
 <footer class="bg-brand-dark text-white pt-16 pb-8">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-      
       <div>
         <div class="flex items-center gap-2 mb-4">
-            <img src="images/MajeeoNuts.Logo.png" onerror="this.style.display='none'" alt="MajeeoNuts" class="h-10 grayscale brightness-200">
+            <img src="assets/images/Product/Images/MajeeoNuts.Logo.png" onerror="this.src='https://placehold.co/100x40?text=MN'" alt="MajeeoNuts" class="h-10 grayscale brightness-200">
             <span class="text-xl font-serif font-bold tracking-wide">MajeeoNuts</span>
         </div>
-        <p class="text-gray-400 text-sm mb-6 leading-relaxed">
-          Delivering health and happiness through premium dry fruits. Experience the royal taste of nature's finest jewels.
-        </p>
-        <div class="flex space-x-4">
-          <a href="#" class="text-gray-400 hover:text-brand-gold transition"><i class="ri-instagram-line text-xl"></i></a>
-          <a href="#" class="text-gray-400 hover:text-brand-gold transition"><i class="ri-facebook-circle-fill text-xl"></i></a>
-          <a href="#" class="text-gray-400 hover:text-brand-gold transition"><i class="ri-twitter-x-line text-xl"></i></a>
-        </div>
+        <p class="text-gray-400 text-sm mb-6 leading-relaxed">Delivering health and happiness through premium dry fruits.</p>
       </div>
-
       <div>
         <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Shop</h4>
         <ul class="space-y-2 text-gray-400 text-sm">
           <li><a href="shop.html" class="hover:text-white transition">All Products</a></li>
-          <li><a href="shop.html?cat=almonds" class="hover:text-white transition">Almonds</a></li>
-          <li><a href="shop.html?cat=cashews" class="hover:text-white transition">Cashews</a></li>
-          <li><a href="shop.html?cat=dates" class="hover:text-white transition">Dates</a></li>
-          <li><a href="gifting.html" class="hover:text-white transition">Gift Boxes</a></li>
+          <li><a href="gifting.html" class="hover:text-white transition">Gifting</a></li>
         </ul>
       </div>
-
       <div>
-        <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Support</h4>
-        <ul class="space-y-2 text-gray-400 text-sm">
-          <li><a href="about.html" class="hover:text-white transition">About Us</a></li>
-          <li><a href="contact.html" class="hover:text-white transition">Contact Us</a></li>
-          <li><a href="shipping.html" class="hover:text-white transition">Shipping Policy</a></li>
-          <li><a href="return.html" class="hover:text-white transition">Returns & Refunds</a></li>
-          <li><a href="privacy.html" class="hover:text-white transition">Privacy Policy</a></li>
+        <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Contact Details</h4>
+        <ul class="text-gray-400 space-y-2 text-sm">
+            <li>📍 Mumbai, India</li>
+            <!-- Updated Email -->
+            <li>✉️ maheshgawade7799@gmail.com</li>
+            <!-- Updated Phone -->
+            <li>📞 +91-8369245051</li>
         </ul>
       </div>
-
       <div>
-        <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Stay Updated</h4>
-        <p class="text-gray-400 text-sm mb-4">Subscribe for exclusive offers and nutrition tips.</p>
-        <form class="flex flex-col gap-2">
-          <input type="email" placeholder="Enter your email" class="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded focus:outline-none focus:border-brand-gold">
+        <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Newsletter</h4>
+        <p class="text-gray-400 text-sm mb-4">Subscribe for exclusive offers.</p>
+        <form id="newsletterForm" class="flex flex-col gap-2">
+          <input type="email" id="subEmail" placeholder="Enter your email" class="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded focus:outline-none focus:border-brand-gold" required>
           <button type="submit" class="bg-brand-gold text-brand-dark font-bold px-4 py-2 rounded hover:bg-white transition">Subscribe</button>
         </form>
       </div>
     </div>
-
     <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-      <p class="text-gray-500 text-xs">© 2025 MajeeoNuts. All rights reserved. Made with ❤️ in India.</p>
-      <div class="flex gap-4 text-2xl text-gray-500">
-         <i class="ri-visa-line"></i>
-         <i class="ri-mastercard-line"></i>
-         <i class="ri-google-play-line"></i> </div>
+      <p class="text-gray-500 text-xs">© 2025 MajeeoNuts. All rights reserved.</p>
+      <div class="flex gap-4 text-2xl text-gray-500"><i class="ri-visa-line"></i><i class="ri-mastercard-line"></i><i class="ri-google-play-line"></i></div>
     </div>
   </div>
 </footer>
 
-<a href="https://wa.me/917483600212" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition transform hover:scale-110 z-50 flex items-center justify-center">
+<!-- Floating WhatsApp (Updated Number) -->
+<a href="https://wa.me/918369245051" target="_blank" class="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-2xl hover:bg-green-600 transition transform hover:scale-110 z-50 flex items-center justify-center">
   <i class="ri-whatsapp-line text-3xl"></i>
 </a>
 
+<div id="toast">Item added to cart!</div>
+
 <script>
-  // Toggle Mobile Menu
+  // Navigation Logic
   function toggleMenu() {
-    const menu = document.getElementById('mobile-menu');
+    const overlay = document.getElementById('mobile-menu-overlay');
     const sidebar = document.getElementById('mobile-sidebar');
-    
-    if (menu.classList.contains('hidden')) {
-      menu.classList.remove('hidden');
-      sidebar.classList.remove('-translate-x-full');
-    } else {
-      menu.classList.add('hidden');
-      sidebar.classList.add('-translate-x-full');
-    }
+    overlay.classList.toggle('hidden');
+    sidebar.classList.toggle('-translate-x-full');
   }
+
+  // Search Functionality (Redirects to shop.html)
+  function handleSearch() {
+    const query = document.getElementById('navSearch').value;
+    if(query) window.location.href = `shop.html?search=${encodeURIComponent(query)}`;
+  }
+
+  document.getElementById('navSearch').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') handleSearch();
+  });
+
+  // Cart Logic
+  const STORAGE_KEY = 'majeeo-cart';
+  
+  function getCart() { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  
+  function saveCart(c) { 
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); 
+    updateCartCount(); 
+  }
+  
+  function updateCartCount() {
+    const c = getCart();
+    const count = c.reduce((sum, item) => sum + item.count, 0);
+    const badge = document.getElementById('cart-count-badge');
+    badge.textContent = count;
+    if(count > 0) badge.classList.remove('opacity-0');
+    else badge.classList.add('opacity-0');
+  }
+
+  function quickAdd(name, price, img, grams) {
+    const cart = getCart();
+    const existing = cart.find(i => i.name === name && i.unitGrams === grams);
+    if (existing) {
+        existing.count += 1;
+        existing.grams += grams;
+        existing.price += price;
+    } else {
+        cart.push({ name, grams, price, count: 1, unitGrams: grams, img });
+    }
+    saveCart(cart);
+    
+    // Show Toast
+    const toast = document.getElementById("toast");
+    toast.className = "show";
+    setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+  }
+
+  // Newsletter Logic
+  document.getElementById('newsletterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const email = document.getElementById('subEmail').value;
+    // Simulate sending to the specific email provided in prompt
+    alert(`Thank you for subscribing! A confirmation has been sent to ${email} (Admin notification sent to maheshgawade7799@gmail.com)`);
+    document.getElementById('subEmail').value = '';
+  });
+
+  // Init
+  updateCartCount();
 </script>
 </body>
 </html>

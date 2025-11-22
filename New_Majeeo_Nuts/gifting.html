@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gifting Collections – MajeeoNuts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { brand: { red: '#7f1d1d', gold: '#D4AF37', cream: '#F9F5F1', dark: '#1A1A1A' } },
+          fontFamily: { sans: ['Poppins', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    #toast { visibility: hidden; min-width: 250px; background-color: #333; color: #fff; text-align: center; border-radius: 8px; padding: 16px; position: fixed; z-index: 100; left: 50%; transform: translateX(-50%); bottom: 30px; font-size: 17px; }
+    #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+    @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+    @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+  </style>
+</head>
+<body class="bg-brand-cream text-brand-dark font-sans antialiased">
+
+<nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+        <a href="index.html" class="flex items-center gap-2">
+            <img src="assets/images/Product/Images/MajeeoNuts.Logo.png" onerror="this.src='https://placehold.co/150x50?text=MajeeoNuts'" alt="MajeeoNuts" class="h-12 w-auto object-contain">
+            <span class="text-2xl font-serif font-bold text-brand-red">MajeeoNuts</span>
+        </a>
+        <div class="hidden md:flex space-x-8 items-center">
+            <a href="index.html" class="text-brand-dark hover:text-brand-red font-medium">Home</a>
+            <a href="shop.html" class="text-brand-dark hover:text-brand-red font-medium">Shop All</a>
+            <a href="gifting.html" class="text-brand-red font-medium border-b-2 border-brand-red">Gifting</a>
+        </div>
+        <div class="flex items-center space-x-4 text-brand-red">
+             <a href="cart.html" class="relative hover:text-brand-gold transition group">
+                <i class="ri-shopping-bag-line text-xl"></i>
+                <span id="cart-count-badge" class="absolute -top-2 -right-2 bg-brand-gold text-brand-red text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full transition opacity-0">0</span>
+             </a>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-serif font-bold text-brand-red mb-4">Royal Gifting Collections</h1>
+        <p class="text-gray-600 max-w-2xl mx-auto">Elegant boxes filled with the finest dry fruits, perfect for weddings, festivals, and corporate gifting.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Gift Box 1 -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden group">
+            <div class="relative h-64 bg-gray-100">
+                 <img src="https://placehold.co/400x400?text=Royal+Box" alt="Royal Gift Box" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+            <div class="p-6 text-center">
+                <h3 class="font-serif font-bold text-xl mb-2">The Royal Gold Box</h3>
+                <p class="text-sm text-gray-500 mb-4">Includes: Almonds, Cashews, Pistachios, Raisins (200g each)</p>
+                <div class="flex justify-center items-center gap-4">
+                    <span class="font-bold text-brand-red text-lg">₹1,800</span>
+                    <button onclick="quickAdd('Royal Gold Box', 1800, 'https://placehold.co/400x400?text=Royal+Box', 800)" class="bg-brand-gold text-brand-red px-6 py-2 rounded-full font-bold hover:bg-brand-dark hover:text-brand-gold transition">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+         <!-- Gift Box 2 -->
+         <div class="bg-white rounded-xl shadow-lg overflow-hidden group">
+            <div class="relative h-64 bg-gray-100">
+                 <img src="https://placehold.co/400x400?text=Festive+Treat" alt="Festive Treat Box" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+            <div class="p-6 text-center">
+                <h3 class="font-serif font-bold text-xl mb-2">Festive Treat Box</h3>
+                <p class="text-sm text-gray-500 mb-4">Includes: Salted Cashews, Roasted Almonds (250g each)</p>
+                <div class="flex justify-center items-center gap-4">
+                    <span class="font-bold text-brand-red text-lg">₹1,200</span>
+                    <button onclick="quickAdd('Festive Treat Box', 1200, 'https://placehold.co/400x400?text=Festive+Treat', 500)" class="bg-brand-gold text-brand-red px-6 py-2 rounded-full font-bold hover:bg-brand-dark hover:text-brand-gold transition">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gift Box 3 -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden group">
+            <div class="relative h-64 bg-gray-100">
+                 <img src="https://placehold.co/400x400?text=Healthy+Mix" alt="Healthy Mix Box" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+            <div class="p-6 text-center">
+                <h3 class="font-serif font-bold text-xl mb-2">Healthy Mix Hamper</h3>
+                <p class="text-sm text-gray-500 mb-4">Includes: Walnuts, Figs, Apricots, Dates (200g each)</p>
+                <div class="flex justify-center items-center gap-4">
+                    <span class="font-bold text-brand-red text-lg">₹2,100</span>
+                    <button onclick="quickAdd('Healthy Mix Hamper', 2100, 'https://placehold.co/400x400?text=Healthy+Mix', 800)" class="bg-brand-gold text-brand-red px-6 py-2 rounded-full font-bold hover:bg-brand-dark hover:text-brand-gold transition">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div id="toast">Item added to cart!</div>
+
+<!-- Same JS Logic for Cart Consistency -->
+<script>
+  const STORAGE_KEY = 'majeeo-cart';
+  function getCart() { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+  function saveCart(c) { localStorage.setItem(STORAGE_KEY, JSON.stringify(c)); updateCartCount(); }
+  
+  function updateCartCount() {
+    const c = getCart();
+    const count = c.reduce((sum, item) => sum + item.count, 0);
+    const badge = document.getElementById('cart-count-badge');
+    badge.textContent = count;
+    if(count > 0) badge.classList.remove('opacity-0');
+    else badge.classList.add('opacity-0');
+  }
+
+  function quickAdd(name, price, img, grams) {
+    const cart = getCart();
+    const existing = cart.find(i => i.name === name);
+    if (existing) {
+        existing.count += 1;
+        existing.price += price;
+    } else {
+        cart.push({ name, grams, price, count: 1, unitGrams: grams, img });
+    }
+    saveCart(cart);
+    
+    const toast = document.getElementById("toast");
+    toast.className = "show";
+    setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+  }
+  updateCartCount();
+</script>
+</body>
+</html>
