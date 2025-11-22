@@ -260,7 +260,7 @@
         <h4 class="text-brand-gold font-bold mb-4 uppercase tracking-wider text-sm">Newsletter</h4>
         <p class="text-gray-400 text-sm mb-4">Subscribe for exclusive offers.</p>
         <form id="newsletterForm" class="flex flex-col gap-2">
-          <input type="email" id="subEmail" placeholder="Enter your email" class="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded focus:outline-none focus:border-brand-gold" required>
+         <input type="email" id="subEmail" placeholder="Enter your email" class="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded focus:outline-none focus:border-brand-gold" required><input type="email" id="subEmail" name="email" placeholder="Enter your email" class="bg-gray-800 border border-gray-700 text-white px-4 py-2 rounded focus:outline-none focus:border-brand-gold" required>
           <button type="submit" class="bg-brand-gold text-brand-dark font-bold px-4 py-2 rounded hover:bg-white transition">Subscribe</button>
         </form>
       </div>
@@ -334,18 +334,55 @@
     toast.className = "show";
     setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
   }
+  
+<script>
+  // ... keep your other scripts (toggleMenu, etc.) ...
 
-  // Newsletter Logic
+  // REAL EMAIL NEWSLETTER LOGIC (FormSubmit with AJAX)
   document.getElementById('newsletterForm').addEventListener('submit', function(e) {
     e.preventDefault();
-    const email = document.getElementById('subEmail').value;
-    // Simulate sending to the specific email provided in prompt
-    alert(`Thank you for subscribing! A confirmation has been sent to ${email} (Admin notification sent to maheshgawade7799@gmail.com)`);
-    document.getElementById('subEmail').value = '';
-  });
+    
+    const emailInput = document.getElementById('subEmail');
+    const email = emailInput.value;
+    const subscribeBtn = this.querySelector('button');
+    const originalBtnText = subscribeBtn.innerText;
 
-  // Init
-  updateCartCount();
+    // 1. Change button text to show processing
+    subscribeBtn.innerText = "Sending...";
+    subscribeBtn.disabled = true;
+
+    // 2. Send data to FormSubmit Service
+    fetch("https://formsubmit.co/ajax/maheshgawade7799@gmail.com", {
+        method: "POST",
+        headers: { 
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+            email: email,
+            _subject: "New Newsletter Subscriber!",
+            _autoresponse: "Thank you for subscribing to MajeeoNuts! You will now receive exclusive offers and updates."
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        // 3. Success Message
+        alert(`Success! A confirmation email has been sent to ${email}.`);
+        emailInput.value = ''; // Clear input
+        subscribeBtn.innerText = "Subscribed!";
+        setTimeout(() => {
+            subscribeBtn.innerText = originalBtnText;
+            subscribeBtn.disabled = false;
+        }, 3000);
+    })
+    .catch(error => {
+        // 4. Error Handling
+        console.log(error);
+        alert("Something went wrong. Please try again later.");
+        subscribeBtn.innerText = originalBtnText;
+        subscribeBtn.disabled = false;
+    });
+  });
 </script>
 </body>
 </html>
