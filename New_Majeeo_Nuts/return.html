@@ -1,26 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <title>Return Policy | MajeeoNuts</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Returns & Refunds – MajeeoNuts</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { brand: { red: '#7f1d1d', gold: '#D4AF37', cream: '#F9F5F1', dark: '#1A1A1A' } },
+          fontFamily: { sans: ['Poppins', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="bg-white text-gray-800">
-  <div class="max-w-4xl mx-auto px-4 py-10">
-    <h1 class="text-3xl font-bold mb-6">Return & Cancellation Policy</h1>
+<body class="bg-brand-cream text-brand-dark font-sans antialiased">
+
+<nav id="navbar" class="sticky top-0 z-50 bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center">
+        <a href="index.html" class="flex items-center gap-2">
+            <img src="assets/images/Product/Images/MajeeoNuts.Logo.png" onerror="this.src='images/MajeeoNuts.Logo.png'" alt="MajeeoNuts" class="h-12 w-auto object-contain">
+            <span class="text-2xl font-serif font-bold text-brand-red">MajeeoNuts</span>
+        </a>
+        <div class="flex items-center space-x-4 text-brand-red">
+            <a href="account.html" class="hover:text-brand-gold">My Account</a>
+        </div>
+    </div>
+</nav>
+
+<main class="max-w-3xl mx-auto px-4 py-12">
+    <h1 class="text-3xl font-serif font-bold text-brand-red mb-6 text-center">Return Request</h1>
     
-    <ul class="list-disc pl-6 space-y-2 mb-4">
-      <li>Cancellation is allowed within 1–2 days if the item hasn't been shipped.</li>
-      <li>No cancellation for perishable items unless quality is proven poor.</li>
-      <li>Damaged/defective items must be reported within 1–2 days of delivery.</li>
-      <li>If not satisfied with the product, raise a complaint within 1–2 days.</li>
-      <li>Refunds (if approved) will take 6–8 days to reflect in your account.</li>
-      <li>Warranty-related complaints should be taken up with the manufacturer directly.</li>
-    </ul>
-  </div>
-  <div class="text-center mt-4">
-  <a href="home.html" class="text-red-700 underline text-sm hover:text-red-900">← Go to Home</a>
-</div>
+    <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-100">
+        <p class="text-gray-600 mb-6 text-center">We're sorry you're not satisfied. Please fill out the form below to initiate a return. Returns are accepted within 7 days of delivery.</p>
+        
+        <form action="https://formsubmit.co/maheshgawade7799@gmail.com" method="POST" class="space-y-5">
+            <!-- Config -->
+            <input type="hidden" name="_subject" value="New Return Request">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_cc" id="cc-email"> <!-- Dynamically set by JS -->
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Order ID</label>
+                    <input type="text" name="Order ID" placeholder="e.g. MN-1234" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-brand-red outline-none">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-1">Your Email</label>
+                    <input type="email" name="email" id="return-email" placeholder="Enter your email" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-brand-red outline-none">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Reason for Return</label>
+                <select name="Reason" class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-brand-red outline-none">
+                    <option>Quality Issue</option>
+                    <option>Damaged Packaging</option>
+                    <option>Wrong Item Received</option>
+                    <option>Other</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold text-gray-700 mb-1">Additional Comments</label>
+                <textarea name="Comments" rows="3" class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-brand-red outline-none"></textarea>
+            </div>
+
+            <button type="submit" class="w-full bg-brand-red text-white font-bold py-3 rounded hover:bg-brand-dark transition">Submit Return Request</button>
+        </form>
+    </div>
+</main>
+
+<script>
+    // Link CC email field to input
+    document.getElementById('return-email').addEventListener('input', function(e) {
+        document.getElementById('cc-email').value = e.target.value;
+    });
+</script>
 
 </body>
 </html>
