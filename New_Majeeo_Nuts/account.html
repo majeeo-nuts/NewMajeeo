@@ -94,6 +94,7 @@
     <!-- 2. DASHBOARD SECTION -->
     <div id="dashboard-container" class="w-full hidden-section fade-in">
         <div class="flex flex-col md:flex-row gap-8">
+            <!-- Sidebar -->
             <aside class="w-full md:w-64 flex-shrink-0">
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center mb-6">
                     <div class="w-20 h-20 bg-brand-red text-white rounded-full flex items-center justify-center text-3xl mx-auto mb-4 font-serif">
@@ -106,10 +107,16 @@
                     <button onclick="showTab('orders')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
                         <i class="ri-box-3-line text-brand-red"></i> My Orders
                     </button>
+                    
+                    <!-- NEW: Track Order Tab Button -->
+                    <button onclick="showTab('track')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
+                        <i class="ri-map-pin-time-line text-brand-red"></i> Track Order
+                    </button>
+
                     <button onclick="showTab('profile')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
                         <i class="ri-user-settings-line text-brand-red"></i> Profile
                     </button>
-                    <!-- NEW: Return Page Link -->
+                    
                     <a href="return.html" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
                         <i class="ri-arrow-go-back-line text-brand-red"></i> Returns & Refunds
                     </a>
@@ -119,11 +126,61 @@
                 </nav>
             </aside>
 
-            <section class="flex-grow bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-10">
+            <!-- Content Area -->
+            <section class="flex-grow bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-10 min-h-[500px]">
+                
+                <!-- Tab: My Orders -->
                 <div id="tab-orders">
                     <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Order History</h2>
                     <div id="orders-list" class="space-y-4"></div>
                 </div>
+
+                <!-- Tab: Track Order (Embedded) -->
+                <div id="tab-track" class="hidden">
+                    <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Track Your Order</h2>
+                    
+                    <!-- Search Box -->
+                    <div class="flex gap-2 mb-8">
+                        <input type="text" id="track-input" placeholder="Enter Order ID (e.g. MN-2025...)" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-gold outline-none">
+                        <button onclick="trackOrder()" class="bg-brand-red text-white px-6 py-3 rounded-lg font-bold hover:bg-brand-dark transition">Track</button>
+                    </div>
+
+                    <!-- Result Display -->
+                    <div id="tracking-result" class="hidden">
+                        <div class="bg-gray-50 p-6 rounded-xl mb-6">
+                            <h3 class="font-bold text-xl text-brand-dark mb-1">Order <span id="track-id-display"></span></h3>
+                            <p class="text-sm text-gray-500" id="track-status-text">Checking status...</p>
+                        </div>
+                        
+                        <!-- Vertical Timeline -->
+                        <div class="relative pl-4 space-y-8 border-l-2 border-gray-200 ml-4">
+                            <!-- Steps -->
+                            <div class="relative pl-8">
+                                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+                                <h4 class="font-bold text-brand-dark">Order Placed</h4>
+                                <p class="text-xs text-gray-500">We have received your order.</p>
+                            </div>
+                            <div class="relative pl-8 opacity-50 transition-all" id="step-packed">
+                                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-gray-300 rounded-full border-2 border-white" id="dot-packed"></div>
+                                <h4 class="font-bold text-brand-dark">Packed</h4>
+                                <p class="text-xs text-gray-500">Packed with care.</p>
+                            </div>
+                            <div class="relative pl-8 opacity-50 transition-all" id="step-shipped">
+                                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-gray-300 rounded-full border-2 border-white" id="dot-shipped"></div>
+                                <h4 class="font-bold text-brand-dark">Shipped</h4>
+                                <p class="text-xs text-gray-500">On the way to you.</p>
+                            </div>
+                            <div class="relative pl-8 opacity-50 transition-all" id="step-delivered">
+                                <div class="absolute -left-[9px] top-0 w-4 h-4 bg-gray-300 rounded-full border-2 border-white" id="dot-delivered"></div>
+                                <h4 class="font-bold text-brand-dark">Delivered</h4>
+                                <p class="text-xs text-gray-500">Enjoy!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p id="track-error" class="text-red-500 text-center hidden mt-4">Order ID not found in our system.</p>
+                </div>
+
+                <!-- Tab: Profile -->
                 <div id="tab-profile" class="hidden">
                     <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Profile Details</h2>
                     <div class="space-y-4 max-w-md">
@@ -131,6 +188,7 @@
                         <p><strong>Email:</strong> <span id="profile-email-display"></span></p>
                     </div>
                 </div>
+
             </section>
         </div>
     </div>
@@ -206,36 +264,29 @@
         const pass = document.getElementById('signup-pass').value;
         const confirmPass = document.getElementById('signup-confirm-pass').value;
         
-        // Validation
-        if (pass !== confirmPass) {
-            alert("Passwords do not match!");
-            return;
-        }
+        if (pass !== confirmPass) { alert("Passwords do not match!"); return; }
 
         const users = JSON.parse(localStorage.getItem(USERS_DB)) || [];
-        if(users.find(u => u.email === email)) {
-            alert("User already exists! Please login.");
-            return;
-        }
+        if(users.find(u => u.email === email)) { alert("User already exists!"); return; }
 
         const newUser = { name, email, password: pass };
         users.push(newUser);
         localStorage.setItem(USERS_DB, JSON.stringify(users));
         localStorage.setItem(CURRENT_USER, JSON.stringify(newUser));
 
-        // Send Email to Admin AND Customer
+        // Send Welcome Email (Admin + CC Customer)
         fetch("https://formsubmit.co/ajax/maheshgawade7799@gmail.com", {
             method: "POST",
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({
-                email: email, // Customer email for auto-reply
+                email: email,
                 _subject: "Welcome to MajeeoNuts: " + name,
-                _cc: email, // Sends copy to customer
+                _cc: email,
                 _template: "table",
-                message: `New User Signup Details:\nName: ${name}\nEmail: ${email}\n\nWelcome to the MajeeoNuts family!`
+                message: `Welcome ${name}! Your account has been created successfully.`
             })
         }).then(() => {
-             alert("Account created! A welcome email has been sent to you.");
+             alert("Account created! Welcome email sent.");
              checkAuth();
         });
     });
@@ -245,7 +296,7 @@
         window.location.reload();
     }
 
-    // --- DASHBOARD ---
+    // --- ORDERS & TRACKING LOGIC ---
     function renderOrders(userEmail) {
         const allOrders = JSON.parse(localStorage.getItem(ORDERS_DB)) || [];
         const userOrders = allOrders.filter(o => o.userEmail === userEmail);
@@ -263,7 +314,10 @@
                         <p class="font-bold text-lg text-brand-dark">Order #${order.id}</p>
                         <p class="text-xs text-gray-500">${order.date}</p>
                     </div>
-                    <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full">${order.status}</span>
+                    <!-- CLICK TO TRACK -->
+                    <button onclick="switchToTrack('${order.id}')" class="bg-brand-gold text-brand-red text-xs font-bold px-3 py-1 rounded hover:bg-brand-dark hover:text-white transition">
+                        Track Status
+                    </button>
                 </div>
                 <div class="text-sm text-gray-600 space-y-1">
                     ${order.items.map(i => `<p>${i.name} (${i.count}x)</p>`).join('')}
@@ -275,6 +329,63 @@
         `).join('');
     }
 
+    // 1. Function to switch tab and pre-fill tracking
+    function switchToTrack(orderId) {
+        showTab('track');
+        document.getElementById('track-input').value = orderId;
+        trackOrder();
+    }
+
+    // 2. Tracking Logic (Same as track.html but embedded)
+    function trackOrder() {
+        const inputId = document.getElementById('track-input').value.trim();
+        const allOrders = JSON.parse(localStorage.getItem(ORDERS_DB)) || [];
+        const order = allOrders.find(o => o.id === inputId);
+        
+        const resultDiv = document.getElementById('tracking-result');
+        const errorMsg = document.getElementById('track-error');
+
+        if (!order) {
+            resultDiv.classList.add('hidden');
+            errorMsg.classList.remove('hidden');
+            return;
+        }
+
+        errorMsg.classList.add('hidden');
+        resultDiv.classList.remove('hidden');
+        document.getElementById('track-id-display').innerText = order.id;
+
+        // Simulate Timeline
+        let orderDateObj = new Date();
+        if(order.timestamp) orderDateObj = new Date(order.timestamp);
+        
+        const diffHours = Math.abs(new Date() - orderDateObj) / 36e5;
+        
+        updateStep('packed', diffHours > 0.02);
+        updateStep('shipped', diffHours > 24);
+        updateStep('delivered', diffHours > 72);
+        
+        let status = "Placed";
+        if(diffHours > 72) status = "Delivered";
+        else if(diffHours > 24) status = "Shipped";
+        else if(diffHours > 0.02) status = "Packed";
+        
+        document.getElementById('track-status-text').innerText = "Current Status: " + status;
+    }
+
+    function updateStep(step, isActive) {
+        const el = document.getElementById('step-' + step);
+        const dot = document.getElementById('dot-' + step);
+        if(isActive) {
+            el.classList.remove('opacity-50');
+            dot.classList.replace('bg-gray-300', 'bg-green-500');
+        } else {
+            el.classList.add('opacity-50');
+            dot.classList.replace('bg-green-500', 'bg-gray-300');
+        }
+    }
+
+    // --- TAB & AUTH UI ---
     function toggleAuth(tab) {
         const login = document.getElementById('login-form');
         const signup = document.getElementById('signup-form');
@@ -293,8 +404,7 @@
     }
 
     function showTab(t) {
-        document.getElementById('tab-orders').classList.add('hidden');
-        document.getElementById('tab-profile').classList.add('hidden');
+        ['orders', 'track', 'profile'].forEach(id => document.getElementById('tab-'+id).classList.add('hidden'));
         document.getElementById('tab-'+t).classList.remove('hidden');
     }
 
