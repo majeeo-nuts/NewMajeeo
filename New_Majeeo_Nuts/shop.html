@@ -92,17 +92,15 @@
         <div class="mt-auto pt-4 border-t border-gray-200">
             <div class="flex justify-between font-bold text-brand-dark mb-3"><span>Total:</span><span id="cart-total">₹0.00</span></div>
             
-            <!-- View Cart Page (Goes to cart.html) -->
             <a href="cart.html" class="block w-full bg-brand-dark text-white text-center py-3 rounded-xl mb-2 font-bold text-sm hover:bg-gray-800">View Full Cart</a>
             
-            <!-- Quick Checkout (Razorpay Direct) -->
             <button id="quick-checkout-btn" class="w-full bg-brand-red text-white py-3 rounded-xl font-bold hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed transition">Quick Checkout</button>
         </div>
     </div>
 </aside>
 <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleCartSidebar()"></div>
 
-<!-- Footer (Reusable) -->
+<!-- Footer -->
 <footer class="bg-brand-dark text-white pt-16 pb-8 mt-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -127,7 +125,7 @@
     const ORDERS_KEY = 'majeeo-orders';
     
     const products = [
-        // PRICE UPDATED TO 1 HERE
+        // PRICE IS 1 FOR TESTING
         { name:"Premium Almonds (Badam)", img:"images/almonds.webp", price:1, desc:"High-quality California almonds.", best:true, link:"#" },
         { name:"Premium Cashews (Kaju)", img:"images/cashews.avif", price:1200, desc:"Fresh, creamy cashews.", best:true, link:"#" },
         { name:"Mamra Almonds (Organic)", img:"images/mamra_almonds.webp", price:1600, desc:"Premium organic Mamra almonds.", best:false, link:"#" },
@@ -253,24 +251,24 @@
         }
     }
 
-    // --- QUICK CHECKOUT (Sidebar) ---
+    // --- QUICK CHECKOUT WITH ERROR HANDLING ---
     checkoutBtn.addEventListener('click', () => {
         const cart = getCart();
         const total = cart.reduce((s, i) => s + i.price, 0);
         
-        // For quick checkout, we don't capture email in sidebar (simplification), or user can use full checkout page.
-        // Using a prompt for email just for Quick Checkout to ensure invoice works
+        // Ask for Email for Invoice
         const email = prompt("Please enter your email for the invoice:");
         if(!email || !email.includes('@')) return;
 
-        new Razorpay({
-            key: "rzp_live_LIqOpioBHDIhG4",
+        const options = {
+            key: "rzp_live_LIqOpioBHDIhG4", // LIVE KEY
             amount: Math.round(total * 100),
             currency: "INR",
             name: "MajeeoNuts",
             description: "Order Checkout",
             prefill: { email: email },
             handler: (resp) => {
+                // Success Handler
                 const newOrder = {
                     id: 'MN-' + Math.floor(1000 + Math.random() * 9000),
                     date: new Date().toLocaleDateString('en-IN'),
@@ -280,12 +278,10 @@
                     paymentId: resp.razorpay_payment_id
                 };
                 
-                // Save History
                 const orders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
                 orders.unshift(newOrder);
                 localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
 
-                // Send Invoice
                 const itemsList = cart.map(i => `${i.name} (${i.count} x ${i.unitGrams}g)`).join(', ');
                 fetch("https://formsubmit.co/ajax/maheshgawade7799@gmail.com", {
                     method: "POST",
@@ -307,7 +303,16 @@
                 window.location.href = 'account.html';
             },
             theme: { color: "#7f1d1d" }
-        }).open();
+        };
+
+        const rzp = new Razorpay(options);
+        
+        // --- FAILURE HANDLING ---
+        rzp.on('payment.failed', function (response){
+            alert("Payment Failed! Code: " + response.error.code + "\nReason: " + response.error.description);
+        });
+
+        rzp.open();
     });
 
     renderCart();

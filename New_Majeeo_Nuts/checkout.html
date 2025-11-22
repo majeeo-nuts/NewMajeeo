@@ -37,6 +37,7 @@
     <h1 class="text-3xl font-serif font-bold text-brand-red mb-8 border-b pb-4">Finalize Your Order</h1>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        
         <div>
             <h2 class="text-xl font-bold mb-4">Order Summary</h2>
             <div id="order-items" class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
@@ -62,10 +63,6 @@
                 <button id="pay-btn" class="w-full bg-brand-red text-white py-4 rounded-xl font-bold text-lg hover:bg-brand-dark transition flex items-center justify-center gap-2 shadow-lg">
                     <i class="ri-secure-payment-line"></i> Pay Securely with Razorpay
                 </button>
-                
-                <div class="mt-4 flex justify-center gap-4 text-2xl text-gray-400">
-                    <i class="ri-visa-line"></i> <i class="ri-mastercard-line"></i> <i class="ri-bank-card-line"></i>
-                </div>
             </div>
         </div>
     </div>
@@ -125,6 +122,7 @@
                 contact: "9999999999"
             },
             handler: function (response) {
+                // Success Handler
                 const newOrder = {
                     id: 'MN-' + Math.floor(1000 + Math.random() * 9000),
                     date: new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }),
@@ -164,9 +162,15 @@
         };
 
         const rzp = new Razorpay(options);
+        
+        // --- FAILURE HANDLING ADDED HERE ---
+        rzp.on('payment.failed', function (response){
+            alert("Payment Failed! \nReason: " + response.error.description + "\nPlease try again with a valid card.");
+        });
+
         rzp.open();
     });
-</script>
+  </script>
 
 </body>
 </html>
