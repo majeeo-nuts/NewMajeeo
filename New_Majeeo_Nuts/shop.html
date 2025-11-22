@@ -92,15 +92,20 @@
         <div class="mt-auto pt-4 border-t border-gray-200">
             <div class="flex justify-between font-bold text-brand-dark mb-3"><span>Total:</span><span id="cart-total">₹0.00</span></div>
             
-            <a href="cart.html" class="block w-full bg-brand-dark text-white text-center py-3 rounded-xl mb-2 font-bold text-sm hover:bg-gray-800">View Full Cart</a>
-            
-            <button id="quick-checkout-btn" class="w-full bg-brand-red text-white py-3 rounded-xl font-bold hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed transition">Quick Checkout</button>
+            <!-- Email Input for Invoice -->
+            <div class="mb-3">
+                <label class="text-xs text-gray-500 mb-1 block">Email for Invoice/Receipt:</label>
+                <input type="email" id="customer-email" placeholder="Enter your email" class="w-full p-2 border border-gray-300 rounded text-sm focus:border-brand-red outline-none">
+            </div>
+
+            <a href="cart.html" class="block w-full bg-brand-dark text-white text-center py-3 rounded-xl mb-2 font-bold text-sm hover:bg-gray-800">View Cart Page</a>
+            <button id="checkout-btn" class="w-full bg-brand-red text-white py-3 rounded-xl font-bold hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed transition">Proceed to Pay</button>
         </div>
     </div>
 </aside>
 <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleCartSidebar()"></div>
 
-<!-- Footer -->
+<!-- Footer (Reusable) -->
 <footer class="bg-brand-dark text-white pt-16 pb-8 mt-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -122,10 +127,11 @@
 
 <script>
     const STORAGE_KEY = 'majeeo-cart';
-    const ORDERS_KEY = 'majeeo-orders';
+    const ORDERS_DB = 'majeeo-orders-db'; // Updated DB Key for Free Version
+    const CURRENT_USER = 'majeeo-current-user'; // Check Logged in user
     
     const products = [
-        // PRICE IS 1 FOR TESTING
+        // PRICE IS 1 FOR TESTING (As requested)
         { name:"Premium Almonds (Badam)", img:"images/almonds.webp", price:1, desc:"High-quality California almonds.", best:true, link:"#" },
         { name:"Premium Cashews (Kaju)", img:"images/cashews.avif", price:1200, desc:"Fresh, creamy cashews.", best:true, link:"#" },
         { name:"Mamra Almonds (Organic)", img:"images/mamra_almonds.webp", price:1600, desc:"Premium organic Mamra almonds.", best:false, link:"#" },
@@ -143,7 +149,7 @@
     const cartItemsDiv = document.getElementById('cart-items');
     const badge = document.getElementById('cart-count');
     const cartTotalSpan = document.getElementById('cart-total');
-    const checkoutBtn = document.getElementById('quick-checkout-btn');
+    const checkoutBtn = document.getElementById('checkout-btn');
     const noResults = document.getElementById('no-results');
 
     function renderProducts(filterText = '') {
@@ -251,68 +257,81 @@
         }
     }
 
-    // --- QUICK CHECKOUT WITH ERROR HANDLING ---
+    // --- CHECKOUT LOGIC (Auth + Save to Free DB) ---
     checkoutBtn.addEventListener('click', () => {
+        // 1. CHECK LOGIN STATUS
+        const activeUser = JSON.parse(localStorage.getItem(CURRENT_USER));
+        if (!activeUser) {
+            alert("Please Login or Sign Up to complete your order and save history!");
+            window.location.href = "account.html";
+            return;
+        }
+
+        const emailInput = document.getElementById('customer-email');
+        // Use input email if provided, otherwise use logged-in email
+        const customerEmail = emailInput.value || activeUser.email;
+
+        if (!customerEmail || !customerEmail.includes('@')) {
+            alert("Please enter a valid email address to receive your invoice.");
+            emailInput.focus();
+            return;
+        }
+
         const cart = getCart();
         const total = cart.reduce((s, i) => s + i.price, 0);
         
-        // Ask for Email for Invoice
-        const email = prompt("Please enter your email for the invoice:");
-        if(!email || !email.includes('@')) return;
-
-        const options = {
-            key: "rzp_live_LIqOpioBHDIhG4", // LIVE KEY
+        new Razorpay({
+            key: "rzp_live_LIqOpioBHDIhG4",
             amount: Math.round(total * 100),
             currency: "INR",
             name: "MajeeoNuts",
-            description: "Order Checkout",
-            prefill: { email: email },
+            description: "Order Payment",
+            prefill: {
+                email: customerEmail,
+                contact: '9999999999'
+            },
             handler: (resp) => {
-                // Success Handler
+                // A. Create Order Object
                 const newOrder = {
                     id: 'MN-' + Math.floor(1000 + Math.random() * 9000),
                     date: new Date().toLocaleDateString('en-IN'),
+                    userEmail: activeUser.email, // LINKED TO USER
                     items: cart,
                     total: total,
                     status: 'Paid',
                     paymentId: resp.razorpay_payment_id
                 };
-                
-                const orders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
-                orders.unshift(newOrder);
-                localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
 
-                const itemsList = cart.map(i => `${i.name} (${i.count} x ${i.unitGrams}g)`).join(', ');
+                // B. Save to "Global" Orders DB in LocalStorage
+                const orders = JSON.parse(localStorage.getItem(ORDERS_DB)) || [];
+                orders.push(newOrder);
+                localStorage.setItem(ORDERS_DB, JSON.stringify(orders));
+
+                // C. Send Invoice Email
+                const itemsList = cart.map(i => `${i.name} (${i.count} x ${i.unitGrams}g) - Rs.${i.price}`).join(' | ');
+                
                 fetch("https://formsubmit.co/ajax/maheshgawade7799@gmail.com", {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify({
-                        email: email,
-                        _subject: `Invoice: Order #${newOrder.id}`,
-                        _cc: email,
+                        email: customerEmail,
+                        _subject: `Invoice for Order #${newOrder.id}`,
+                        _cc: customerEmail,
                         _template: "table",
                         "Order ID": newOrder.id,
                         "Amount": `₹${total}`,
+                        "Payment ID": resp.razorpay_payment_id,
                         "Items": itemsList
                     })
                 });
 
-                alert("Payment Successful!");
+                alert("Payment Successful! Invoice sent to " + customerEmail);
                 localStorage.removeItem(STORAGE_KEY);
                 renderCart();
                 window.location.href = 'account.html';
             },
             theme: { color: "#7f1d1d" }
-        };
-
-        const rzp = new Razorpay(options);
-        
-        // --- FAILURE HANDLING ---
-        rzp.on('payment.failed', function (response){
-            alert("Payment Failed! Code: " + response.error.code + "\nReason: " + response.error.description);
-        });
-
-        rzp.open();
+        }).open();
     });
 
     renderCart();
