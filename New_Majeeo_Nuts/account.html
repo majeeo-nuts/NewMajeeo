@@ -17,6 +17,11 @@
       }
     }
   </script>
+  <style>
+    .hidden-section { display: none; }
+    .fade-in { animation: fadeIn 0.5s ease-in-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  </style>
 </head>
 <body class="bg-brand-cream text-brand-dark font-sans antialiased">
 
@@ -27,97 +32,220 @@
             <span class="text-2xl font-serif font-bold text-brand-red">MajeeoNuts</span>
         </a>
         <div class="flex items-center space-x-4 text-brand-red">
-            <a href="shop.html" class="hover:text-brand-gold">Shop</a>
+            <a href="shop.html" class="hover:text-brand-gold font-medium">Shop</a>
             <a href="cart.html"><i class="ri-shopping-bag-line text-xl"></i></a>
         </div>
     </div>
 </nav>
 
-<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="flex flex-col md:flex-row gap-8">
-        
-        <!-- Sidebar -->
-        <aside class="w-full md:w-64 flex-shrink-0">
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center mb-6">
-                <div class="w-20 h-20 bg-brand-red text-white rounded-full flex items-center justify-center text-3xl mx-auto mb-4 font-serif">
-                    M
-                </div>
-                <h2 class="font-bold text-lg text-brand-dark">Majeeo Member</h2>
-                <p class="text-xs text-gray-500">maheshgawade7799@gmail.com</p>
-            </div>
-            <nav class="space-y-2">
-                <button onclick="showTab('orders')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
-                    <i class="ri-box-3-line text-brand-red"></i> My Orders
-                </button>
-                <button onclick="showTab('address')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
-                    <i class="ri-map-pin-line text-brand-red"></i> Addresses
-                </button>
-                <button onclick="showTab('profile')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
-                    <i class="ri-user-settings-line text-brand-red"></i> Profile
-                </button>
-            </nav>
-        </aside>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 min-h-[600px] flex items-center justify-center">
+    
+    <!-- 1. AUTHENTICATION SECTION (Login/Signup) -->
+    <div id="auth-container" class="w-full max-w-md bg-white p-8 rounded-xl shadow-2xl border border-gray-100 fade-in">
+        <!-- Toggle Tabs -->
+        <div class="flex mb-8 border-b border-gray-200">
+            <button onclick="toggleAuth('login')" id="tab-login" class="w-1/2 pb-3 text-lg font-bold text-brand-red border-b-2 border-brand-red transition">Login</button>
+            <button onclick="toggleAuth('signup')" id="tab-signup" class="w-1/2 pb-3 text-lg font-medium text-gray-500 hover:text-brand-red transition">Sign Up</button>
+        </div>
 
-        <!-- Content Area -->
-        <section class="flex-grow bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-10">
-            
-            <!-- Tab: My Orders -->
-            <div id="tab-orders" class="block">
-                <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Order History</h2>
-                <div id="orders-list" class="space-y-4">
-                    <!-- JS will inject orders here -->
-                    <p class="text-center text-gray-500">Loading your orders...</p>
+        <!-- Login Form -->
+        <form id="login-form" class="space-y-5">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <div class="relative">
+                    <i class="ri-mail-line absolute left-3 top-3 text-gray-400"></i>
+                    <input type="email" id="login-email" required placeholder="Enter your email" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-gold outline-none">
                 </div>
             </div>
-
-            <!-- Tab: Addresses -->
-            <div id="tab-address" class="hidden">
-                <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Saved Addresses</h2>
-                <div class="border border-brand-red rounded-lg p-4 relative bg-brand-cream/30 max-w-sm">
-                    <span class="absolute top-2 right-2 text-brand-red text-xs font-bold">DEFAULT</span>
-                    <h3 class="font-bold mb-2">Home</h3>
-                    <p class="text-sm text-gray-600 leading-relaxed">
-                        Mahesh Gawade<br>Mumbai, Maharashtra - 400028<br>India
-                    </p>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
+                <div class="relative">
+                    <i class="ri-lock-2-line absolute left-3 top-3 text-gray-400"></i>
+                    <input type="password" id="login-pass" required placeholder="••••••••" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-gold outline-none">
                 </div>
             </div>
+            <button type="submit" class="w-full bg-brand-red text-white py-3 rounded-lg font-bold hover:bg-brand-dark transition shadow-lg">Login Securely</button>
+            <p class="text-center text-sm text-gray-500 mt-4">Forgot password? <a href="#" class="text-brand-red underline">Reset here</a></p>
+        </form>
 
-             <!-- Tab: Profile -->
-             <div id="tab-profile" class="hidden">
-                <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Profile Details</h2>
-                <form class="space-y-4 max-w-md">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                        <input type="email" value="maheshgawade7799@gmail.com" readonly class="w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                        <input type="tel" value="+91 8369245051" class="w-full p-2 border border-gray-300 rounded focus:ring-brand-gold">
-                    </div>
-                    <button class="bg-brand-red text-white px-6 py-2 rounded hover:bg-brand-dark transition">Save Changes</button>
-                </form>
+        <!-- Signup Form (Hidden by default) -->
+        <form id="signup-form" class="space-y-5 hidden-section">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                <div class="relative">
+                    <i class="ri-user-line absolute left-3 top-3 text-gray-400"></i>
+                    <input type="text" id="signup-name" required placeholder="Your Name" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-gold outline-none">
+                </div>
             </div>
-
-        </section>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                <div class="relative">
+                    <i class="ri-mail-line absolute left-3 top-3 text-gray-400"></i>
+                    <input type="email" id="signup-email" required placeholder="Enter your email" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-gold outline-none">
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Create Password</label>
+                <div class="relative">
+                    <i class="ri-lock-2-line absolute left-3 top-3 text-gray-400"></i>
+                    <input type="password" id="signup-pass" required placeholder="••••••••" class="w-full pl-10 p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-gold outline-none">
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-brand-gold text-brand-red py-3 rounded-lg font-bold hover:bg-brand-dark hover:text-white transition shadow-lg">Create Account</button>
+        </form>
     </div>
+
+    <!-- 2. DASHBOARD SECTION (Hidden until logged in) -->
+    <div id="dashboard-container" class="w-full hidden-section fade-in">
+        <div class="flex flex-col md:flex-row gap-8">
+            
+            <!-- Sidebar -->
+            <aside class="w-full md:w-64 flex-shrink-0">
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center mb-6">
+                    <div class="w-20 h-20 bg-brand-red text-white rounded-full flex items-center justify-center text-3xl mx-auto mb-4 font-serif">
+                        <span id="user-initial">M</span>
+                    </div>
+                    <h2 class="font-bold text-lg text-brand-dark" id="user-name-display">Welcome</h2>
+                    <p class="text-xs text-gray-500" id="user-email-display">user@example.com</p>
+                </div>
+                <nav class="space-y-2">
+                    <button onclick="showTab('orders')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
+                        <i class="ri-box-3-line text-brand-red"></i> My Orders
+                    </button>
+                    <button onclick="showTab('profile')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
+                        <i class="ri-user-settings-line text-brand-red"></i> Profile
+                    </button>
+                    <button onclick="logout()" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-red-100 text-red-600 font-medium transition shadow-sm border border-gray-100 flex items-center gap-2 mt-4">
+                        <i class="ri-logout-box-line"></i> Logout
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <section class="flex-grow bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-10">
+                
+                <!-- Tab: My Orders -->
+                <div id="tab-orders" class="block">
+                    <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Order History</h2>
+                    <div id="orders-list" class="space-y-4">
+                        <p class="text-center text-gray-500">Loading your orders...</p>
+                    </div>
+                </div>
+
+                 <!-- Tab: Profile -->
+                 <div id="tab-profile" class="hidden">
+                    <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Profile Details</h2>
+                    <form class="space-y-4 max-w-md">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+                            <input type="text" id="profile-name" class="w-full p-2 border border-gray-300 rounded bg-gray-50">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" id="profile-email" readonly class="w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed">
+                        </div>
+                        <button class="bg-brand-red text-white px-6 py-2 rounded hover:bg-brand-dark transition">Save Changes</button>
+                    </form>
+                </div>
+
+            </section>
+        </div>
+    </div>
+
 </main>
 
-<footer class="bg-brand-dark text-white pt-8 pb-4 text-center text-sm">
+<footer class="bg-brand-dark text-white pt-8 pb-4 text-center text-sm mt-auto">
     <p>© 2025 MajeeoNuts. All rights reserved.</p>
 </footer>
 
 <script>
-    // Tab Logic
+    // --- AUTHENTICATION LOGIC ---
+    const USER_KEY = 'majeeo-user';
+    const ORDERS_KEY = 'majeeo-orders';
+
+    // Check if user is logged in on load
+    function checkAuth() {
+        const user = JSON.parse(localStorage.getItem(USER_KEY));
+        const authContainer = document.getElementById('auth-container');
+        const dashboardContainer = document.getElementById('dashboard-container');
+
+        if (user) {
+            // Show Dashboard
+            authContainer.classList.add('hidden-section');
+            dashboardContainer.classList.remove('hidden-section');
+            
+            // Populate User Data
+            document.getElementById('user-name-display').innerText = user.name;
+            document.getElementById('user-email-display').innerText = user.email;
+            document.getElementById('user-initial').innerText = user.name.charAt(0).toUpperCase();
+            document.getElementById('profile-name').value = user.name;
+            document.getElementById('profile-email').value = user.email;
+            
+            renderOrders(); // Load orders
+        } else {
+            // Show Login
+            authContainer.classList.remove('hidden-section');
+            dashboardContainer.classList.add('hidden-section');
+        }
+    }
+
+    // Handle Login
+    document.getElementById('login-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        // Simulate Login (In real app, verify password with backend)
+        const user = { name: "Majeeo Member", email: email }; // Default name for login
+        localStorage.setItem(USER_KEY, JSON.stringify(user));
+        checkAuth();
+    });
+
+    // Handle Signup
+    document.getElementById('signup-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('signup-name').value;
+        const email = document.getElementById('signup-email').value;
+        const user = { name: name, email: email };
+        localStorage.setItem(USER_KEY, JSON.stringify(user));
+        alert("Account created successfully! Welcome, " + name);
+        checkAuth();
+    });
+
+    // Handle Logout
+    function logout() {
+        localStorage.removeItem(USER_KEY);
+        window.location.reload(); // Refresh to show login screen
+    }
+
+    // Toggle Login/Signup Tabs
+    function toggleAuth(tab) {
+        const loginForm = document.getElementById('login-form');
+        const signupForm = document.getElementById('signup-form');
+        const tabLogin = document.getElementById('tab-login');
+        const tabSignup = document.getElementById('tab-signup');
+
+        if (tab === 'signup') {
+            loginForm.classList.add('hidden-section');
+            signupForm.classList.remove('hidden-section');
+            tabSignup.classList.add('text-brand-red', 'border-b-2', 'border-brand-red', 'font-bold');
+            tabSignup.classList.remove('text-gray-500');
+            tabLogin.classList.remove('text-brand-red', 'border-b-2', 'border-brand-red', 'font-bold');
+            tabLogin.classList.add('text-gray-500');
+        } else {
+            signupForm.classList.add('hidden-section');
+            loginForm.classList.remove('hidden-section');
+            tabLogin.classList.add('text-brand-red', 'border-b-2', 'border-brand-red', 'font-bold');
+            tabLogin.classList.remove('text-gray-500');
+            tabSignup.classList.remove('text-brand-red', 'border-b-2', 'border-brand-red', 'font-bold');
+            tabSignup.classList.add('text-gray-500');
+        }
+    }
+
+    // --- DASHBOARD LOGIC ---
     function showTab(tabName) {
-        ['orders', 'address', 'profile'].forEach(t => {
-            document.getElementById('tab-' + t).classList.add('hidden');
-        });
+        ['orders', 'profile'].forEach(t => document.getElementById('tab-' + t).classList.add('hidden'));
         document.getElementById('tab-' + tabName).classList.remove('hidden');
     }
 
-    // --- ORDER HISTORY RENDER LOGIC ---
-    const ORDERS_KEY = 'majeeo-orders';
-    
     function renderOrders() {
         const orders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
         const container = document.getElementById('orders-list');
@@ -144,7 +272,6 @@
                         <p class="text-xs text-gray-400 mt-1">ID: ${order.paymentId}</p>
                     </div>
                 </div>
-                
                 <div class="space-y-3">
                     ${order.items.map(item => `
                         <div class="flex items-center gap-4 bg-gray-50 p-2 rounded-lg">
@@ -157,7 +284,6 @@
                         </div>
                     `).join('')}
                 </div>
-                
                 <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
                     <span class="text-sm text-gray-600 font-medium">Total Amount Paid</span>
                     <span class="font-bold text-xl text-brand-dark">₹${order.total.toFixed(2)}</span>
@@ -165,9 +291,9 @@
             </div>
         `).join('');
     }
-    
-    // Call on load
-    renderOrders();
+
+    // Init
+    checkAuth();
 </script>
 
 </body>
