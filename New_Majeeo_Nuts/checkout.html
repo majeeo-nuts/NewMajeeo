@@ -33,11 +33,12 @@
     </div>
 </nav>
 
-<main class="max-w-6xl mx-auto px-4 py-12">
+<main class="max-w-6xl mx-auto px-4 py-12 min-h-[600px]">
     <h1 class="text-3xl font-serif font-bold text-brand-red mb-8 border-b pb-4">Finalize Your Order</h1>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
         
+        <!-- Left: Order Summary -->
         <div>
             <h2 class="text-xl font-bold mb-4">Order Summary</h2>
             <div id="order-items" class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
@@ -45,6 +46,7 @@
             </div>
         </div>
 
+        <!-- Right: Payment Details -->
         <div>
             <div class="bg-white p-8 rounded-xl shadow-2xl border border-brand-red/10 sticky top-24">
                 <h2 class="text-xl font-bold mb-6">Payment Details</h2>
@@ -63,14 +65,23 @@
                 <button id="pay-btn" class="w-full bg-brand-red text-white py-4 rounded-xl font-bold text-lg hover:bg-brand-dark transition flex items-center justify-center gap-2 shadow-lg">
                     <i class="ri-secure-payment-line"></i> Pay Securely with Razorpay
                 </button>
+                
+                <div class="mt-4 flex justify-center gap-4 text-2xl text-gray-400">
+                    <i class="ri-visa-line"></i> <i class="ri-mastercard-line"></i> <i class="ri-bank-card-line"></i>
+                </div>
             </div>
         </div>
     </div>
 </main>
 
+<footer class="bg-brand-dark text-white pt-8 pb-4 text-center text-sm mt-auto">
+    <p>© 2025 MajeeoNuts. All rights reserved.</p>
+</footer>
+
 <script>
     const STORAGE_KEY = 'majeeo-cart';
-    const ORDERS_KEY = 'majeeo-orders';
+    const ORDERS_KEY = 'majeeo-orders-db';
+    const CURRENT_USER = 'majeeo-current-user';
     
     const cart = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
     const total = cart.reduce((sum, item) => sum + item.price, 0);
@@ -78,9 +89,22 @@
     const container = document.getElementById('order-items');
     const totalDisplay = document.getElementById('total-display');
     const payBtn = document.getElementById('pay-btn');
+    const emailInput = document.getElementById('customer-email');
 
+    // 1. CHECK LOGIN (Updated with Safer Redirect)
+    const activeUser = JSON.parse(localStorage.getItem(CURRENT_USER));
+    if (!activeUser) {
+        alert("Please Log In to complete your purchase.");
+        // Using explicit relative path to fix the error
+        window.location.assign("./account.html"); 
+    } else {
+        // Pre-fill email if logged in
+        emailInput.value = activeUser.email;
+    }
+
+    // 2. Render Cart Logic
     if (cart.length === 0) {
-        container.innerHTML = `<p class="text-gray-500">Your cart is empty. <a href="shop.html" class="text-brand-red underline">Go Shop</a></p>`;
+        container.innerHTML = `<p class="text-gray-500">Your cart is empty. <a href="./shop.html" class="text-brand-red underline">Go Shop</a></p>`;
         payBtn.disabled = true;
         payBtn.classList.add('opacity-50', 'cursor-not-allowed');
     } else {
@@ -99,19 +123,19 @@
         totalDisplay.innerText = total.toFixed(2);
     }
 
+    // 3. Payment & Invoice Logic
     payBtn.addEventListener('click', () => {
-        const emailInput = document.getElementById('customer-email');
         const customerEmail = emailInput.value;
 
         if (!customerEmail || !customerEmail.includes('@')) {
-            alert("Please enter a valid email address to receive your invoice.");
+            alert("Please enter a valid email address.");
             emailInput.focus();
             emailInput.classList.add('border-red-500');
             return;
         }
 
         const options = {
-            key: "rzp_live_LIqOpioBHDIhG4",
+            key: "rzp_live_LIqOpioBHDIhG4", // Live Key
             amount: Math.round(total * 100),
             currency: "INR",
             name: "MajeeoNuts",
@@ -122,20 +146,35 @@
                 contact: "9999999999"
             },
             handler: function (response) {
-                // Success Handler
+                // --- SEQUENTIAL ORDER ID LOGIC ---
+                const today = new Date();
+                const dateStr = today.getFullYear() + "" + String(today.getMonth() + 1).padStart(2, '0') + String(today.getDate()).padStart(2, '0');
+                
+                const allOrders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+                // Filter for orders created today to calculate sequence
+                const todayOrdersCount = allOrders.filter(o => o.id && o.id.startsWith('MN-' + dateStr)).length;
+                // Sequence is Count + 1
+                const nextSeq = String(todayOrdersCount + 1).padStart(3, '0');
+                
+                const orderId = `MN-${dateStr}-${nextSeq}`;
+
+                // Create Order
                 const newOrder = {
-                    id: 'MN-' + Math.floor(1000 + Math.random() * 9000),
-                    date: new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    id: orderId,
+                    timestamp: new Date().getTime(),
+                    date: today.toDateString(),
+                    userEmail: activeUser.email, // LINKED TO USER
                     items: cart,
                     total: total,
                     status: 'Paid',
                     paymentId: response.razorpay_payment_id
                 };
 
-                const orders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
-                orders.unshift(newOrder);
-                localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+                // Save History
+                allOrders.unshift(newOrder);
+                localStorage.setItem(ORDERS_KEY, JSON.stringify(allOrders));
 
+                // Send Invoice Email (Admin + Customer)
                 const itemsList = cart.map(i => `${i.name} (${i.count} x ${i.unitGrams}g)`).join(', ');
                 
                 fetch("https://formsubmit.co/ajax/maheshgawade7799@gmail.com", {
@@ -143,34 +182,37 @@
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify({
                         email: customerEmail,
-                        _subject: `Invoice: Order #${newOrder.id} - MajeeoNuts`,
+                        _subject: `Invoice: Order #${orderId}`,
                         _cc: customerEmail,
                         _template: "table",
-                        "Order Number": newOrder.id,
+                        "Order Number": orderId,
                         "Amount Paid": `₹${total}`,
                         "Payment ID": response.razorpay_payment_id,
                         "Items Ordered": itemsList,
+                        "Track Order": `https://newmajeeo.netlify.app/track.html?id=${orderId}`,
                         "Status": "Payment Successful - Processing"
                     })
                 });
 
                 alert("✅ Payment Successful! Invoice sent to " + customerEmail);
                 localStorage.removeItem(STORAGE_KEY);
-                window.location.href = "account.html";
+                
+                // Updated Safer Redirect
+                window.location.assign("./account.html");
             },
             theme: { color: "#7f1d1d" }
         };
 
         const rzp = new Razorpay(options);
         
-        // --- FAILURE HANDLING ADDED HERE ---
+        // --- FAILURE HANDLING ---
         rzp.on('payment.failed', function (response){
-            alert("Payment Failed! \nReason: " + response.error.description + "\nPlease try again with a valid card.");
+            alert("Payment Failed! \nReason: " + response.error.description + "\nPlease try again.");
         });
 
         rzp.open();
     });
-  </script>
+</script>
 
 </body>
 </html>

@@ -26,12 +26,10 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-20">
             <button onclick="toggleMenu()" class="lg:hidden text-brand-red p-2"><i class="ri-menu-line text-2xl"></i></button>
-            
             <a href="index.html" class="flex-shrink-0 flex items-center gap-2">
                 <img src="assets/images/Product/Images/MajeeoNuts.Logo.png" onerror="this.src='images/MajeeoNuts.Logo.png'" alt="MajeeoNuts" class="h-12 w-auto object-contain">
                 <span class="text-2xl font-serif font-bold text-brand-red tracking-tight">MajeeoNuts</span>
             </a>
-            
             <div class="hidden lg:flex items-center space-x-6">
                 <a href="index.html" class="text-brand-dark hover:text-brand-red font-medium transition">Home</a>
                 <a href="shop.html" class="text-brand-red font-medium transition border-b-2 border-brand-red">Shop All</a>
@@ -39,7 +37,6 @@
                 <a href="contact.html" class="text-brand-dark hover:text-brand-red font-medium transition">Contact Us</a>
                 <input id="searchInput" type="text" placeholder="Search dry fruits..." class="px-3 py-2 rounded-full border border-gray-300 focus:ring-2 focus:ring-brand-red w-64 text-sm">
             </div>
-
             <div class="flex items-center space-x-4 text-brand-red">
                 <a href="account.html" class="hover:text-brand-gold transition"><i class="ri-user-line text-xl"></i></a>
                 <button onclick="toggleCartSidebar()" class="relative hover:text-brand-gold transition">
@@ -49,8 +46,6 @@
             </div>
         </div>
     </div>
-    
-    <!-- Mobile Menu -->
     <div id="mobile-menu-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleMenu()"></div>
     <div id="mobile-sidebar" class="fixed top-0 left-0 w-3/4 max-w-xs h-full bg-white z-50 transform -translate-x-full transition-transform duration-300 shadow-2xl">
         <div class="p-5 flex justify-between items-center border-b">
@@ -73,7 +68,6 @@
     <div class="text-center mb-10">
         <h1 class="text-4xl md:text-5xl font-serif font-bold text-brand-red mb-2">Our Premium Collection</h1>
     </div>
-
     <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="product-grid-container"></section>
     <div id="no-results" class="text-center text-xl text-gray-500 mt-12 hidden"><p>Sorry, no products matched.</p></div>
 </main>
@@ -85,20 +79,13 @@
             <h2 class="text-xl font-serif font-bold text-brand-red">Your Bag</h2>
             <button onclick="toggleCartSidebar()" class="text-brand-dark"><i class="ri-close-line text-2xl"></i></button>
         </div>
-        
-        <!-- Cart Items Area -->
         <div id="cart-items" class="flex-grow overflow-y-auto space-y-4 text-sm"></div>
-        
-        <!-- Checkout Area -->
         <div class="mt-auto pt-4 border-t border-gray-200">
             <div class="flex justify-between font-bold text-brand-dark mb-3"><span>Total:</span><span id="cart-total">₹0.00</span></div>
-            
-            <!-- Email Input for Invoice -->
             <div class="mb-3">
                 <label class="text-xs text-gray-500 mb-1 block">Email for Invoice/Receipt:</label>
                 <input type="email" id="customer-email" placeholder="Enter your email" class="w-full p-2 border border-gray-300 rounded text-sm focus:border-brand-red outline-none">
             </div>
-
             <a href="cart.html" class="block w-full bg-brand-dark text-white text-center py-3 rounded-xl mb-2 font-bold text-sm hover:bg-gray-800">View Full Cart</a>
             <button id="checkout-btn" class="w-full bg-brand-red text-white py-3 rounded-xl font-bold hover:bg-red-800 disabled:opacity-50 disabled:cursor-not-allowed transition">Proceed to Pay</button>
         </div>
@@ -106,7 +93,6 @@
 </aside>
 <div id="cart-overlay" class="fixed inset-0 bg-black/50 z-40 hidden" onclick="toggleCartSidebar()"></div>
 
-<!-- Footer -->
 <footer class="bg-brand-dark text-white pt-16 pb-8 mt-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -132,8 +118,7 @@
     const CURRENT_USER = 'majeeo-current-user';
     
     const products = [
-        // PRICE IS 1 FOR TESTING
-        { name:"Premium Almonds (Badam)", img:"images/almonds.webp", price:1, desc:"High-quality California almonds.", best:true, link:"#" },
+        { name:"Premium Almonds (Badam)", img:"images/almonds.webp", price:1, desc:"High-quality California almonds.", best:true, link:"#" }, // PRICE IS 1
         { name:"Premium Cashews (Kaju)", img:"images/cashews.avif", price:1200, desc:"Fresh, creamy cashews.", best:true, link:"#" },
         { name:"Mamra Almonds (Organic)", img:"images/mamra_almonds.webp", price:1600, desc:"Premium organic Mamra almonds.", best:false, link:"#" },
         { name:"Pista (Pistachios)", img:"images/Pista.jpg", price:1400, desc:"Crunchy, lightly salted pistachios.", best:false, link:"#" },
@@ -192,7 +177,6 @@
         cartTotalSpan.textContent = `₹${total.toFixed(2)}`;
         checkoutBtn.disabled = c.length === 0;
         
-        // SIDEBAR CART ITEMS with + / - / Remove Controls
         cartItemsDiv.innerHTML = c.map((item, i) => `
             <div class="flex justify-between items-center border-b pb-2 gap-2">
                 <div class="flex-grow">
@@ -204,34 +188,26 @@
                      <span class="text-xs font-bold px-1">${item.count}</span>
                      <button onclick="updateQty(${i}, 1)" class="px-2 py-1 hover:bg-gray-200 rounded-r transition">+</button>
                 </div>
-                <button onclick="removeAll(${i})" class="text-red-600 hover:text-red-800 ml-1" title="Remove All"><i class="ri-delete-bin-line"></i></button>
+                <button onclick="removeAll(${i})" class="text-red-600 hover:text-red-800 ml-1"><i class="ri-delete-bin-line"></i></button>
             </div>
         `).join('');
     }
 
-    // Add or Remove 1 Quantity
     function updateQty(index, delta) {
         const c = getCart();
         const item = c[index];
         const unitPrice = item.price / item.count;
         const unitGrams = item.unitGrams;
-        
         if (item.count + delta > 0) {
             item.count += delta;
             item.price += unitPrice * delta;
             item.grams += unitGrams * delta;
-        } else {
-            // If qty goes to 0, don't remove automatically in sidebar to avoid accidents, 
-            // or uncomment below line to remove:
-            // c.splice(index, 1);
-            return; 
-        }
+        } else { return; }
         saveCart(c);
     }
 
-    // Remove Entire Item
     function removeAll(index) {
-        if(confirm("Remove this item completely?")) {
+        if(confirm("Remove this item?")) {
             const c = getCart();
             c.splice(index, 1);
             saveCart(c);
@@ -246,28 +222,19 @@
             const name = btn.dataset.name;
             const img = btn.dataset.img;
             const price = (parseFloat(btn.dataset.price) / 1000) * grams;
-            
             const cart = getCart();
             const existing = cart.find(i => i.name === name && i.unitGrams === grams);
-            if (existing) {
-                existing.count++; existing.grams += grams; existing.price += price;
-            } else {
-                cart.push({ name, grams, price, count: 1, unitGrams: grams, img });
-            }
+            if (existing) { existing.count++; existing.grams += grams; existing.price += price; } 
+            else { cart.push({ name, grams, price, count: 1, unitGrams: grams, img }); }
             saveCart(cart);
             toggleCartSidebar(true);
         }
     });
     
-    // Search & Menu Logic
     const params = new URLSearchParams(window.location.search);
     const search = params.get('search');
-    if(search) {
-        document.getElementById('searchInput').value = search;
-        renderProducts(search);
-    } else {
-        renderProducts();
-    }
+    if(search) { document.getElementById('searchInput').value = search; renderProducts(search); } 
+    else { renderProducts(); }
     
     document.getElementById('searchInput').addEventListener('input', (e) => renderProducts(e.target.value));
 
@@ -288,12 +255,10 @@
         }
     }
 
-    // --- CHECKOUT LOGIC (Auth + Save to Free DB) ---
     checkoutBtn.addEventListener('click', () => {
-        // 1. CHECK LOGIN STATUS
         const activeUser = JSON.parse(localStorage.getItem(CURRENT_USER));
         if (!activeUser) {
-            alert("Please Login or Sign Up to complete your order and save history!");
+            alert("Please Login or Sign Up to complete your order!");
             window.location.href = "account.html";
             return;
         }
@@ -311,51 +276,58 @@
         const total = cart.reduce((s, i) => s + i.price, 0);
         
         new Razorpay({
-            key: "rzp_live_LIqOpioBHDIhG4",
+            key: "rzp_live_LIqOpioBHDIhG4", 
             amount: Math.round(total * 100),
             currency: "INR",
             name: "MajeeoNuts",
-            description: "Order Payment",
-            prefill: {
-                email: customerEmail,
-                contact: '9999999999'
-            },
+            prefill: { email: customerEmail },
             handler: (resp) => {
-                // A. Create Order Object
+                // --- SEQUENTIAL ORDER ID LOGIC ---
+                const today = new Date();
+                // Format: YYYYMMDD (e.g., 20251122)
+                const dateStr = today.getFullYear() + "" + String(today.getMonth() + 1).padStart(2, '0') + String(today.getDate()).padStart(2, '0');
+                
+                // Get existing orders from DB
+                const allOrders = JSON.parse(localStorage.getItem(ORDERS_DB)) || [];
+                // Filter for orders created today to calculate sequence
+                const todayOrdersCount = allOrders.filter(o => o.id && o.id.startsWith('MN-' + dateStr)).length;
+                
+                // Sequence is Count + 1, padded to 3 digits (e.g., 001, 002)
+                const nextSeq = String(todayOrdersCount + 1).padStart(3, '0');
+                
+                // Final ID: MN-20251122-001
+                const orderId = `MN-${dateStr}-${nextSeq}`;
+
                 const newOrder = {
-                    id: 'MN-' + Math.floor(1000 + Math.random() * 9000),
-                    date: new Date().toLocaleDateString('en-IN'),
-                    userEmail: activeUser.email, // LINKED TO USER
+                    id: orderId,
+                    timestamp: new Date().getTime(),
+                    date: today.toDateString(),
+                    userEmail: activeUser.email,
                     items: cart,
                     total: total,
                     status: 'Paid',
                     paymentId: resp.razorpay_payment_id
                 };
 
-                // B. Save to "Global" Orders DB in LocalStorage
-                const orders = JSON.parse(localStorage.getItem(ORDERS_DB)) || [];
-                orders.push(newOrder);
-                localStorage.setItem(ORDERS_DB, JSON.stringify(orders));
+                allOrders.unshift(newOrder);
+                localStorage.setItem(ORDERS_DB, JSON.stringify(allOrders));
 
-                // C. Send Invoice Email
                 const itemsList = cart.map(i => `${i.name} (${i.count} x ${i.unitGrams}g) - Rs.${i.price}`).join(' | ');
-                
                 fetch("https://formsubmit.co/ajax/maheshgawade7799@gmail.com", {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify({
                         email: customerEmail,
-                        _subject: `Invoice for Order #${newOrder.id}`,
+                        _subject: `Invoice: Order #${orderId}`,
                         _cc: customerEmail,
                         _template: "table",
-                        "Order ID": newOrder.id,
+                        "Order ID": orderId,
                         "Amount": `₹${total}`,
-                        "Payment ID": resp.razorpay_payment_id,
                         "Items": itemsList
                     })
                 });
 
-                alert("Payment Successful! Invoice sent to " + customerEmail);
+                alert("Payment Successful! Order ID: " + orderId);
                 localStorage.removeItem(STORAGE_KEY);
                 renderCart();
                 window.location.href = 'account.html';
