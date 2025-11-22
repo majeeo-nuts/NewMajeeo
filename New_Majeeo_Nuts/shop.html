@@ -35,6 +35,8 @@
             <div class="hidden lg:flex items-center space-x-6">
                 <a href="index.html" class="text-brand-dark hover:text-brand-red font-medium transition">Home</a>
                 <a href="shop.html" class="text-brand-red font-medium transition border-b-2 border-brand-red">Shop All</a>
+                <a href="gifting.html" class="text-brand-dark hover:text-brand-red font-medium transition">Gifting</a>
+                <a href="contact.html" class="text-brand-dark hover:text-brand-red font-medium transition">Contact Us</a>
                 <input id="searchInput" type="text" placeholder="Search dry fruits..." class="px-3 py-2 rounded-full border border-gray-300 focus:ring-2 focus:ring-brand-red w-64 text-sm">
             </div>
 
@@ -114,6 +116,7 @@
 
 <script>
     const STORAGE_KEY = 'majeeo-cart';
+    const ORDERS_KEY = 'majeeo-orders'; // New Key for Order History
     
     // --- UPDATED PRODUCT DATA WITH TEST PRICE ---
     const products = [
@@ -215,7 +218,6 @@
         }
     });
     
-    // Search Init
     const params = new URLSearchParams(window.location.search);
     const search = params.get('search');
     if(search) {
@@ -244,10 +246,11 @@
         }
     }
 
-    // Razorpay logic
+    // --- CHECKOUT & ORDER SAVING LOGIC ---
     checkoutBtn.addEventListener('click', () => {
         const cart = getCart();
         const total = cart.reduce((s, i) => s + i.price, 0);
+        
         new Razorpay({
             key: "rzp_live_LIqOpioBHDIhG4",
             amount: Math.round(total * 100),
@@ -255,10 +258,26 @@
             name: "MajeeoNuts",
             description: "Order Checkout",
             handler: (resp) => {
-                alert("Payment ID: " + resp.razorpay_payment_id);
-                localStorage.removeItem(STORAGE_KEY);
+                // 1. Payment Success - Create Order Object
+                const newOrder = {
+                    id: 'MN-' + Math.floor(1000 + Math.random() * 9000),
+                    date: new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' }),
+                    items: cart, // Save exact items
+                    total: total,
+                    status: 'Paid',
+                    paymentId: resp.razorpay_payment_id
+                };
+
+                // 2. Get Existing History & Add New Order
+                const orders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+                orders.unshift(newOrder); // Add to top
+                localStorage.setItem(ORDERS_KEY, JSON.stringify(orders));
+
+                // 3. Success Message, Clear Cart & Redirect
+                alert("Payment Successful! Order #" + newOrder.id + " placed.");
+                localStorage.removeItem(STORAGE_KEY); // Clear current cart
                 renderCart();
-                window.location.href = 'account.html';
+                window.location.href = 'account.html'; // Go to history
             },
             theme: { color: "#7f1d1d" }
         }).open();

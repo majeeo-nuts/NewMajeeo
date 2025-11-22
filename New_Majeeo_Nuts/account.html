@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -34,25 +34,141 @@
 </nav>
 
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <div class="bg-white rounded-xl shadow p-8 max-w-2xl mx-auto">
-        <div class="text-center mb-8">
-            <div class="w-24 h-24 bg-brand-red text-white rounded-full flex items-center justify-center text-4xl mx-auto mb-4 font-serif">M</div>
-            <h2 class="font-bold text-2xl text-brand-dark">Welcome, Member</h2>
-            <p class="text-gray-500">maheshgawade7799@gmail.com</p>
-        </div>
+    <div class="flex flex-col md:flex-row gap-8">
         
-        <div class="border-t pt-6">
-            <h3 class="font-bold text-lg mb-4">My Orders</h3>
-            <div class="bg-gray-50 p-4 rounded border text-center text-gray-500">
-                No recent orders found. <a href="shop.html" class="text-brand-red underline">Start Shopping</a>
+        <!-- Sidebar -->
+        <aside class="w-full md:w-64 flex-shrink-0">
+            <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 text-center mb-6">
+                <div class="w-20 h-20 bg-brand-red text-white rounded-full flex items-center justify-center text-3xl mx-auto mb-4 font-serif">
+                    M
+                </div>
+                <h2 class="font-bold text-lg text-brand-dark">Majeeo Member</h2>
+                <p class="text-xs text-gray-500">maheshgawade7799@gmail.com</p>
             </div>
-        </div>
+            <nav class="space-y-2">
+                <button onclick="showTab('orders')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
+                    <i class="ri-box-3-line text-brand-red"></i> My Orders
+                </button>
+                <button onclick="showTab('address')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
+                    <i class="ri-map-pin-line text-brand-red"></i> Addresses
+                </button>
+                <button onclick="showTab('profile')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
+                    <i class="ri-user-settings-line text-brand-red"></i> Profile
+                </button>
+            </nav>
+        </aside>
 
-        <div class="mt-8 text-center">
-            <button class="text-red-600 font-medium hover:underline"><i class="ri-logout-box-line"></i> Logout</button>
-        </div>
+        <!-- Content Area -->
+        <section class="flex-grow bg-white rounded-xl shadow-sm border border-gray-200 p-6 sm:p-10">
+            
+            <!-- Tab: My Orders -->
+            <div id="tab-orders" class="block">
+                <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Order History</h2>
+                <div id="orders-list" class="space-y-4">
+                    <!-- JS will inject orders here -->
+                    <p class="text-center text-gray-500">Loading your orders...</p>
+                </div>
+            </div>
+
+            <!-- Tab: Addresses -->
+            <div id="tab-address" class="hidden">
+                <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Saved Addresses</h2>
+                <div class="border border-brand-red rounded-lg p-4 relative bg-brand-cream/30 max-w-sm">
+                    <span class="absolute top-2 right-2 text-brand-red text-xs font-bold">DEFAULT</span>
+                    <h3 class="font-bold mb-2">Home</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        Mahesh Gawade<br>Mumbai, Maharashtra - 400028<br>India
+                    </p>
+                </div>
+            </div>
+
+             <!-- Tab: Profile -->
+             <div id="tab-profile" class="hidden">
+                <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Profile Details</h2>
+                <form class="space-y-4 max-w-md">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                        <input type="email" value="maheshgawade7799@gmail.com" readonly class="w-full p-2 border border-gray-300 rounded bg-gray-100 cursor-not-allowed">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                        <input type="tel" value="+91 8369245051" class="w-full p-2 border border-gray-300 rounded focus:ring-brand-gold">
+                    </div>
+                    <button class="bg-brand-red text-white px-6 py-2 rounded hover:bg-brand-dark transition">Save Changes</button>
+                </form>
+            </div>
+
+        </section>
     </div>
 </main>
+
+<footer class="bg-brand-dark text-white pt-8 pb-4 text-center text-sm">
+    <p>© 2025 MajeeoNuts. All rights reserved.</p>
+</footer>
+
+<script>
+    // Tab Logic
+    function showTab(tabName) {
+        ['orders', 'address', 'profile'].forEach(t => {
+            document.getElementById('tab-' + t).classList.add('hidden');
+        });
+        document.getElementById('tab-' + tabName).classList.remove('hidden');
+    }
+
+    // --- ORDER HISTORY RENDER LOGIC ---
+    const ORDERS_KEY = 'majeeo-orders';
+    
+    function renderOrders() {
+        const orders = JSON.parse(localStorage.getItem(ORDERS_KEY)) || [];
+        const container = document.getElementById('orders-list');
+        
+        if(orders.length === 0) {
+            container.innerHTML = `
+                <div class="bg-gray-50 p-8 rounded-xl border border-dashed border-gray-300 text-center">
+                    <i class="ri-shopping-bag-3-line text-4xl text-gray-300 mb-3 block"></i>
+                    <p class="text-gray-500 mb-4">No orders found yet.</p>
+                    <a href="shop.html" class="text-brand-red font-bold hover:underline">Start Shopping</a>
+                </div>`;
+            return;
+        }
+
+        container.innerHTML = orders.map(order => `
+            <div class="border border-gray-200 rounded-xl p-5 hover:shadow-lg transition bg-white">
+                <div class="flex justify-between items-start border-b border-gray-100 pb-4 mb-4">
+                    <div>
+                        <p class="font-bold text-lg text-brand-dark">Order #${order.id}</p>
+                        <p class="text-xs text-gray-500">Placed on ${order.date}</p>
+                    </div>
+                    <div class="text-right">
+                        <span class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full mb-1 inline-block">${order.status}</span>
+                        <p class="text-xs text-gray-400 mt-1">ID: ${order.paymentId}</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    ${order.items.map(item => `
+                        <div class="flex items-center gap-4 bg-gray-50 p-2 rounded-lg">
+                            <img src="${item.img}" onerror="this.src='https://placehold.co/50x50?text=Nut'" class="w-12 h-12 object-cover rounded-md border border-gray-200">
+                            <div class="flex-grow">
+                                <p class="text-sm font-bold text-brand-dark">${item.name}</p>
+                                <p class="text-xs text-gray-500">${item.count} x ${item.unitGrams}g</p>
+                            </div>
+                            <p class="font-bold text-sm text-brand-red">₹${item.price.toFixed(2)}</p>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="mt-4 pt-3 border-t border-gray-100 flex justify-between items-center">
+                    <span class="text-sm text-gray-600 font-medium">Total Amount Paid</span>
+                    <span class="font-bold text-xl text-brand-dark">₹${order.total.toFixed(2)}</span>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    // Call on load
+    renderOrders();
+</script>
 
 </body>
 </html>
