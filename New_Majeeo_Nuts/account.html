@@ -40,7 +40,7 @@
 
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 min-h-[600px] flex items-center justify-center">
     
-    <!-- 1. AUTHENTICATION SECTION -->
+    <!-- 1. AUTHENTICATION SECTION (Login/Signup) -->
     <div id="auth-container" class="w-full max-w-md bg-white p-8 rounded-xl shadow-2xl border border-gray-100 fade-in">
         <div class="flex mb-8 border-b border-gray-200">
             <button onclick="toggleAuth('login')" id="tab-login" class="w-1/2 pb-3 text-lg font-bold text-brand-red border-b-2 border-brand-red transition">Login</button>
@@ -91,7 +91,7 @@
         </form>
     </div>
 
-    <!-- 2. DASHBOARD SECTION -->
+    <!-- 2. DASHBOARD SECTION (Sidebar + Tabs) -->
     <div id="dashboard-container" class="w-full hidden-section fade-in">
         <div class="flex flex-col md:flex-row gap-8">
             <!-- Sidebar -->
@@ -107,19 +107,15 @@
                     <button onclick="showTab('orders')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
                         <i class="ri-box-3-line text-brand-red"></i> My Orders
                     </button>
-                    
-                    <!-- NEW: Track Order Tab Button -->
                     <button onclick="showTab('track')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
                         <i class="ri-map-pin-time-line text-brand-red"></i> Track Order
                     </button>
-
+                    <button onclick="showTab('returns')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
+                        <i class="ri-arrow-go-back-line text-brand-red"></i> Returns & Refunds
+                    </button>
                     <button onclick="showTab('profile')" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
                         <i class="ri-user-settings-line text-brand-red"></i> Profile
                     </button>
-                    
-                    <a href="return.html" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-brand-gold hover:text-brand-dark font-medium transition shadow-sm border border-gray-100 flex items-center gap-2">
-                        <i class="ri-arrow-go-back-line text-brand-red"></i> Returns & Refunds
-                    </a>
                     <button onclick="logout()" class="w-full text-left px-4 py-3 rounded-lg bg-white hover:bg-red-100 text-red-600 font-medium transition shadow-sm border border-gray-100 flex items-center gap-2 mt-4">
                         <i class="ri-logout-box-line"></i> Logout
                     </button>
@@ -139,37 +135,38 @@
                 <div id="tab-track" class="hidden">
                     <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Track Your Order</h2>
                     
-                    <!-- Search Box -->
                     <div class="flex gap-2 mb-8">
                         <input type="text" id="track-input" placeholder="Enter Order ID (e.g. MN-2025...)" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-gold outline-none">
                         <button onclick="trackOrder()" class="bg-brand-red text-white px-6 py-3 rounded-lg font-bold hover:bg-brand-dark transition">Track</button>
                     </div>
 
-                    <!-- Result Display -->
                     <div id="tracking-result" class="hidden">
                         <div class="bg-gray-50 p-6 rounded-xl mb-6">
                             <h3 class="font-bold text-xl text-brand-dark mb-1">Order <span id="track-id-display"></span></h3>
                             <p class="text-sm text-gray-500" id="track-status-text">Checking status...</p>
                         </div>
                         
-                        <!-- Vertical Timeline -->
+                        <!-- Timeline -->
                         <div class="relative pl-4 space-y-8 border-l-2 border-gray-200 ml-4">
-                            <!-- Steps -->
+                            <!-- Step 1 -->
                             <div class="relative pl-8">
                                 <div class="absolute -left-[9px] top-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
                                 <h4 class="font-bold text-brand-dark">Order Placed</h4>
                                 <p class="text-xs text-gray-500">We have received your order.</p>
                             </div>
+                            <!-- Step 2 -->
                             <div class="relative pl-8 opacity-50 transition-all" id="step-packed">
                                 <div class="absolute -left-[9px] top-0 w-4 h-4 bg-gray-300 rounded-full border-2 border-white" id="dot-packed"></div>
                                 <h4 class="font-bold text-brand-dark">Packed</h4>
                                 <p class="text-xs text-gray-500">Packed with care.</p>
                             </div>
+                            <!-- Step 3 -->
                             <div class="relative pl-8 opacity-50 transition-all" id="step-shipped">
                                 <div class="absolute -left-[9px] top-0 w-4 h-4 bg-gray-300 rounded-full border-2 border-white" id="dot-shipped"></div>
                                 <h4 class="font-bold text-brand-dark">Shipped</h4>
                                 <p class="text-xs text-gray-500">On the way to you.</p>
                             </div>
+                            <!-- Step 4 -->
                             <div class="relative pl-8 opacity-50 transition-all" id="step-delivered">
                                 <div class="absolute -left-[9px] top-0 w-4 h-4 bg-gray-300 rounded-full border-2 border-white" id="dot-delivered"></div>
                                 <h4 class="font-bold text-brand-dark">Delivered</h4>
@@ -178,6 +175,48 @@
                         </div>
                     </div>
                     <p id="track-error" class="text-red-500 text-center hidden mt-4">Order ID not found in our system.</p>
+                </div>
+
+                <!-- Tab: Returns & Refunds (NEW) -->
+                <div id="tab-returns" class="hidden">
+                    <h2 class="text-2xl font-serif font-bold text-brand-dark mb-6 pb-4 border-b">Return Request</h2>
+                    <div class="max-w-xl">
+                        <p class="text-gray-600 mb-6">We're sorry you're not satisfied. Returns are accepted within 7 days of delivery.</p>
+                        
+                        <form action="https://formsubmit.co/maheshgawade7799@gmail.com" method="POST" class="space-y-5">
+                            <input type="hidden" name="_subject" value="New Return Request">
+                            <input type="hidden" name="_template" value="table">
+                            <input type="hidden" name="_cc" id="cc-email">
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Order ID</label>
+                                    <input type="text" name="Order ID" placeholder="e.g. MN-1234" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-brand-red outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold text-gray-700 mb-1">Your Email</label>
+                                    <input type="email" name="email" id="return-email" placeholder="Enter your email" required class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-brand-red outline-none">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Reason for Return</label>
+                                <select name="Reason" class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-brand-red outline-none">
+                                    <option>Quality Issue</option>
+                                    <option>Damaged Packaging</option>
+                                    <option>Wrong Item Received</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-bold text-gray-700 mb-1">Additional Comments</label>
+                                <textarea name="Comments" rows="3" class="w-full p-3 border border-gray-300 rounded focus:ring-2 focus:ring-brand-red outline-none"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-brand-red text-white font-bold py-3 rounded hover:bg-brand-dark transition">Submit Return Request</button>
+                        </form>
+                    </div>
                 </div>
 
                 <!-- Tab: Profile -->
@@ -204,20 +243,15 @@
     const CURRENT_USER = 'majeeo-current-user';
     const ORDERS_DB = 'majeeo-orders-db';
 
-    // --- PASSWORD TOGGLE ---
+    // --- UI HELPERS ---
     function togglePassword(inputId, btn) {
         const input = document.getElementById(inputId);
         const icon = btn.querySelector('i');
-        if (input.type === "password") {
-            input.type = "text";
-            icon.className = "ri-eye-off-line";
-        } else {
-            input.type = "password";
-            icon.className = "ri-eye-line";
-        }
+        if (input.type === "password") { input.type = "text"; icon.className = "ri-eye-off-line"; }
+        else { input.type = "password"; icon.className = "ri-eye-line"; }
     }
 
-    // --- AUTH LOGIC ---
+    // --- AUTHENTICATION ---
     function checkAuth() {
         const activeUser = JSON.parse(localStorage.getItem(CURRENT_USER));
         const authContainer = document.getElementById('auth-container');
@@ -240,7 +274,7 @@
         }
     }
 
-    // LOGIN
+    // Login Logic
     document.getElementById('login-form').addEventListener('submit', (e) => {
         e.preventDefault();
         const email = document.getElementById('login-email').value;
@@ -248,15 +282,11 @@
         const users = JSON.parse(localStorage.getItem(USERS_DB)) || [];
         
         const user = users.find(u => u.email === email && u.password === pass);
-        if (user) {
-            localStorage.setItem(CURRENT_USER, JSON.stringify(user));
-            checkAuth();
-        } else {
-            alert("Invalid email or password!");
-        }
+        if (user) { localStorage.setItem(CURRENT_USER, JSON.stringify(user)); checkAuth(); }
+        else { alert("Invalid email or password!"); }
     });
 
-    // SIGNUP
+    // Signup Logic
     document.getElementById('signup-form').addEventListener('submit', (e) => {
         e.preventDefault();
         const name = document.getElementById('signup-name').value;
@@ -265,100 +295,61 @@
         const confirmPass = document.getElementById('signup-confirm-pass').value;
         
         if (pass !== confirmPass) { alert("Passwords do not match!"); return; }
-
         const users = JSON.parse(localStorage.getItem(USERS_DB)) || [];
         if(users.find(u => u.email === email)) { alert("User already exists!"); return; }
-
+        
         const newUser = { name, email, password: pass };
         users.push(newUser);
         localStorage.setItem(USERS_DB, JSON.stringify(users));
         localStorage.setItem(CURRENT_USER, JSON.stringify(newUser));
-
-        // Send Welcome Email (Admin + CC Customer)
+        
+        // Send Welcome Email (Copy to Customer)
         fetch("https://formsubmit.co/ajax/maheshgawade7799@gmail.com", {
             method: "POST",
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({
-                email: email,
-                _subject: "Welcome to MajeeoNuts: " + name,
-                _cc: email,
-                _template: "table",
-                message: `Welcome ${name}! Your account has been created successfully.`
-            })
-        }).then(() => {
-             alert("Account created! Welcome email sent.");
-             checkAuth();
-        });
+            body: JSON.stringify({ email: email, _subject: "Welcome to MajeeoNuts", _cc: email, message: `Welcome ${name}! Your account has been created.` })
+        }).then(() => { alert("Account created! Welcome email sent."); checkAuth(); });
     });
 
-    function logout() {
-        localStorage.removeItem(CURRENT_USER);
-        window.location.reload();
-    }
+    function logout() { localStorage.removeItem(CURRENT_USER); window.location.reload(); }
 
-    // --- ORDERS & TRACKING LOGIC ---
+    // --- ORDER HISTORY ---
     function renderOrders(userEmail) {
         const allOrders = JSON.parse(localStorage.getItem(ORDERS_DB)) || [];
         const userOrders = allOrders.filter(o => o.userEmail === userEmail);
         const container = document.getElementById('orders-list');
 
-        if(userOrders.length === 0) {
-            container.innerHTML = `<p class="text-center text-gray-500">No orders yet. <a href="shop.html" class="text-brand-red underline">Shop Now</a></p>`;
-            return;
-        }
+        if(userOrders.length === 0) { container.innerHTML = `<p class="text-center text-gray-500">No orders yet.</p>`; return; }
 
         container.innerHTML = userOrders.reverse().map(order => `
             <div class="border border-gray-200 rounded-xl p-5 hover:shadow-lg transition bg-white">
                 <div class="flex justify-between items-start border-b border-gray-100 pb-4 mb-4">
-                    <div>
-                        <p class="font-bold text-lg text-brand-dark">Order #${order.id}</p>
-                        <p class="text-xs text-gray-500">${order.date}</p>
-                    </div>
-                    <!-- CLICK TO TRACK -->
-                    <button onclick="switchToTrack('${order.id}')" class="bg-brand-gold text-brand-red text-xs font-bold px-3 py-1 rounded hover:bg-brand-dark hover:text-white transition">
-                        Track Status
-                    </button>
+                    <div><p class="font-bold text-lg text-brand-dark">Order #${order.id}</p><p class="text-xs text-gray-500">${order.date}</p></div>
+                    <button onclick="switchToTrack('${order.id}')" class="bg-brand-gold text-brand-red text-xs font-bold px-3 py-1 rounded hover:bg-brand-dark hover:text-white transition">Track</button>
                 </div>
-                <div class="text-sm text-gray-600 space-y-1">
-                    ${order.items.map(i => `<p>${i.name} (${i.count}x)</p>`).join('')}
-                </div>
-                <div class="mt-4 pt-3 border-t border-gray-100 font-bold text-right text-brand-dark">
-                    Total: ₹${order.total}
-                </div>
-            </div>
-        `).join('');
+                <div class="text-sm text-gray-600 space-y-1">${order.items.map(i => `<p>${i.name} (${i.count}x)</p>`).join('')}</div>
+                <div class="mt-4 pt-3 border-t border-gray-100 font-bold text-right text-brand-dark">Total: ₹${order.total}</div>
+            </div>`).join('');
     }
 
-    // 1. Function to switch tab and pre-fill tracking
-    function switchToTrack(orderId) {
-        showTab('track');
-        document.getElementById('track-input').value = orderId;
-        trackOrder();
-    }
+    // --- TRACKING ---
+    function switchToTrack(orderId) { showTab('track'); document.getElementById('track-input').value = orderId; trackOrder(); }
 
-    // 2. Tracking Logic (Same as track.html but embedded)
     function trackOrder() {
-        const inputId = document.getElementById('track-input').value.trim();
+        let inputId = document.getElementById('track-input').value;
+        inputId = inputId.replace(/Order\s*#?/gi, '').trim();
         const allOrders = JSON.parse(localStorage.getItem(ORDERS_DB)) || [];
         const order = allOrders.find(o => o.id === inputId);
         
         const resultDiv = document.getElementById('tracking-result');
         const errorMsg = document.getElementById('track-error');
 
-        if (!order) {
-            resultDiv.classList.add('hidden');
-            errorMsg.classList.remove('hidden');
-            return;
-        }
+        if (!order) { resultDiv.classList.add('hidden'); errorMsg.classList.remove('hidden'); return; }
 
-        errorMsg.classList.add('hidden');
-        resultDiv.classList.remove('hidden');
+        errorMsg.classList.add('hidden'); resultDiv.classList.remove('hidden');
         document.getElementById('track-id-display').innerText = order.id;
 
-        // Simulate Timeline
-        let orderDateObj = new Date();
-        if(order.timestamp) orderDateObj = new Date(order.timestamp);
-        
+        let orderDateObj = order.timestamp ? new Date(order.timestamp) : new Date();
         const diffHours = Math.abs(new Date() - orderDateObj) / 36e5;
         
         updateStep('packed', diffHours > 0.02);
@@ -369,44 +360,35 @@
         if(diffHours > 72) status = "Delivered";
         else if(diffHours > 24) status = "Shipped";
         else if(diffHours > 0.02) status = "Packed";
-        
         document.getElementById('track-status-text').innerText = "Current Status: " + status;
     }
 
     function updateStep(step, isActive) {
         const el = document.getElementById('step-' + step);
         const dot = document.getElementById('dot-' + step);
-        if(isActive) {
-            el.classList.remove('opacity-50');
-            dot.classList.replace('bg-gray-300', 'bg-green-500');
-        } else {
-            el.classList.add('opacity-50');
-            dot.classList.replace('bg-green-500', 'bg-gray-300');
-        }
+        if(isActive) { el.classList.remove('opacity-50'); dot.classList.replace('bg-gray-300', 'bg-green-500'); } 
+        else { el.classList.add('opacity-50'); dot.classList.replace('bg-green-500', 'bg-gray-300'); }
     }
 
-    // --- TAB & AUTH UI ---
+    // --- TAB SWITCHING ---
     function toggleAuth(tab) {
         const login = document.getElementById('login-form');
         const signup = document.getElementById('signup-form');
         const tLogin = document.getElementById('tab-login');
         const tSignup = document.getElementById('tab-signup');
-
-        if(tab === 'signup') {
-            login.classList.add('hidden-section'); signup.classList.remove('hidden-section');
-            tSignup.classList.add('text-brand-red', 'border-b-2', 'border-brand-red'); tSignup.classList.remove('text-gray-500');
-            tLogin.classList.remove('text-brand-red', 'border-b-2', 'border-brand-red'); tLogin.classList.add('text-gray-500');
-        } else {
-            signup.classList.add('hidden-section'); login.classList.remove('hidden-section');
-            tLogin.classList.add('text-brand-red', 'border-b-2', 'border-brand-red'); tLogin.classList.remove('text-gray-500');
-            tSignup.classList.remove('text-brand-red', 'border-b-2', 'border-brand-red'); tSignup.classList.add('text-gray-500');
-        }
+        if(tab === 'signup') { login.classList.add('hidden-section'); signup.classList.remove('hidden-section'); tSignup.classList.add('text-brand-red', 'border-b-2', 'border-brand-red'); tSignup.classList.remove('text-gray-500'); tLogin.classList.remove('text-brand-red', 'border-b-2', 'border-brand-red'); tLogin.classList.add('text-gray-500'); } 
+        else { signup.classList.add('hidden-section'); login.classList.remove('hidden-section'); tLogin.classList.add('text-brand-red', 'border-b-2', 'border-brand-red'); tLogin.classList.remove('text-gray-500'); tSignup.classList.remove('text-brand-red', 'border-b-2', 'border-brand-red'); tSignup.classList.add('text-gray-500'); }
     }
 
     function showTab(t) {
-        ['orders', 'track', 'profile'].forEach(id => document.getElementById('tab-'+id).classList.add('hidden'));
+        ['orders', 'track', 'returns', 'profile'].forEach(id => document.getElementById('tab-'+id).classList.add('hidden'));
         document.getElementById('tab-'+t).classList.remove('hidden');
     }
+
+    // Returns Logic: Auto-fill CC
+    document.getElementById('return-email').addEventListener('input', function(e) {
+        document.getElementById('cc-email').value = e.target.value;
+    });
 
     checkAuth();
 </script>
